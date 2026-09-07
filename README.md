@@ -1,209 +1,161 @@
-# Clone Blocker for Threads
+# Clone Blocker cho Threads
 
-Clone Blocker patches Meta's Threads app for Android (`com.instagram.barcelona`, version
-`444.0.0.45.85`, arm64-v8a) into a re-signed, separately-installable clone: application ID
-`app.tree55.threads`, launcher label **Threads 55**.
+*Tiếng Việt · [English](README.en.md)*
 
-It installs *beside* official Threads rather than replacing it — its own package, UID, data
-directory, provider authorities, permissions and task affinities — and adds community blocking on
-top of the stock feed. This is a personal research build. It is not affiliated with, endorsed by, or
-connected to Meta, and it is not distributed through any app store.
+Clone Blocker sửa ứng dụng Threads của Meta trên Android thành một bản ký lại —
+mã ứng dụng `app.tree55.threads`, tên hiển thị **Threads 55** — có thể tự chặn
+các tài khoản giả mạo dựa trên một danh sách chung của cộng đồng.
 
-## What it does
+Bản này cài **song song** với Threads chính thức chứ không thay thế. Dự án không
+liên kết với Meta và không có trên kho ứng dụng nào.
 
-- **Passive blocking.** Syncs a signed community block list every ten minutes while the app is in
-  the foreground, and blocks a listed account when that account's own post or reply scrolls into
-  view — one target at a time, under a randomised delay.
-- **Passive blocking is always on.** There is no opt-in and no in-app way to turn it off.
-  Uninstalling the clone is the only way to stop it.
-- **Inline Block control.** Every post and reply carries one Block control that opens a single
-  *Block and report* modal: the post excerpt, a reason, an optional *Also block this profile*
-  checkbox, one dynamic Block/Report action, and Cancel.
-- **Reports are never automatic.** Only an explicit tap on the modal's positive action queues one.
-- **Settings and Activity screens**, reached from a row at the bottom of the left feed drawer:
-  list-fetch status, record counts, the passive-delay controls, the report outbox, and history.
-- **Two configurable values only** — passive minimum delay (2–60 s, default 4) and passive maximum
-  delay (3–60 s, default 10), in whole-second steps.
-- **Optional app-scoped SOCKS5 proxy** over an Android `VpnService`. Off by default, covers only the
-  clone, fail-closed.
-- **Signed in-app updates.** Ed25519-verified metadata, hash- and signer-checked download, handed to
-  Android's *visible* package installer — never a silent, root or shell install.
+## Cài đặt
 
-**Blocks are real account state.** They are performed by Threads' own authenticated block action
-using your live signed-in session, so they appear in official Threads, apply on every device using
-that account, and are *not* undone by uninstalling the clone.
+Tải ở **[trang phát hành](https://github.com/Tree55-org/ThreadsMod/releases/tag/release)**:
 
-## Status
+| Tệp | Dung lượng | Dùng khi nào |
+|---|---:|---|
+| `tree55-threads-mod.apk` | 129 MB | Chính là ứng dụng. Tải tệp này. |
+| `tree55-threads-mod.zip` | 83 MB | Cũng chính tệp APK đó nhưng đã nén — dùng khi mạng hoặc trình duyệt chặn tải `.apk`. Giải nén rồi cài. |
 
-The current build is `ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-threads55-mod1-d.apk`,
-135,150,120 bytes, SHA-256 `e6ec4d70dacfa094659e31e09f2a890c537ba72b574767d62337a6a929c672a4`,
-published 2026-09-06 from patchlet series 005 r1, 010 r5, 020 r24, 030 r7, 040 r2, 050 r17, 060 r14,
-070 r10, 080 r3, 085 r2, 090 r62.
+Cần **Android 9 trở lên**, chip **arm64-v8a**. Bạn sẽ phải cho phép cài ứng dụng
+từ nguồn không xác định.
 
-**No published build has ever been installed or started on a device.** Every release records
-`runtimeValidation: not-run`. The release gates are *static* — they prove properties of the signed
-bytes, not that the app runs. The only device evidence anywhere is an isolated Activity-UI
-probe on an emulator, run against a review candidate rather than published bytes. Login, feed
-scrolling, list refresh, the SQLite v2→v3 migration, a real block, report delivery, VPN routing and
-the updater are all unexercised on hardware. Treat this as unverified software.
+Hãy kiểm tra tệp trước khi cài — mã băm phải đúng chính xác:
 
-The in-app updater is additionally inert in production: no update manifest has been published for
-`app.tree55.threads`.
-
-See [docs/CHANGELOG.md](docs/CHANGELOG.md) for release history.
-
-## Requirements
-
-**To run:** Android 9+ (API 28), arm64-v8a.
-
-**To build:** Windows with PowerShell 7, a JDK on `PATH`, Android SDK build-tools 36.0.0, and the
-pinned toolchain — Apktool 3.0.3, APKEditor 1.4.9, JADX 1.5.6. The upstream Threads split APKs and
-the toolchain jars are local-only and **not** in this repository; their exact SHA-256 hashes are
-pinned in `patchlets/resolutions/444.0.0.45.85/resolution.json`.
-
-## Build
-
-Passwords come from the environment only, never from the command line:
-
-```powershell
-$env:THREADSMOD_KS_PASS  = Read-Host 'Keystore password' -MaskInput
-$env:THREADSMOD_KEY_PASS = Read-Host 'Key password' -MaskInput
+```
+SHA-256  e6ec4d70dacfa094659e31e09f2a890c537ba72b574767d62337a6a929c672a4
 ```
 
-Releasing is two-phase. First produce non-publishing signed evidence:
-
 ```powershell
-.\patchlets\tools\Invoke-PatchletPipeline.ps1 `
-  -SourceApkSet .\Threads-444.0.0.45.85 `
-  -RunRoot .\work\patchlet-signed-review-NEW `
-  -ResolutionPath .\patchlets\resolutions\444.0.0.45.85\resolution.json `
-  -KeyStore "$env:USERPROFILE\.android\debug.keystore" `
-  -KeyAlias androiddebugkey `
-  -ValidationMode SignedReview `
-  -ReviewDeviceSerial emulator-5554
+Get-FileHash -Algorithm SHA256 tree55-threads-mod.apk    # Windows
+sha256sum tree55-threads-mod.apk                         # Linux / macOS
 ```
 
-A human then reviews that exact candidate and promotes the resolution to `verified-current`. Only
-after promotion does a fresh run publish:
+Nếu mã băm không khớp thì đừng cài.
 
-```powershell
-.\patchlets\tools\Invoke-PatchletPipeline.ps1 `
-  -SourceApkSet .\Threads-444.0.0.45.85 `
-  -RunRoot .\work\patchlet-release-NEW `
-  -ResolutionPath .\patchlets\resolutions\444.0.0.45.85\resolution.json `
-  -KeyStore "$env:USERPROFILE\.android\debug.keystore" `
-  -KeyAlias androiddebugkey `
-  -PublishPath .\dist\ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-NEW-mod1.apk
-```
+Cài đè lên bản **Threads 55** cũ thì dữ liệu vẫn còn. Bản này không bao giờ cập
+nhật hay thay thế được Threads chính thức, và bản `com.threadsmod.barcelona` cũ
+là một ứng dụng riêng mà trình cập nhật không nối sang được.
 
-`-PublishPath` must not already exist — the pipeline refuses to overwrite a published artifact, so
-each revision publishes a new filename. For the per-stage scripts, see
-[patchlets/README.md](patchlets/README.md).
+Hãy đọc [ứng dụng làm gì](#ứng-dụng-làm-gì) và [rủi ro](#rủi-ro) trước, rồi thử
+bằng một tài khoản mà bạn chấp nhận mất.
 
-## Install
+## Ứng dụng làm gì
 
-Built APKs are not committed (each is ~135 MB, and they are derived from Meta's signed binaries), so
-build one first. Verify its hash, then:
+- **Tự chặn tài khoản giả mạo khi bạn lướt.** Cứ mười phút một lần trong lúc mở
+  ứng dụng, nó tải danh sách chung đã ký, rồi chặn một tài khoản trong danh sách
+  ngay khi bài viết hoặc trả lời của chính tài khoản đó hiện lên màn hình — mỗi
+  lần một tài khoản, có giãn cách ngẫu nhiên.
+- **Việc này luôn bật.** Không có nút tắt. Cách duy nhất để dừng là gỡ ứng dụng.
+- **Mỗi bài viết và trả lời có một nút Chặn**, mở đúng một hộp thoại *Chặn và báo
+  cáo*: trích đoạn bài viết, lý do, tuỳ chọn *Chặn luôn hồ sơ này*, và Huỷ.
+- **Không bao giờ tự gửi báo cáo** — chỉ gửi khi bạn bấm.
+- **Trang Cài đặt và Hoạt động** ở cuối ngăn kéo bên trái: tình trạng danh sách,
+  số bản ghi, hàng đợi báo cáo và lịch sử.
+- **Proxy SOCKS5 tuỳ chọn**, chỉ áp dụng cho riêng ứng dụng này. Mặc định tắt.
+- **Cập nhật trong ứng dụng có chữ ký**, giao cho trình cài đặt thường của
+  Android — không bao giờ cài ngầm hay cần root.
 
-```powershell
-adb install -r --no-streaming .\dist\<artifact>.apk
-adb shell am start -n app.tree55.threads/com.instagram.barcelona.mainactivity.BarcelonaActivity
-```
+**Các lượt chặn là thật.** Chúng chạy qua chính chức năng chặn của Threads bằng
+phiên đăng nhập của bạn, nên sẽ hiện trong Threads chính thức, áp dụng trên mọi
+thiết bị dùng tài khoản đó, và **không** được hoàn tác khi bạn gỡ ứng dụng.
 
-`-r` updates an earlier `app.tree55.threads` install only when the signer matches, migrating its
-store on first open. It can never update or replace official Threads. An older
-`com.threadsmod.barcelona` clone is a separate side-by-side install that the updater cannot bridge.
+## Tình trạng
 
-Read [docs/07](docs/07-CLONE-BLOCKER-AUTO-BLOCK.md) and [docs/12](docs/12-PASSIVE-BLOCKING.md)
-before installing, and test with a disposable account.
+Bản hiện tại `tree55-threads-mod.apk`, phát hành 2026-09-06, từ loạt patchlet
+005 r1, 010 r5, 020 r24, 030 r7, 040 r2, 050 r17, 060 r14, 070 r10, 080 r3,
+085 r2, 090 r62.
 
-## How it is built
+**Chưa có bản phát hành nào từng được cài hay chạy thử trên máy thật.** Mọi bản
+đều ghi `runtimeValidation: not-run`. Các cổng kiểm tra khi phát hành đều là kiểm
+tra tĩnh — chúng chứng minh tính chất của tệp đã ký, chứ không chứng minh ứng
+dụng chạy được. Đăng nhập, lướt bảng tin, một lượt chặn thật, việc gửi báo cáo và
+trình cập nhật đều chưa được thử trên thiết bị. Hãy xem đây là phần mềm chưa được
+kiểm chứng.
 
-Nothing is hand-edited. The mod is defined as eleven ordered, exact-count **patchlets** replayed
-against a hash-locked three-APK split source set. Every obfuscated Threads symbol lives in a
-per-version **resolution** bound to an exact source SHA-256, never in stable Java. Each rewrite rule
-declares an exact path, complete before/after anchor text and an expected count, and the engine is
-strictly tri-state: pristine at the exact count applies, already-applied at the exact count is a
-no-op, anything else stops with a drift report.
+Lịch sử: [docs/CHANGELOG.md](docs/CHANGELOG.md).
 
-Reapplying the complete series to an already-patched tree must be a content-identical no-op. Any
-count drift, hash drift or gate failure fails closed and produces no installable artifact.
-`decompiled/`, `work/`, `dist/` and built APKs are evidence or output — never source.
+## Quyền riêng tư
 
-Details: [docs/08](docs/08-AI-DRIVEN-PATCHLETS.md) and [patchlets/README.md](patchlets/README.md).
+Việc chặn dùng chính chức năng đã xác thực của Threads. **Không có phiên đăng
+nhập, cookie, token hay mã tài khoản Threads nào được gửi về máy chủ của dự án.**
 
-## Repository layout
+Danh sách được đọc từ ba nguồn cố định, và mã SHA-256 của từng phần đều được đối
+chiếu với một bản kê đã ký trước khi đọc. Chỉ có đúng hai thứ được gửi đi: một
+báo cáo, và chỉ khi bạn bấm gửi; cùng một tín hiệu kích hoạt ẩn danh cho mỗi lần
+cài. Không có SDK thống kê, quảng cáo hay báo lỗi nào — điều này được kiểm tra
+bắt buộc khi phát hành.
 
-| Path | What it is | In git |
-|---|---|:-:|
-| `patchlets/` | Canonical source. Every change originates here. | yes |
-| `patchlets/features/` | The eleven patchlets, each a `patchlet.json` + `PATCHLET.md`. | yes |
-| `patchlets/resolutions/` | Per-APK-version symbol bindings and evidence. | yes |
-| `patchlets/tools/` | The PowerShell pipeline and the DEX inspectors. | yes |
-| `patchlets/assets/` | Injected Java, Smali templates, release-gate fixtures. | yes |
-| `docs/` | Design and operator documentation. | yes |
-| `AGENTS.md` | Binding project rules. | yes |
-| `Threads-<version>/` | Pristine upstream split set. | no |
-| `dist/` | Published APKs. | no |
-| `work/` | Per-run build and review evidence. | no |
-| `decompiled/` | Analysis trees. | no |
-| `.tools/` | Pinned third-party toolchain. | no |
+Khi bạn gửi báo cáo, máy chủ trung chuyển lưu địa chỉ IP, User-Agent và thành
+phố/quốc gia suy ra từ đó, không tự động xoá sau thời hạn nào. Chi tiết:
+[docs/10](docs/10-REPORTING-AND-LIMITS.md).
 
-The excluded paths are local-only: they hold Meta's redistributable-restricted binaries, files over
-GitHub's size limit, or per-run evidence. Their exact hashes are pinned in the resolution, so a build
-is reproducible without them being committed.
+## Rủi ro
 
-## Privacy and network
+- Sửa APK làm mất chữ ký của Meta, nên bản này không bao giờ dùng chung tên gói
+  với Threads chính thức được.
+- Các điểm cuối riêng tư và tên lớp đã làm rối không phải API ổn định. Mỗi lần
+  Threads cập nhật là phải làm lại từ đầu.
+- Play Integrity, đăng nhập bằng Facebook/Instagram, App Links và cập nhật qua
+  Play nhiều khả năng sẽ hỏng hoặc chạy không đầy đủ với chữ ký cá nhân.
+- Tự động dùng API riêng tư có thể vi phạm điều khoản của Meta và khiến tài khoản
+  gặp rủi ro. Hãy dùng tài khoản dùng một lần.
+- Đừng phát tán lại APK đã sửa của Meta khi chưa xem xét pháp lý.
 
-Blocking uses Threads' own authenticated block action. **No Threads session, cookie, token or
-account ID is ever sent to this project's backend.**
+## Tự build
 
-List reads come from three fixed mirrors — GitHub raw, jsDelivr, an AWS relay — where every object's
-SHA-256 is proven against a signed manifest before it is parsed. There are exactly two write
-destinations: a report, sent only on an explicit tap, and one anonymous activation ping per installed
-build. Third-party analytics, advertising, attribution and crash SDKs are forbidden and
-gate-enforced.
+Cần Windows với PowerShell 7, một JDK, Android SDK build-tools 36.0.0 và bộ công
+cụ đã ghim (Apktool 3.0.3, APKEditor 1.4.9, JADX 1.5.6). Các tệp APK gốc của
+Threads và bộ công cụ **không** nằm trong kho này; mã băm chính xác của chúng
+được ghim trong tệp resolution.
 
-The relay stores the connection IP, User-Agent and derived city/country on a report, with no
-automatic expiry. Full disclosure: [docs/10](docs/10-REPORTING-AND-LIMITS.md).
+Việc phát hành gồm hai bước: một lượt `SignedReview` không xuất bản, một lượt
+duyệt thủ công để nâng resolution lên `verified-current`, rồi một lượt `Release`
+mới xuất bản. Câu lệnh nằm ở [docs/03](docs/03-BUILD-SIGN-TEST-PLAN.md); các
+script từng bước nằm ở [patchlets/README.md](patchlets/README.md).
 
-## Boundaries and risk
+Không có gì được sửa tay. Bản mod là mười một patchlet có thứ tự, đếm chính xác,
+chạy lại trên một bộ nguồn đã khoá mã băm, với mọi ký hiệu đã làm rối được tách
+riêng vào resolution của từng phiên bản. Sai lệch bất kỳ đều dừng lại và không
+tạo ra tệp nào.
 
-- Modifying the APK invalidates Meta's signature. A re-signed same-package APK can never update or
-  coexist with the official install under the normal Android security model.
-- The private endpoints and obfuscated class names are not stable APIs. Every Threads release needs
-  a fresh resolution and a full regression run.
-- Play Integrity, Facebook/Instagram SSO, App Links, Play in-app updates and Play split delivery are
-  expected to fail or degrade under a personal signer.
-- Automating private APIs and reverse-engineering may violate Meta's terms and can put the account
-  at risk. Use a disposable account and test device.
-- Do not redistribute a modified Meta APK without appropriate legal review.
+## Cấu trúc kho
 
-## Documentation
-
-| Document | Contents |
+| Đường dẫn | |
 |---|---|
-| [CHANGELOG](docs/CHANGELOG.md) | Release history, newest first |
-| [01 — APK inventory and decompilation](docs/01-APK-INVENTORY-AND-DECOMPILATION.md) | Source APK identity, hashes, toolchain provenance |
-| [02 — Auto-block feasibility and design](docs/02-AUTO-BLOCK-FEASIBILITY-AND-DESIGN.md) | Why blocking must run in-process, and the design that follows |
-| [03 — Build, signing, and test plan](docs/03-BUILD-SIGN-TEST-PLAN.md) | The build lane, installation reality, staged runtime plan |
-| [04 — Integrity and delivery audit](docs/04-INTEGRITY-AND-DELIVERY-AUDIT.md) | TLS, update and delivery audit *(415-era)* |
-| [05 — Historical demo builds](docs/05-HISTORICAL-DEMO-BUILDS.md) | Superseded dialog and separate-ID demos *(historical)* |
-| [07 — Clone Blocker guide](docs/07-CLONE-BLOCKER-AUTO-BLOCK.md) | What it does, how to install it, how to test it safely |
-| [08 — AI-driven patchlets](docs/08-AI-DRIVEN-PATCHLETS.md) | The patchlet model, trust boundary, updating to a new APK |
-| [09 — Activity, Settings, inline controls](docs/09-ACTIVITY-SETTINGS-AND-INLINE-BLOCK.md) | The UI contract |
-| [10 — Reporting and limits](docs/10-REPORTING-AND-LIMITS.md) | Report flow, payload privacy, the limits contract |
-| [11 — SOCKS5 proxy](docs/11-SOCKS5-PROXY.md) | App-scoped transport, bypass rules, fail-closed guard |
-| [12 — Passive blocking](docs/12-PASSIVE-BLOCKING.md) | Signed list, indexing, visible-row admission |
-| [13 — In-app updates](docs/13-IN-APP-UPDATES.md) | Signed metadata, verification, installer boundary |
+| `patchlets/` | Nguồn chính thức — mọi thay đổi bắt đầu từ đây |
+| `patchlets/features/` | Mười một patchlet |
+| `patchlets/resolutions/` | Ràng buộc ký hiệu và bằng chứng theo từng phiên bản |
+| `patchlets/tools/` | Pipeline build và các trình kiểm tra DEX |
+| `docs/` | Tài liệu thiết kế và vận hành |
+| `AGENTS.md` | Quy tắc bắt buộc của dự án |
 
-[AGENTS.md](AGENTS.md) holds the binding project rules.
-[patchlets/README.md](patchlets/README.md) documents the patchlet engine itself.
+Các tệp APK gốc, `dist/`, `work/`, `decompiled/` và `.tools/` chỉ nằm ở máy —
+đó là tệp nhị phân của Meta, tệp vượt giới hạn dung lượng của GitHub, hoặc bằng
+chứng của từng lượt chạy. Mã băm của chúng đã được ghim nên vẫn build lại được.
 
-## License
+## Tài liệu
 
-[MIT](LICENSE) for this project's own code and documentation. It does not extend to Meta's Threads
-application, to any APK derived from it, or to any Meta trademark.
+Tài liệu kỹ thuật viết bằng tiếng Anh.
 
-Bundled third-party components — hev-socks5-tunnel (MIT), lwIP (BSD 3-Clause) and ed25519-java
-(CC0) — are attributed in [NOTICE](NOTICE).
+[Changelog](docs/CHANGELOG.md) ·
+[01 Kiểm kê APK](docs/01-APK-INVENTORY-AND-DECOMPILATION.md) ·
+[02 Tính khả thi và thiết kế](docs/02-AUTO-BLOCK-FEASIBILITY-AND-DESIGN.md) ·
+[03 Build, ký, kiểm thử](docs/03-BUILD-SIGN-TEST-PLAN.md) ·
+[04 Kiểm toán toàn vẹn](docs/04-INTEGRITY-AND-DELIVERY-AUDIT.md) ·
+[05 Bản demo cũ](docs/05-HISTORICAL-DEMO-BUILDS.md) ·
+[07 Hướng dẫn Clone Blocker](docs/07-CLONE-BLOCKER-AUTO-BLOCK.md) ·
+[08 Hệ thống patchlet](docs/08-AI-DRIVEN-PATCHLETS.md) ·
+[09 Giao diện](docs/09-ACTIVITY-SETTINGS-AND-INLINE-BLOCK.md) ·
+[10 Báo cáo và giới hạn](docs/10-REPORTING-AND-LIMITS.md) ·
+[11 Proxy SOCKS5](docs/11-SOCKS5-PROXY.md) ·
+[12 Chặn tự động](docs/12-PASSIVE-BLOCKING.md) ·
+[13 Cập nhật trong ứng dụng](docs/13-IN-APP-UPDATES.md)
+
+## Giấy phép
+
+[MIT](LICENSE) cho phần mã nguồn và tài liệu của riêng dự án này. Giấy phép đó
+không áp dụng cho ứng dụng Threads của Meta, cho bất kỳ APK nào tạo ra từ nó, hay
+cho nhãn hiệu nào của Meta. Các thành phần bên thứ ba được ghi nhận trong
+[NOTICE](NOTICE).
