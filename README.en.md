@@ -11,10 +11,11 @@ with Meta, and not on any app store.
 
 ## Install
 
-<a href="docs/media/threads55-install-guide.mp4"><img src="docs/media/threads55-install-guide-poster.jpg" width="270" alt="Install and block walkthrough video, 47 seconds (Vietnamese captions)"></a>
+<a href="https://cdn.jsdelivr.net/gh/Tree55-org/ThreadsMod@main/docs/media/threads55-install-guide.mp4"><img src="docs/media/threads55-install-guide-poster.jpg" width="270" alt="Install and block walkthrough video, 47 seconds (Vietnamese captions)"></a>
 
-**[Walkthrough video — 47 s](docs/media/threads55-install-guide.mp4)** (Vietnamese captions): click the poster to play it on GitHub,
-or [download the MP4](https://raw.githubusercontent.com/Tree55-org/ThreadsMod/main/docs/media/threads55-install-guide.mp4).
+**[▶ Watch the walkthrough — 47 s](https://cdn.jsdelivr.net/gh/Tree55-org/ThreadsMod@main/docs/media/threads55-install-guide.mp4)** (Vietnamese captions; plays in the browser)
+· [download the MP4](https://raw.githubusercontent.com/Tree55-org/ThreadsMod/main/docs/media/threads55-install-guide.mp4)
+· [file in the repo](docs/media/threads55-install-guide.mp4).
 It is an animated mockup of the UI, not footage from a device.
 
 Download from the **[release page](https://github.com/Tree55-org/ThreadsMod/releases/tag/release)**:
