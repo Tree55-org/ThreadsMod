@@ -1,0 +1,297 @@
+{
+  "$schema": "../../schemas/patchlet.schema.json",
+  "schemaVersion": 1,
+  "id": "020-autoblock-runtime",
+  "revision": 24,
+  "title": "Indexed passive Clone Blocker runtime",
+  "summary": "Compile the stable Java runtime, freshest-verified allowlisted-mirror chunked v3 signed-root refresh (GitHub raw, jsDelivr, and AWS are all consulted for the signed root and the strictly newest root wins; its hash-bound group tables and gzip NDJSON chunks are fetched from the same three bases through pattern-validated object names, proven by SHA-256 before any parse, stream-parsed row by row into a content-addressed staging table, and only chunks whose signed name changed are downloaded) with exception-safe exact-Long durable 10-minute not-before reads and rejection-time re-advance, whole-chunk rejection of malformed rows, a per-bucket atomically replaced SQLite ID/username index (schema v3: h32 bucket column and index, UNIQUE normalized-username index, chunk/group/staging tables) with exact per-replaced-bucket new-ID metadata and reviewed v1-to-v2-to-v3 migration that retains the verified generation in fresh tables, tri-state observed-generation failures, main-thread authority grants with lock-serialized off-main revocation, one visible target per manual-first scheduler drain, exact-SHA native already-blocked preflight, repeated final authority checks before passive-running persistence, passive delay reservation and bridge dispatch, exactly one atomic 2-60 / 3-60 second passive delay pair, uncapped and unpaced manual inline work, conservative non-clearing passive deadlines after reservation, bounded live refresh/index/inline-render status, the shared automatic/manual single-flight scheduler with durable interrupted-passive review, and stable bootstrap arbitration for patchlet 085 whose no-update continuation is an empty Runnable that shows no UI.",
+  "stage": "compile",
+  "dependsOn": ["010-clone-identity"],
+  "resolution": {
+    "required": true,
+    "binding": "exact-apk-sha256",
+    "sourceSha256Pointer": "/source/sha256",
+    "requiredSections": ["source", "assets", "release"],
+    "rewriteSets": []
+  },
+  "risk": [
+    "network-read",
+    "account-mutation",
+    "settings-storage",
+    "packaging"
+  ],
+  "ownership": {
+    "classPrefixes": [
+      "Lthreadsmod/autoblock/AutoBlockSync",
+      "Lthreadsmod/autoblock/BlockDiagnostic",
+      "Lthreadsmod/autoblock/BlockLimits",
+      "Lthreadsmod/autoblock/BlockLimitsStore",
+      "Lthreadsmod/autoblock/BlocklistStore",
+      "Lthreadsmod/autoblock/BridgeCallback",
+      "Lthreadsmod/autoblock/ChunkInstaller",
+      "Lthreadsmod/autoblock/CloneBlockerEndpoints",
+      "Lthreadsmod/autoblock/ManualBlockCallback",
+      "Lthreadsmod/autoblock/ObjectFetcher",
+      "Lthreadsmod/autoblock/ModStateStore",
+      "Lthreadsmod/bootstrap/ModBootstrap",
+      "Lnet/i2p/crypto/eddsa/"
+    ],
+    "classDescriptors": [
+      "Lthreadsmod/autoblock/AutoBlockSync;",
+      "Lthreadsmod/autoblock/BlockDiagnostic;",
+      "Lthreadsmod/autoblock/BlockLimits;",
+      "Lthreadsmod/autoblock/BlockLimitsStore;",
+      "Lthreadsmod/autoblock/BlocklistStore;",
+      "Lthreadsmod/autoblock/BridgeCallback;",
+      "Lthreadsmod/autoblock/BridgeCallbackDispatcher;",
+      "Lthreadsmod/autoblock/ChunkInstaller;",
+      "Lthreadsmod/autoblock/CloneBlockerEndpoints;",
+      "Lthreadsmod/autoblock/ManualBlockCallback;",
+      "Lthreadsmod/autoblock/ObjectFetcher;",
+      "Lthreadsmod/autoblock/ModStateStore;",
+      "Lthreadsmod/bootstrap/ModBootstrap;"
+    ],
+    "rewriteRuleIds": [],
+    "manifestComponents": [],
+    "hostHooks": [],
+    "preferenceKeys": [
+      "enabled",
+      "status",
+      "status_general",
+      "status_threads_<viewerId>",
+      "list_etag",
+      "list_etag_url",
+      "list_refresh_not_before",
+      "list_fetched_at",
+      "list_updated_at",
+      "list_cache_valid",
+      "list_threads_targets",
+      "done_threads_<viewerId>",
+      "attempts_threads_<viewerId>",
+      "automatic_attempts_threads_<viewerId>",
+      "pace_until_threads_<viewerId>",
+      "retry_threads_<viewerId>",
+      "completion_review_threads_<viewerId>",
+      "passive_running_threads_<viewerId>",
+      "ui_active_viewer",
+      "ui_runtime_state_code",
+      "ui_runtime_state_at",
+      "ui_runtime_state_viewer",
+      "ui_manual_queue_threads_<viewerId>",
+      "ui_history_threads_<viewerId>",
+      "ui_alerts_threads_<viewerId>",
+      "limit_passive_min_delay_ms",
+      "limit_passive_max_delay_ms",
+      "limit_manual_min_delay_ms",
+      "limit_manual_max_delay_ms",
+      "limit_automatic_min_delay_ms",
+      "limit_automatic_max_delay_ms",
+      "limit_automatic_per_hour",
+      "limit_target_budget",
+      "limit_total_per_hour",
+      "limit_total_per_day",
+      "limit_max_per_run"
+    ],
+    "databaseSchemas": [
+      "database:threadsmod_blocklist.db:v3",
+      "migration:threadsmod_blocklist.db:v1-to-v2",
+      "migration:threadsmod_blocklist.db:v2-to-v3",
+      "table:blocklist_targets:v3",
+      "index:blocklist_targets_username_idx:v3",
+      "index:blocklist_targets_h32_idx:v3",
+      "table:blocklist_metadata:v3",
+      "schema:blocklist_metadata.new_target_count:v2",
+      "schema:blocklist_metadata.bucket_bits:v3",
+      "table:blocklist_chunks:v3",
+      "table:blocklist_groups:v3",
+      "table:blocklist_staging:v3",
+      "table:blocklist_targets_v2:retired-empty",
+      "table:blocklist_metadata_v2:retired-empty"
+    ]
+  },
+  "inputs": [
+    {
+      "id": "autoblock-java",
+      "kind": "asset-tree",
+      "path": "assets/autoblock/java",
+      "sha256FromResolution": "/assets/autoblockJavaTreeSha256",
+      "required": true
+    },
+    {
+      "id": "eddsa-library",
+      "kind": "asset-file",
+      "path": "assets/autoblock/lib/net-i2p-crypto-eddsa-0.3.1.jar",
+      "sha256": "3bc2c8922a52de7ecad21e9a34d2594b473f18598b7a2b8bd7d4b68ed6cc4dbf",
+      "required": true
+    },
+    {
+      "id": "smali-carrier",
+      "kind": "asset-file",
+      "path": "assets/autoblock/stub/smali-carrier.apk",
+      "sha256FromResolution": "/assets/smaliCarrierSha256",
+      "required": true
+    },
+    {
+      "id": "runtime-host-tests",
+      "kind": "asset-tree",
+      "path": "assets/tests",
+      "required": true
+    }
+  ],
+  "operations": [
+    {
+      "id": "compile-runtime-to-smali",
+      "type": "java-to-smali",
+      "sources": [
+        "assets/autoblock/java/threadsmod/autoblock",
+        "assets/autoblock/java/threadsmod/bootstrap",
+        "assets/autoblock/lib/net-i2p-crypto-eddsa-0.3.1.jar"
+      ],
+      "target": "decoded-apk:primary-dex",
+      "idempotency": "class-set-and-content-hash",
+      "discardClasses": ["threadsmod/autoblock/ThreadsBlockBridge"]
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "resolution-sha-matches-input",
+      "check": "source-apk-sha256-equals-resolution",
+      "pointer": "/source/sha256",
+      "severity": "error"
+    },
+    {
+      "id": "pinned-dependency-hash",
+      "check": "input-sha256-matches-declaration",
+      "path": "assets/autoblock/lib/net-i2p-crypto-eddsa-0.3.1.jar",
+      "severity": "error"
+    },
+    {
+      "id": "mod-class-descriptors-unused",
+      "check": "no-duplicate-target-class-descriptors",
+      "severity": "error"
+    }
+  ],
+  "postconditions": [
+    {
+      "id": "runtime-classes-present",
+      "check": "compiled-runtime-class-set-present",
+      "severity": "error"
+    },
+    {
+      "id": "compile-time-bridge-discarded",
+      "check": "class-absent-until-native-bridge-patchlet",
+      "value": "Lthreadsmod/autoblock/ThreadsBlockBridge;",
+      "severity": "error"
+    },
+    {
+      "id": "mirror-policy-compiled",
+      "check": "required-endpoint-strings-present",
+      "pointer": "/release/requiredReadEndpoints",
+      "severity": "error"
+    },
+    {
+      "id": "blocked-origin-not-compiled",
+      "check": "forbidden-dex-strings-absent",
+      "pointer": "/release/forbiddenDexStrings",
+      "severity": "error"
+    },
+    {
+      "id": "configurable-limits-compiled",
+      "check": "executable-two-field-passive-delay-bound-step-atomic-store-fail-closed-contract-plus-manual-unpaced-and-retired-cap-absence-structural-contract",
+      "severity": "error"
+    },
+    {
+      "id": "active-viewer-process-memory-only",
+      "check": "only-live-session-hook-publishes-in-process-viewer-and-restored-ui-cannot-read-retired-persisted-viewer",
+      "severity": "error"
+    },
+    {
+      "id": "viewer-scoped-activity-status",
+      "check": "activity-snapshot-public-status-and-disable-route-through-the-same-viewer-derived-key-with-wrong-type-fail-closed",
+      "severity": "error"
+    },
+    {
+      "id": "manual-model-hint-reservation-order",
+      "check": "durable-manual-enqueue-mark-started-and-attempt-persistence-precede-the-optional-opaque-model-hint-bridge-call-with-no-passive-delay-or-retired-cap-admission-and-with-the-automatic-null-path-routed-to-the-reviewed-cache-placeholder-bridge",
+      "severity": "error"
+    },
+    {
+      "id": "closed-block-diagnostic-contract",
+      "check": "block-diagnostic-owns-a-closed-stage-code-message-map-with-no-identifier-url-or-throwable-input-bounded-detail-status-and-log-output-and-one-viewer-scoped-alert-per-persisted-failure",
+      "severity": "error"
+    },
+    {
+      "id": "bridge-callback-firewall-contract",
+      "check": "stable-dispatcher-enqueues-every-bridge-and-native-started-failure-and-success-delivery-on-the-main-handler-with-no-direct-or-caught-real-mod-callback-and-the-automatic-manual-bridgecallback-consumers-run-directly-with-no-unchecked-second-post",
+      "severity": "error"
+    },
+    {
+      "id": "bridge-caller-catch-contract",
+      "check": "automatic-and-manual-scheduler-ownership-true-handoff-and-false-return-precede-a-single-entry-bridge-selection-argument-load-and-invocation-only-throwable-catch-range-whose-fixed-bridge-exception-handler-routes-outside-the-range-with-no-fail-finish-dispatch-callback-or-scheduler-state-work-inside",
+      "severity": "error"
+    },
+    {
+      "id": "bridge-caller-callback-effect-contract",
+      "check": "all-six-automatic-and-manual-callback-consumers-run-directly-with-cfg-reachable-reviewed started-failure-success effects and quarantine-before-release; saved passive success releases the one-target owner through a checked fresh manual-first drain using only the already-persisted passive deadline, manual success releases with zero configured delay, and no same-owner second-target selection or retired capacity admission exists",
+      "severity": "error"
+    },
+    {
+      "id": "scheduler-wake-enqueue-contract",
+      "check": "every-scheduler-critical-handler-post-and-post-delayed-acceptance-result-is-checked-and-rejection-releases-or-pauses-with-durable-work-preserved-while-only-best-effort-toast-may-ignore-acceptance",
+      "severity": "error"
+    },
+    {
+      "id": "uncertain-mutation-review-contract",
+      "check": "elapsed-or-rejected-post-dispatch-watchdogs-install-viewer-target-review-quarantine-before-release-with-automatic-work-never-backed-off-or-retried-and-inline-running-work-durably-abandoned-until-explicit-atomic-retry",
+      "severity": "error"
+    },
+    {
+      "id": "confirmed-success-quarantine-contract",
+      "check": "native-success-completion-save-failure-installs-bounded-local-and-durable-viewer-target-quarantine-before-release-never-enters-backoff-or-automatic-retry-and-manual-explicit-retry-removes-queue-and-quarantine-state-in-one-commit",
+      "severity": "error"
+    },
+    {
+      "id": "passive-index-contract",
+      "check": "signed-root-signature-and-per-object-sha256-are-proven-before-any-parse-then-chunks-reject-the-whole-chunk-for-malformed-rows-while-valid-threads-id-rows-atomically-replace-their-hash-buckets-in-a-bounded-sqlite-primary-id-and-unique-normalized-username-index-with-generation-freshness-total-count-bucket-bits-and-exact-per-replaced-bucket-new-id-count metadata; v1-to-v2 migration retains the verified generation with minus-one unknown count and v2-to-v3 migration retains generation, timestamps and both counts in fresh tables, first install counts all rows, 304 records zero, timestamp and username invariants remain strict, and invalid stores retain observed-generation latch semantics",
+      "severity": "error"
+    },
+    {
+      "id": "passive-refresh-contract",
+      "check": "enabled-foreground-runtime-consults-github-jsdelivr-aws-manifest-roots-in-declared-order-verifies-each-and-installs-only-the-strictly-newest-signed-root-whose-objects-are-fetched-only-through-pattern-validated-sha256-names-under-the-three-reviewed-object-bases-on-a-checked-ten-minute-wake-and-reads-list-refresh-not-before-with-exception-safe-raw-type-exact-long-validation-so-read-exception-wrong-type-overflow-or-implausible-value-pauses-fail-closed-and-persists-each-attempts-deadline-across-pause-resume-and-process-recreation-re-advances-that-durable-deadline-from-worker-start-rejection-time-so-ordinary-resume-cannot-retry-early-while-forced-refresh-is-the-only-bounded-viewer-scoped-bypass-and-does-not-clear-or-transfer-that-deadline-independent-of-mutation-limits-and-fetch-never-enumerates-targets-into-block-work",
+      "severity": "error"
+    },
+    {
+      "id": "passive-visible-scheduler-contract",
+      "check": "main-thread-only-authority grants and lock-serialized off-main revocation feed one currently visible immutable numeric id per manual-first fresh scheduler drain; invalid-store generation and username conflicts fail closed; callback-free native already-blocked preflight precedes running persistence and passive delay reservation; full authority is rechecked immediately before running persistence, reservation, and bridge dispatch under the generation-replacement lock; the passive deadline is atomically persisted before dispatch and never cleared or shortened afterward; no target-run-hour-day admission or visible-set batch remains",
+      "severity": "error"
+    }
+  ],
+  "releaseGates": [
+    "host-runtime-tests",
+    "configurable-limit-contract",
+    "manual-model-hint-scheduler-contract",
+    "closed-block-diagnostic-contract",
+    "bridge-callback-firewall-contract",
+    "bridge-caller-catch-contract",
+    "bridge-caller-callback-effect-contract",
+    "scheduler-wake-enqueue-contract",
+    "uncertain-mutation-review-contract",
+    "confirmed-success-quarantine-contract",
+    "passive-index-contract",
+    "passive-refresh-contract",
+    "passive-visible-scheduler-contract",
+    "viewer-scope-memory-contract",
+    "viewer-scoped-activity-status-contract",
+    "dependency-hashes",
+    "endpoint-policy",
+    "exact-network-allowlist-contract",
+    "dex-method-budget"
+  ],
+  "ai": {
+    "allowed": true,
+    "taskTemplate": "../../ai/tasks/RESOLVE-PASSIVE-BLOCKING.md",
+    "output": "proposal-json-only",
+    "mayEditProductionTree": false,
+    "mayRelaxChecks": false
+  }
+}

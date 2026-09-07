@@ -1,0 +1,21 @@
+# Chunked blocklist test fixture
+
+`blocklist-v3-2026-09-06/` is the pinned chunked (v3) Clone Blocker tree used for offline verifier and passive-import regression tests. It was captured on 2026-09-06 from the reviewed GitHub raw mirror, the first entry of the allowlisted mirror order, and contains only the objects the Threads partition references. The signed root `manifest.json` has SHA-256 `35f2d2bdc93e21ba75b08c8aae6310b90fb2f50a1431d92f92fc4d2893436477`. It is the host fixture that patchlet 090 r62 binds for the patchlet 020 r24 chunked-index client, reviewed by the r65 `SignedReview` (candidate SHA-256 `4a2af379085f3c8b55676067c876e8b82143f267cf198c12f0f18fb9780dd1b2`) and published on 2026-09-06 as `dist/ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-threads55-mod1-d.apk`, SHA-256 `e6ec4d70dacfa094659e31e09f2a890c537ba72b574767d62337a6a929c672a4`; it replaces the retired whole-file `blocklist-signed-2026-08-30.json` fixture.
+
+## Layout
+
+- `manifest.json` is the signed root: an Ed25519 envelope (`payload`, `sig`, `alg`) over the exact compact payload bytes, verified with the pinned CloneBlocker public key. The payload carries `v` = 3, `updatedAt` = `2026-09-06T07:14:05.577Z`, `hash` = `sha256-hi32`, `maxChunkRows` = 8192, `maxChunkBytes` = 262144 and a `platforms` map. The `threads` partition is `k` = 4 bucket bits, `g` = 0 group bits, `total` = 1633 rows and one group table name. The root also names a `facebook` partition and an `extras` object; those objects are deliberately not captured and no test may require them.
+- `objects/<sha256>.json` is the Threads group table: `{"v":3,"platform":"threads","k":4,"g":0,"group":0,"chunks":[...]}` with exactly `1 << (k - g)` = 16 entries, one per bucket. Each entry is `[chunkSha256, rowCount, gzipByteCount]` or `null` for an empty bucket; this capture has no empty bucket.
+- `objects/<sha256>.ndjson.gz` are the 16 chunks: gzip NDJSON, one compact JSON object per line with keys among `i` (Threads ID), `u` (username), `d` and `t` (skipped). 1,607 lines carry an ID; 26 are handle-only rows without `i`.
+
+Every object file name is the lowercase SHA-256 of its bytes. A row belongs to bucket `h32 >>> (32 - k)` where `h32` is the first 4 bytes of SHA-256 over the UTF-8 key `threads:<i>` for an ID row or `threads:@<u>` (the username exactly as published) for a handle-only row.
+
+## Proof
+
+`../PassiveBlocklistFixtureHarness.java` takes the path of `manifest.json`, reads the sibling `objects/` directory, and proves the tree offline: the root signature and a tampered-payload negative, the v3/`sha256-hi32` root shape, the `threads` partition caps, every object's content address before it is parsed or inflated, every chunk's byte count before it is inflated, capped inflation, line-by-line row parsing, ID and case-insensitive username uniqueness across the whole build, bucket placement of every row, per-chunk row counts and the partition total. It also runs synthetic in-memory negatives (duplicate IDs, normalized username collisions, wrong-bucket rows, row/byte/sha mismatches) and positives (empty bucket as `null`, handle-only rows counted separately). Its last line is `PASS passive-fixture-v3 k=4 chunks=16 idRows=1607 handleRows=26 unique=1607`, computed from the captured data and pinned by the host gate.
+
+## Integrity
+
+The whole tree is bound by the exact resolution as `assets.signedBlocklistV3FixtureTreeSha256` (`aa09d3ed9f1c03419ad434929f7130c0860ae4e702abf6fa092c3b04e50f0835` in the promoted Threads 444 resolution, SHA-256 `9b96cce9134d207264ed42b9ecd4e92d10f3c630c58d9908cff755b00eeb9371`) and is checked as the `signed-blocklist-v3-fixture` tree hash over every file in this directory before the host harnesses run; there is no separate `.sha256` ledger file. Inside the tree every object's own name is the SHA-256 of its bytes, which the harness proves before parsing or inflating it. The fixture is public blocklist data, not a live availability probe. Updating the tree requires an explicit fixture review, a re-pinned harness line and a re-pinned resolution tree hash; do not silently refresh it from the network.
+
+Earlier single-document v2 fixtures (`blocklist-signed-<date>.json` and their `.sha256` sidecars) are retired; any copy still present is deletion-only and must not regain a test or resolution binding.

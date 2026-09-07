@@ -1,0 +1,118 @@
+{
+  "$schema": "../../schemas/patchlet.schema.json",
+  "schemaVersion": 1,
+  "id": "040-main-activity-hooks",
+  "revision": 2,
+  "title": "Main activity lifecycle hooks",
+  "summary": "Apply exact onResume and onPause rewrites that call the stable ModBootstrap entry points while preserving the reviewed live UserSession register.",
+  "stage": "hook",
+  "dependsOn": ["030-native-block-bridge"],
+  "resolution": {
+    "required": true,
+    "binding": "exact-apk-sha256",
+    "sourceSha256Pointer": "/source/sha256",
+    "requiredSections": ["source", "activity", "proofs", "rewriteSets"],
+    "rewriteSets": ["hook-rewrites.json"]
+  },
+  "risk": ["lifecycle-hook", "private-api"],
+  "ownership": {
+    "classPrefixes": [],
+    "classDescriptors": [],
+    "rewriteRuleIds": [
+      "main-activity-on-resume",
+      "main-activity-on-pause"
+    ],
+    "manifestComponents": [],
+    "hostHooks": [
+      "resolved BarcelonaActivity onResume UserSession registration",
+      "resolved BarcelonaActivity onPause background notification"
+    ],
+    "preferenceKeys": [],
+    "databaseSchemas": []
+  },
+  "inputs": [
+    {
+      "id": "decoded-source-apk",
+      "kind": "decoded-apk",
+      "path": ".",
+      "required": true
+    },
+    {
+      "id": "lifecycle-hook-rewrites",
+      "kind": "resolution-rewrite-set",
+      "pathFromResolution": "hook-rewrites.json",
+      "required": true
+    },
+    {
+      "id": "resolved-activity",
+      "kind": "resolution-section",
+      "pointer": "/activity",
+      "required": true
+    }
+  ],
+  "operations": [
+    {
+      "id": "apply-lifecycle-hooks",
+      "type": "exact-anchor-rewrite-set",
+      "source": "resolution:hook-rewrites.json",
+      "target": "decoded-apk",
+      "expectedCount": "per-rule",
+      "idempotency": "before-xor-after"
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "resolution-sha-matches-input",
+      "check": "source-apk-sha256-equals-resolution",
+      "pointer": "/source/sha256",
+      "severity": "error"
+    },
+    {
+      "id": "activity-session-proof-matches",
+      "check": "resolved-session-register-is-live-and-non-null-at-anchor",
+      "pointer": "/activity/onResumeSessionRegister",
+      "severity": "error"
+    },
+    {
+      "id": "every-hook-has-one-valid-state",
+      "check": "rewrite-before-xor-after-at-expected-count",
+      "expectedCount": "per-rule",
+      "severity": "error"
+    }
+  ],
+  "postconditions": [
+    {
+      "id": "all-hooks-applied-once",
+      "check": "rewrite-after-at-expected-count",
+      "expectedCount": "per-rule",
+      "severity": "error"
+    },
+    {
+      "id": "bootstrap-resume-call-present",
+      "check": "bootstrap-lifecycle-call-count",
+      "value": "Lthreadsmod/bootstrap/ModBootstrap;->onResume",
+      "expectedCount": 1,
+      "severity": "error"
+    },
+    {
+      "id": "bootstrap-pause-call-present",
+      "check": "bootstrap-lifecycle-call-count",
+      "value": "Lthreadsmod/bootstrap/ModBootstrap;->onPause",
+      "expectedCount": 1,
+      "severity": "error"
+    }
+  ],
+  "releaseGates": [
+    "hook-exact-counts",
+    "session-register-proof",
+    "smali-assembly",
+    "targeted-jadx-hook-recovery"
+  ],
+  "ai": {
+    "allowed": true,
+    "taskTemplate": "../../ai/tasks/RESOLVE-MAIN-ACTIVITY-HOOKS.md",
+    "output": "proposal-json-only",
+    "mayEditProductionTree": false,
+    "mayRelaxChecks": false
+  }
+}

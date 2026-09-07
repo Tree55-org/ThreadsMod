@@ -1,0 +1,247 @@
+.class public final Lthreadsmod/inlinecontrol/InlineActionRowAdapter;
+.super Ljava/lang/Object;
+.source "InlineActionRowAdapter.smali"
+
+# direct methods
+.method private constructor <init>()V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+    return-void
+.end method
+
+.method public static render({{ufiStyleDescriptor}}{{composerDescriptor}}{{ufiConfigDescriptor}}Lthreadsmod/inlinecontrol/InlineBlockRequest;JJ)V
+    .locals 28
+
+    move-object/from16 v0, p0
+    move-object/from16 v1, p1
+    move-object/from16 v2, p2
+    move-object/from16 v3, p3
+
+    if-eqz v0, :return
+    if-eqz v1, :return
+    if-eqz v2, :return
+
+    const v4, 0x16b10c6a
+    invoke-interface {v1, v4}, {{composerDescriptor}}->EQ5(I)V
+
+    :try_start_0
+    const-string v4, "hook_seen"
+    invoke-static {v4}, Lthreadsmod/autoblock/AutoBlockSync;->recordInlineRenderStage(Ljava/lang/String;)V
+
+    if-eqz v3, :report_request_unavailable
+
+    iget-object v7, v2, {{ufiMediaIdField}}
+    if-eqz v7, :report_request_unavailable
+
+    invoke-virtual {v3, v7}, Lthreadsmod/inlinecontrol/InlineBlockRequest;->hasMediaKey(Ljava/lang/String;)Z
+    move-result v4
+    if-eqz v4, :report_request_unavailable
+    invoke-virtual {v3}, Lthreadsmod/inlinecontrol/InlineBlockRequest;->isValid()Z
+    move-result v4
+    if-eqz v4, :report_request_unavailable
+
+    invoke-virtual {v3}, Lthreadsmod/inlinecontrol/InlineBlockRequest;->getAuthorId()Ljava/lang/String;
+    move-result-object v8
+    if-eqz v8, :report_request_unavailable
+
+    invoke-virtual {v3}, Lthreadsmod/inlinecontrol/InlineBlockRequest;->getLabel()Ljava/lang/String;
+    move-result-object v4
+
+    invoke-virtual {v3}, Lthreadsmod/inlinecontrol/InlineBlockRequest;->getResolvedAuthorModel()Ljava/lang/Object;
+    move-result-object v6
+    if-eqz v6, :report_request_unavailable
+    move-object/from16 v27, v6
+
+    move-object v9, v3
+
+    invoke-static {v9}, Lthreadsmod/reporting/InlineReportActionFactory;->createRequest(Lthreadsmod/inlinecontrol/InlineBlockRequest;)Lthreadsmod/reporting/ReportRequest;
+    move-result-object v23
+    if-nez v23, :report_request_ready
+
+    :report_request_unavailable
+    const-string v4, "report_request_unavailable"
+    invoke-static {v4}, Lthreadsmod/autoblock/AutoBlockSync;->recordInlineRenderStage(Ljava/lang/String;)V
+    goto :end_group
+
+    :report_request_ready
+
+    invoke-interface {v1, v9}, {{composerDescriptor}}->ATT(Ljava/lang/Object;)Z
+    move-result v4
+    invoke-interface {v1}, {{composerDescriptor}}->E5W()Ljava/lang/Object;
+    move-result-object v5
+    sget-object v6, {{composerEmptyField}}
+    if-nez v4, :new_state
+    if-ne v5, v6, :state_ready
+
+    :new_state
+    invoke-static {v7, v8}, Lthreadsmod/inlinecontrol/InlineBlockController;->getUiState(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v10
+    const/4 v4, 0x0
+    const-string v11, "queued"
+    invoke-virtual {v11, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v11
+    if-nez v11, :initial_working
+    const-string v11, "started"
+    invoke-virtual {v11, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v11
+    if-eqz v11, :initial_success_check
+
+    :initial_working
+    const/4 v4, 0x1
+    goto :initial_state_ready
+
+    :initial_success_check
+    const-string v11, "success"
+    invoke-virtual {v11, v10}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v10
+    if-eqz v10, :initial_state_ready
+    const/4 v4, 0x2
+
+    :initial_state_ready
+    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    move-result-object v4
+    sget-object v5, {{snapshotPolicyField}}
+    new-instance v10, Landroidx/compose/runtime/ParcelableSnapshotMutableState;
+    invoke-direct {v10, v5, v4}, Landroidx/compose/runtime/ParcelableSnapshotMutableState;-><init>(LX/07jz;Ljava/lang/Object;)V
+    invoke-interface {v1, v10}, {{composerDescriptor}}->EVG(Ljava/lang/Object;)V
+    move-object v5, v10
+
+    :state_ready
+    check-cast v5, Landroidx/compose/runtime/MutableState;
+    move-object/from16 v24, v5
+    invoke-interface {v5}, Landroidx/compose/runtime/MutableState;->getValue()Ljava/lang/Object;
+    move-result-object v4
+    check-cast v4, Ljava/lang/Number;
+    invoke-virtual {v4}, Ljava/lang/Number;->intValue()I
+    move-result v26
+    invoke-interface {v1, v9}, {{composerDescriptor}}->ATT(Ljava/lang/Object;)Z
+    move-result v4
+    invoke-interface {v1, v5}, {{composerDescriptor}}->ATV(Ljava/lang/Object;)Z
+    move-result v7
+    or-int/2addr v4, v7
+    move-object/from16 v10, v27
+    invoke-interface {v1, v10}, {{composerDescriptor}}->ATV(Ljava/lang/Object;)Z
+    move-result v10
+    or-int/2addr v4, v10
+    move-object/from16 v10, v23
+    invoke-interface {v1, v10}, {{composerDescriptor}}->ATT(Ljava/lang/Object;)Z
+    move-result v10
+    or-int/2addr v4, v10
+    invoke-interface {v1}, {{composerDescriptor}}->E5W()Ljava/lang/Object;
+    move-result-object v7
+    if-nez v4, :new_click
+    if-ne v7, v6, :click_ready
+
+    :new_click
+    new-instance v7, Lthreadsmod/inlinecontrol/InlineActionClick;
+    move-object/from16 v10, v23
+    invoke-direct {v7, v9, v10, v5}, Lthreadsmod/inlinecontrol/InlineActionClick;-><init>(Lthreadsmod/inlinecontrol/InlineBlockRequest;Lthreadsmod/reporting/ReportRequest;Landroidx/compose/runtime/MutableState;)V
+    invoke-interface {v1, v7}, {{composerDescriptor}}->EVG(Ljava/lang/Object;)V
+
+    :click_ready
+    check-cast v7, {{inlineClickInterface}}
+    move-object/from16 v25, v7
+
+    # Remember one lifecycle-aware visibility callback for this immutable row
+    # identity and its exact-SHA resolved author model. The callback itself
+    # treats the model as opaque; the second key only forces replacement when
+    # Compose reuses a row slot for a different native author object.
+    invoke-interface {v1, v9}, {{composerDescriptor}}->ATT(Ljava/lang/Object;)Z
+    move-result v4
+    move-object/from16 v10, v27
+    invoke-interface {v1, v10}, {{composerDescriptor}}->ATV(Ljava/lang/Object;)Z
+    move-result v10
+    or-int/2addr v4, v10
+    invoke-interface {v1}, {{composerDescriptor}}->E5W()Ljava/lang/Object;
+    move-result-object v7
+    sget-object v6, {{composerEmptyField}}
+    if-nez v4, :new_visibility_callback
+    if-ne v7, v6, :visibility_callback_ready
+
+    :new_visibility_callback
+    new-instance v7, Lthreadsmod/inlinecontrol/InlineVisibilityCallback;
+    invoke-direct {v7, v9}, Lthreadsmod/inlinecontrol/InlineVisibilityCallback;-><init>(Lthreadsmod/inlinecontrol/InlineBlockRequest;)V
+    invoke-interface {v1, v7}, {{composerDescriptor}}->EVG(Ljava/lang/Object;)V
+
+    :visibility_callback_ready
+    check-cast v7, Lthreadsmod/inlinecontrol/InlineVisibilityCallback;
+    move-object/from16 v22, v7
+
+    sget-object v2, {{baseModifierField}}
+    move-object/from16 v4, v22
+    invoke-static {v2, v4}, LX/0Ca6;->A00(LX/08ub;Lkotlin/jvm/functions/Function1;)LX/08ub;
+    move-result-object v2
+    const-string v4, "threadsmod_inline_block"
+    invoke-static {v2, v4}, {{testTagMethod}}
+    move-result-object v2
+
+    move/from16 v10, v26
+    const/4 v4, 0x1
+    if-ne v10, v4, :animation_ready
+    new-instance v4, {{nativeActionAnimationDescriptor}}
+    const/4 v5, 0x0
+    const/4 v7, 0x1
+    invoke-direct {v4, v5, v7}, {{nativeActionAnimationConstructor}}
+    sget-object v5, {{modifierComposedInspectorField}}
+    invoke-static {v2, v5, v4}, {{modifierComposedMethod}}
+    move-result-object v2
+
+    :animation_ready
+    move/from16 v10, v26
+    const/4 v4, 0x2
+    if-ne v10, v4, :not_success
+    const v8, {{successIconResourceId}}
+    const-string v3, "Blocked"
+    const-wide v13, 0xff2e9e5b00000000L
+    const-wide v15, 0xff2e9e5b00000000L
+    goto :call_button
+
+    :not_success
+    const-string v3, "Block user"
+    const v8, {{blockIconResourceId}}
+    move-wide/from16 v13, p4
+    move-wide/from16 v15, p6
+
+    :call_button
+    move-object/from16 v0, p0
+    move-object/from16 v1, p1
+    const/4 v4, 0x0
+    move-object/from16 v5, v25
+    const/4 v6, 0x0
+    const/4 v7, 0x0
+    const/4 v9, 0x0
+    const/4 v10, 0x0
+    const/4 v11, 0x0
+    # Keep p2/v2 (the tagged onGloballyPositioned modifier). Bit 0x80 in the
+    # Kotlin default mask replaces it with the base modifier inside LX/03hH.A00.
+    # Bit 0x100 must stay SET: it selects the helper's native icon-size default
+    # for the F parameter (p7). With that bit clear the literal 0.0f in v7 became
+    # the icon size and the control composed as an invisible zero-size button.
+    const v12, 0xf700
+    const/16 v17, 0x1
+    const/16 v18, 0x0
+    const/16 v19, 0x1
+    const/16 v20, 0x0
+    const/16 v21, 0x0
+    invoke-static/range {v0 .. v21}, {{ufiButtonMethod}}
+    const-string v4, "button_rendered"
+    invoke-static {v4}, Lthreadsmod/autoblock/AutoBlockSync;->recordInlineRenderStage(Ljava/lang/String;)V
+    :try_end_0
+    .catch Ljava/lang/Throwable; {:try_start_0 .. :try_end_0} :catch_0
+
+    :end_group
+    move-object v0, v1
+    check-cast v0, Landroidx/compose/runtime/ComposerImpl;
+    const/4 v2, 0x0
+    invoke-static {v0, v2}, Landroidx/compose/runtime/ComposerImpl;->A0O(Landroidx/compose/runtime/ComposerImpl;Z)V
+
+    :return
+    return-void
+
+    :catch_0
+    move-exception v0
+    const-string v0, "adapter_exception"
+    invoke-static {v0}, Lthreadsmod/autoblock/AutoBlockSync;->recordInlineRenderStage(Ljava/lang/String;)V
+    goto :end_group
+.end method

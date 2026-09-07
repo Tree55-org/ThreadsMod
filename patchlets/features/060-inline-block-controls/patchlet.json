@@ -1,0 +1,246 @@
+{
+  "$schema": "../../schemas/patchlet.schema.json",
+  "schemaVersion": 1,
+  "id": "060-inline-block-controls",
+  "revision": 14,
+  "title": "Single inline Block control and combined Block and report modal",
+  "summary": "Own the exact Threads post/reply host rewrite after Share, resolve one immutable media/author snapshot inside that exact-SHA host class, bind the carrier through the stable getMediaKey API, render one version-bound animated Block control for a valid immutable report request without depending on process-global viewer readiness at composition time, preserve the decorated visibility modifier by clearing the exact native modifier-default mask bit while keeping the native icon-size default bit set so the control is never composed at zero size, emit only bounded identifier-free hook/request/render/adapter diagnostic stages, attach one remembered clipped-viewport observer with main-only registration and lock-serialized revocation, retain live viewer/self rejection at click and queue boundaries, and route the compact combined Block and report modal.",
+  "stage": "hook",
+  "dependsOn": ["030-native-block-bridge", "050-mod-settings-ui", "070-consented-reporting"],
+  "resolution": {
+    "required": true,
+    "binding": "exact-apk-sha256",
+    "sourceSha256Pointer": "/source/sha256",
+    "requiredSections": ["source", "inlineControls", "bridge", "proofs", "rewriteSets", "release"],
+    "rewriteSets": ["inline-control-rewrites.json"]
+  },
+  "risk": ["account-mutation", "private-api", "inline-feed-hook", "user-interface", "packaging"],
+  "ownership": {
+    "classPrefixes": ["Lthreadsmod/inlinecontrol/"],
+    "classDescriptors": [
+      "Lthreadsmod/inlinecontrol/InlineBlockController;",
+      "Lthreadsmod/inlinecontrol/InlineBlockDialog;",
+      "Lthreadsmod/inlinecontrol/InlineBlockRequest;",
+      "Lthreadsmod/inlinecontrol/InlineBlockStrings;",
+      "Lthreadsmod/inlinecontrol/InlineBlockUiCallback;",
+      "Lthreadsmod/inlinecontrol/InlineActionClick;",
+      "Lthreadsmod/inlinecontrol/InlineActionRowAdapter;",
+      "Lthreadsmod/inlinecontrol/InlineVisibilityCallback;"
+    ],
+    "rewriteRuleIds": [
+      "inline-media-id-field",
+      "inline-media-id-bind",
+      "inline-action-spacing-capture",
+      "inline-action-row-hook",
+      "inline-author-snapshot-host-method"
+    ],
+    "manifestComponents": [],
+    "hostHooks": [
+      "resolved UFI configuration media-ID carrier",
+      "resolved Share spacing preservation and exactly one post-Share-container parent-row Block insertion",
+      "resolved displayed-author and media models captured with one immutable media and numeric author identity and handed to stable code only as Object",
+      "resolved displayed-author username extracted beside that same row identity and passed only as a bounded chooser label",
+      "exact-SHA host helper is the sole inline/report owner of the private media lookup, author lookup, author ID, and username seams"
+      ,"the sole Block-control modifier owns a remembered request-and-author-model-keyed clipped-root visibility callback with a main-only per-geometry idempotent registration heartbeat, unconditional lock-serialized off-main revocation, and unregister lifecycle, and its native call clears the modifier-default mask bit so the decorated modifier is not replaced while keeping the icon-size default bit set so the sole control renders at the native size instead of an invisible zero-size button",
+      "the exact carrier binding calls the stable InlineBlockRequest.getMediaKey API and the sole control fails closed before rendering when the immutable ReportRequest is absent"
+    ],
+    "preferenceKeys": [],
+    "databaseSchemas": [],
+    "semanticProofIds": [
+      "inline-ufi-modifier-default-mask-parameter",
+      "inline-ufi-modifier-default-mask-bit",
+      "inline-ufi-modifier-default-substitution",
+      "inline-ufi-icon-size-default-mask-bit",
+      "inline-ufi-icon-size-default-value"
+    ]
+  },
+  "inputs": [
+    {
+      "id": "decoded-source-apk",
+      "kind": "decoded-apk",
+      "path": ".",
+      "required": true
+    },
+    {
+      "id": "inline-runtime-java",
+      "kind": "asset-tree",
+      "path": "assets/autoblock/java/threadsmod/inlinecontrol",
+      "required": true
+    },
+    {
+      "id": "inline-smali-templates",
+      "kind": "asset-tree",
+      "pathFromResolution": "/inlineControls/templateRoot",
+      "required": true
+    },
+    {
+      "id": "inline-control-rewrites",
+      "kind": "resolution-rewrite-set",
+      "pathFromResolution": "inline-control-rewrites.json",
+      "required": true
+    },
+    {
+      "id": "resolved-inline-controls",
+      "kind": "resolution-section",
+      "pointer": "/inlineControls",
+      "required": true
+    }
+  ],
+  "operations": [
+    {
+      "id": "compile-inline-control-java-to-smali",
+      "type": "java-to-smali",
+      "sources": [
+        "assets/autoblock/java/threadsmod/inlinecontrol"
+      ],
+      "target": "decoded-apk:primary-dex",
+      "idempotency": "class-set-and-content-hash"
+    },
+    {
+      "id": "render-inline-action-adapter",
+      "type": "render-smali-templates",
+      "source": "resolution:/inlineControls/templateRoot",
+      "target": "decoded-apk:primary-dex",
+      "destination": "smali/threadsmod/inlinecontrol",
+      "templateNames": [
+        "InlineActionClick.smali.tmpl",
+        "InlineActionRowAdapter.smali.tmpl",
+        "InlineVisibilityCallback.smali.tmpl"
+      ],
+      "bindingsPointer": "/inlineControls/symbols",
+      "idempotency": "rendered-content-hash",
+      "verifyNoPlaceholders": true
+    },
+    {
+      "id": "apply-inline-action-hooks",
+      "type": "exact-anchor-rewrite-set",
+      "source": "resolution:inline-control-rewrites.json",
+      "target": "decoded-apk",
+      "expectedCount": "per-rule",
+      "idempotency": "before-xor-after"
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "resolution-sha-matches-input",
+      "check": "source-apk-sha256-equals-resolution",
+      "pointer": "/source/sha256",
+      "severity": "error"
+    },
+    {
+      "id": "inline-symbol-proofs-match",
+      "check": "resolution-proofs-match-decoded-apk",
+      "pointer": "/proofs",
+      "severity": "error"
+    },
+    {
+      "id": "inline-bindings-resolved",
+      "check": "template-placeholders-have-resolution-values",
+      "pointer": "/inlineControls/symbols",
+      "severity": "error"
+    },
+    {
+      "id": "inline-post-share-single-control-topology",
+      "check": "share-call-before-style-capture-before-two-container-closes-before-exactly-one-inline-render-with-no-report-render",
+      "severity": "error"
+    },
+    {
+      "id": "inline-hooks-have-one-valid-state",
+      "check": "rewrite-before-xor-after-at-expected-count",
+      "expectedCount": "per-rule",
+      "severity": "error"
+    }
+  ],
+  "postconditions": [
+    {
+      "id": "inline-classes-present-once",
+      "check": "owned-class-descriptors-present-once",
+      "severity": "error"
+    },
+    {
+      "id": "inline-hooks-applied-once",
+      "check": "rewrite-after-at-expected-count",
+      "expectedCount": "per-rule",
+      "severity": "error"
+    },
+    {
+      "id": "combined-action-routing",
+      "check": "sole-positive-action-always-durably-queues-the-immutable-row-report-and-only-when-also-block-is-checked-also-routes-the-same-numeric-target-to-the-shared-block-scheduler",
+      "severity": "error"
+    },
+    {
+      "id": "inline-safety-guards-present",
+      "check": "immutable-row-confirmation-self-and-callback-guards-present",
+      "severity": "error"
+    },
+    {
+      "id": "compact-combined-dialog-present",
+      "check": "single-block-and-report-dialog-has-bounded-identity-report-reason-immutable-bounded-post-excerpt-persisted-also-block-checkbox-one-dynamic-block-or-report-positive-action-concise-disclosure-and-cancel",
+      "severity": "error"
+    },
+    {
+      "id": "combined-dialog-is-single-step",
+      "check": "dialog-has-no-dedicated-report-action-report-dialog-editor-review-report-preview-consent-checkbox-note-one-click-bypass-second-modal-or-direct-network-transport",
+      "severity": "error"
+    },
+    {
+      "id": "shared-inline-hook-has-one-control",
+      "check": "one-block-adapter-call-and-zero-report-adapter-calls-follow-share-in-the-parent-row",
+      "severity": "error"
+    },
+    {
+      "id": "inline-author-model-handoff",
+      "check": "displayed-native-author-model-is-carried-only-as-an-opaque-object-bound-to-the-same-immutable-media-and-numeric-target-and-never-in-persisted-state",
+      "severity": "error"
+    },
+    {
+      "id": "inline-profile-username-label",
+      "check": "sha-bound-displayed-author-username-is-trimmed-prefixed-with-at-bounded-by-the-immutable-request-and-rendered-with-the-numeric-profile-id",
+      "severity": "error"
+    },
+    {
+      "id": "inline-host-bound-snapshot",
+      "check": "one-exact-sha-host-helper-captures-media-id-author-id-username-author-model-and-media-model-into-one-immutable-request-and-stable-inline-and-report-code-have-no-private-author-id-media-lookup-or-already-blocked-seams",
+      "severity": "error"
+    },
+    {
+      "id": "inline-pre-enqueue-diagnostics",
+      "check": "every-terminal-failure-before-durable-queue-ownership-is-recorded-once-through-the-closed-identifier-free-diagnostic-owner-before-the-ui-callback-while-post-queue-failures-remain-scheduler-owned-and-render-diagnostics-accept-only-fixed-hook-request-unavailable-render-or-adapter-exception-stages-without-row-or-account-data-and-a-null-host-row-snapshot-is-counted-as-hook-seen-plus-request-unavailable",
+      "severity": "error"
+    },
+    {
+      "id": "passive-viewport-observer",
+      "check": "exactly-one-remembered-visibility-callback-on-the-sole-block-control-idempotently-reestablishes-its-immutable-registration-only-on-main-on-every-geometry-callback-requires-attached-nonempty-clipped-root-bounds-transition-dedupes-unconditionally-revokes-through-the-lock-serialized-stable-api-off-main-and-unregisters-on-forgotten-or-abandoned-with-no-database-or-bridge-call-and-the-final-native-button-call-carries-the-decorated-modifier-with-its-default-mask-bit-clear",
+      "severity": "error"
+    },
+    {
+      "id": "inline-stable-media-key-and-report-request-guard",
+      "check": "carrier-binding-invokes-the-existing-stable-getMediaKey-method-exactly-once-and-never-getMediaId-the-row-adapter-requires-a-non-null-validated-immutable-report-request-before-control-state-or-render-and-neither-the-exact-444-row-adapter-nor-report-factory-calls-getCurrentViewer-at-composition-time-while-click-and-queue-self-session-guards-remain",
+      "severity": "error"
+    }
+  ],
+  "releaseGates": [
+    "inline-resolution-proofs",
+    "inline-action-hook-exact-counts",
+    "inline-post-share-single-control-topology",
+    "shared-inline-hook-ownership",
+    "compact-combined-dialog-contract",
+    "inline-author-model-handoff-contract",
+    "inline-profile-username-label-contract",
+    "inline-host-bound-snapshot-contract",
+    "inline-pre-enqueue-diagnostic-contract",
+    "passive-viewport-observer-contract",
+    "inline-stable-media-key-and-report-request-guard-contract",
+    "inline-scheduler-callgraph",
+    "inline-safety-contract",
+    "smali-assembly",
+    "targeted-jadx-inline-recovery"
+  ],
+  "ai": {
+    "allowed": true,
+    "taskTemplate": "../../ai/tasks/RESOLVE-INLINE-ACTION-ROW.md",
+    "output": "proposal-json-only",
+    "mayEditProductionTree": false,
+    "mayRelaxChecks": false
+  }
+}

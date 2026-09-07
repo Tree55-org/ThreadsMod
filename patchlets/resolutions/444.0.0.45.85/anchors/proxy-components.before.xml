@@ -1,0 +1,2 @@
+        </activity-alias>
+        <meta-data android:name="com.android.dynamic.apk.fused.modules" android:value="base,longtail"/>

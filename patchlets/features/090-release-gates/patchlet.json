@@ -1,0 +1,734 @@
+{
+  "$schema": "../../schemas/patchlet.schema.json",
+  "schemaVersion": 1,
+  "id": "090-release-gates",
+  "revision": 62,
+  "title": "Fail-closed release and signed-review gates",
+  "summary": "Verify the full patchlet replay and signed primary DEX for the exact Threads source: strict mirror and write routing; chunked v3 signed-root refresh with pattern-validated object names, SHA-256-proven objects before parse, streamed whole-chunk rejection, per-bucket atomic replacement and the reviewed v1-to-v2-to-v3 migration with total/new-count/bucket-bits status; only the atomic two-field passive delay with manual inline work uncapped and unpaced; no retired target/run/hour/day admission; complete lock-bound authority before passive running, delay reservation, and bridge dispatch with conservative non-clearing deadlines; one post-Share inline control that does not depend on viewer readiness during composition and preserves its decorated visibility modifier by clearing the exact native modifier-default bit; A75 code accessor first with A7o as the strict permalink fallback, caption/no-text excerpt helper flow, zero render-time current-viewer calls, and fixed identifier-free render diagnostics; the exact Threads 444 adapter has four raw diagnostic invokes while pinned JADX 1.5.6 deterministically recovers five call expressions after duplicating the shared request-unavailable block; the isolated Activity probe securely decodes bounded UI XML, requires fixed labels as exact viewport-intersecting nodes, and requires the five dynamic status fields as one ordered value-bearing multiline viewport-intersecting node with bypass-negative fixtures; existing bridge, reporting, proxy, updater, archive, signing, idempotency, targeted-JADX, raw CFG/value-flow, negative-fixture, and non-publishing SignedReview gates remain fail closed.",
+  "stage": "verify",
+  "dependsOn": [
+    "005-split-source-universalization",
+    "010-clone-identity",
+    "020-autoblock-runtime",
+    "030-native-block-bridge",
+    "040-main-activity-hooks",
+    "050-mod-settings-ui",
+    "060-inline-block-controls",
+    "070-consented-reporting",
+    "080-socks5-proxy",
+    "085-in-app-update"
+  ],
+  "resolution": {
+    "required": true,
+    "binding": "exact-apk-sha256",
+    "sourceSha256Pointer": "/source/sha256",
+    "requiredSections": [
+      "source",
+      "toolchain",
+      "target",
+      "patchlets",
+      "rewriteSets",
+      "uiComponents",
+      "drawerSettings",
+      "inlineControls",
+      "reporting",
+      "proxy",
+      "update",
+      "proofs",
+      "assets",
+      "release"
+    ],
+    "rewriteSets": [
+      "identity-rewrites.json",
+      "hook-rewrites.json",
+      "settings-manifest-rewrites.json",
+      "drawer-settings-rewrites.json",
+      "inline-control-rewrites.json",
+      "proxy-manifest-rewrites.json",
+      "update-manifest-rewrites.json"
+    ]
+  },
+  "risk": ["packaging", "signing", "account-mutation", "network-read", "network-write", "network-routing", "credential-storage", "native-code", "vpn-service", "personal-data", "private-api", "user-interface", "inline-feed-hook"],
+  "ownership": {
+    "classPrefixes": [],
+    "classDescriptors": [],
+    "rewriteRuleIds": [],
+    "manifestComponents": [],
+    "hostHooks": [],
+    "preferenceKeys": [],
+    "databaseSchemas": [],
+    "archiveTransforms": [],
+    "semanticProofIds": [
+      "user-cache-null-seed-user-id-callsite"
+    ]
+  },
+  "inputs": [
+    {
+      "id": "patchlet-core-module",
+      "kind": "asset-file",
+      "path": "tools/ThreadsMod.Patchlets.psm1",
+      "sha256FromResolution": "/assets/patchletCoreModuleSha256",
+      "required": true
+    },
+    {
+      "id": "resolution-schema",
+      "kind": "asset-file",
+      "path": "schemas/resolution.schema.json",
+      "sha256FromResolution": "/assets/resolutionSchemaSha256",
+      "required": true
+    },
+    {
+      "id": "patchlet-schema",
+      "kind": "asset-file",
+      "path": "schemas/patchlet.schema.json",
+      "sha256FromResolution": "/assets/patchletSchemaSha256",
+      "required": true
+    },
+    {
+      "id": "patchlet-catalog-test-tool",
+      "kind": "asset-file",
+      "path": "tools/Test-PatchletCatalog.ps1",
+      "sha256FromResolution": "/assets/patchletCatalogTestSourceSha256",
+      "required": true
+    },
+    {
+      "id": "split-source-universalization-tool",
+      "kind": "asset-file",
+      "path": "tools/Build-SplitSourceUniversalApk.ps1",
+      "sha256FromResolution": "/assets/splitUniversalizationToolSourceSha256",
+      "required": true
+    },
+    {
+      "id": "split-source-contract-test-tool",
+      "kind": "asset-file",
+      "path": "tools/Test-SplitSourceSetContract.ps1",
+      "sha256FromResolution": "/assets/splitSourceContractTestSourceSha256",
+      "required": true
+    },
+    {
+      "id": "patchlet-pipeline-tool",
+      "kind": "asset-file",
+      "path": "tools/Invoke-PatchletPipeline.ps1",
+      "sha256FromResolution": "/assets/patchletPipelineSourceSha256",
+      "required": true
+    },
+    {
+      "id": "patched-apk-build-tool",
+      "kind": "asset-file",
+      "path": "tools/Build-PatchedApk.ps1",
+      "sha256FromResolution": "/assets/buildPatchedApkSourceSha256",
+      "required": true
+    },
+    {
+      "id": "built-candidate-apk",
+      "kind": "built-apk",
+      "path": ".",
+      "required": true
+    },
+    {
+      "id": "release-contract",
+      "kind": "resolution-section",
+      "pointer": "/release",
+      "required": true
+    },
+    {
+      "id": "source-contract",
+      "kind": "resolution-section",
+      "pointer": "/source",
+      "required": true
+    },
+    {
+      "id": "targeted-jadx-recovery-tool",
+      "kind": "asset-file",
+      "path": "tools/TargetedJadxRecovery.java",
+      "sha256FromResolution": "/assets/targetedJadxRecoverySourceSha256",
+      "required": true
+    },
+    {
+      "id": "dex-inspector-tool",
+      "kind": "asset-file",
+      "path": "tools/DexInspector.java",
+      "sha256FromResolution": "/assets/dexInspectorSourceSha256",
+      "required": true
+    },
+    {
+      "id": "dex-literal-call-inspector-tool",
+      "kind": "asset-file",
+      "path": "tools/DexLiteralCallInspector.java",
+      "sha256FromResolution": "/assets/dexLiteralCallInspectorSourceSha256",
+      "required": true
+    },
+    {
+      "id": "dex-literal-call-inspector-test-tool",
+      "kind": "asset-file",
+      "path": "tools/Test-DexLiteralCallInspector.ps1",
+      "sha256FromResolution": "/assets/dexLiteralCallInspectorTestSourceSha256",
+      "required": true
+    },
+    {
+      "id": "dex-literal-call-fixtures",
+      "kind": "asset-tree",
+      "path": "assets/release-gates/dex-literal-call",
+      "sha256FromResolution": "/assets/dexLiteralCallFixtureTreeSha256",
+      "required": true
+    },
+    {
+      "id": "dex-proxy-bootstrap-flow-inspector-tool",
+      "kind": "asset-file",
+      "path": "tools/DexProxyBootstrapFlowInspector.java",
+      "sha256FromResolution": "/assets/dexProxyBootstrapFlowInspectorSourceSha256",
+      "required": true
+    },
+    {
+      "id": "dex-proxy-bootstrap-flow-inspector-test-tool",
+      "kind": "asset-file",
+      "path": "tools/Test-DexProxyBootstrapFlowInspector.ps1",
+      "sha256FromResolution": "/assets/dexProxyBootstrapFlowInspectorTestSourceSha256",
+      "required": true
+    },
+    {
+      "id": "dex-proxy-bootstrap-flow-fixtures",
+      "kind": "asset-tree",
+      "path": "assets/release-gates/dex-proxy-bootstrap-flow",
+      "sha256FromResolution": "/assets/dexProxyBootstrapFlowFixtureTreeSha256",
+      "required": true
+    },
+    {
+      "id": "dex-update-flow-inspector-tool",
+      "kind": "asset-file",
+      "path": "tools/DexUpdateFlowInspector.java",
+      "sha256FromResolution": "/assets/dexUpdateFlowInspectorSourceSha256",
+      "required": true
+    },
+    {
+      "id": "dex-update-flow-inspector-test-tool",
+      "kind": "asset-file",
+      "path": "tools/Test-DexUpdateFlowInspector.ps1",
+      "sha256FromResolution": "/assets/dexUpdateFlowInspectorTestSourceSha256",
+      "required": true
+    },
+    {
+      "id": "dex-update-flow-fixtures",
+      "kind": "asset-tree",
+      "path": "assets/release-gates/dex-update-flow",
+      "sha256FromResolution": "/assets/dexUpdateFlowFixtureTreeSha256",
+      "required": true
+    },
+    {
+      "id": "dex-bridge-flow-inspector-tool",
+      "kind": "asset-file",
+      "path": "tools/DexBridgeFlowInspector.java",
+      "sha256FromResolution": "/assets/dexBridgeFlowInspectorSourceSha256",
+      "required": true
+    },
+    {
+      "id": "dex-bridge-flow-fixture-assembler",
+      "kind": "asset-file",
+      "path": "tools/DexBridgeFlowFixtureAssembler.java",
+      "sha256FromResolution": "/assets/dexBridgeFlowFixtureAssemblerSourceSha256",
+      "required": true
+    },
+    {
+      "id": "dex-bridge-flow-inspector-test-tool",
+      "kind": "asset-file",
+      "path": "tools/Test-DexBridgeFlowInspector.ps1",
+      "sha256FromResolution": "/assets/dexBridgeFlowInspectorTestSourceSha256",
+      "required": true
+    },
+    {
+      "id": "dex-bridge-flow-fixtures",
+      "kind": "asset-tree",
+      "path": "assets/release-gates/dex-bridge-flow",
+      "sha256FromResolution": "/assets/dexBridgeFlowFixtureTreeSha256",
+      "required": true
+    },
+    {
+      "id": "dex-report-permalink-flow-inspector-tool",
+      "kind": "asset-file",
+      "path": "tools/DexReportPermalinkFlowInspector.java",
+      "sha256FromResolution": "/assets/dexReportPermalinkFlowInspectorSourceSha256",
+      "required": true
+    },
+    {
+      "id": "dex-report-permalink-flow-inspector-test-tool",
+      "kind": "asset-file",
+      "path": "tools/Test-DexReportPermalinkFlowInspector.ps1",
+      "sha256FromResolution": "/assets/dexReportPermalinkFlowInspectorTestSourceSha256",
+      "required": true
+    },
+    {
+      "id": "dex-report-permalink-flow-fixtures",
+      "kind": "asset-tree",
+      "path": "assets/release-gates/dex-report-permalink-flow",
+      "sha256FromResolution": "/assets/dexReportPermalinkFlowFixtureTreeSha256",
+      "required": true
+    },
+    {
+      "id": "release-tool-contract-module",
+      "kind": "asset-file",
+      "path": "tools/ThreadsMod.ReleaseToolContract.psm1",
+      "sha256FromResolution": "/assets/releaseToolContractModuleSha256",
+      "required": true
+    },
+    {
+      "id": "activity-ui-emulator-test-tool",
+      "kind": "asset-file",
+      "path": "tools/Test-ActivityUiEmulator.ps1",
+      "sha256FromResolution": "/assets/activityUiEmulatorTestSourceSha256",
+      "required": true
+    },
+    {
+      "id": "activity-ui-probe-manifest",
+      "kind": "asset-file",
+      "path": "assets/release-gates/activity-ui-probe/AndroidManifest.xml",
+      "sha256FromResolution": "/assets/activityUiProbeManifestSha256",
+      "required": true
+    },
+    {
+      "id": "patched-apk-test-tool",
+      "kind": "asset-file",
+      "path": "tools/Test-PatchedApk.ps1",
+      "sha256FromResolution": "/assets/patchedApkTestSourceSha256",
+      "required": true
+    },
+    {
+      "id": "release-contract-test-tool",
+      "kind": "asset-file",
+      "path": "tools/Test-ReleaseContract.ps1",
+      "sha256FromResolution": "/assets/releaseContractTestSourceSha256",
+      "required": true
+    }
+  ],
+  "operations": [
+    {
+      "id": "run-static-release-gates",
+      "type": "release-gate-suite",
+      "target": "built-and-signed-apk",
+      "idempotency": "read-only",
+      "orderedGates": [
+        "exact-split-source-set",
+        "split-role-manifest-contract",
+        "pinned-apkeditor-contract",
+        "deterministic-universalization",
+        "universal-payload-preservation",
+        "universal-standalone-manifest",
+        "universal-unsigned-boundary",
+        "bootstrap-entry-attestation",
+        "resolution-sha-binding",
+        "resolution-file-sha-binding",
+        "release-input-snapshot",
+        "catalog-and-schema-validation",
+        "exact-rewrite-postconditions",
+        "patchlet-reapply-idempotency",
+        "decoded-build-input-freeze",
+        "canonical-decoded-zero-mutation-lock",
+        "isolated-apktool-build-working-copy",
+        "exact-apktool-work-mutation-contract",
+        "apktool-build",
+        "intermediate-and-candidate-artifact-lock",
+        "build-working-restoration-and-seal",
+        "artifact-path-confinement",
+        "archive-integrity",
+        "full-archive-unique-canonical-names",
+        "native-and-asset-preservation",
+        "reviewed-asset-preservation-scope",
+        "socks5-config-contract",
+        "socks5-vpn-manifest-contract",
+        "socks5-bootstrap-contract",
+        "socks5-bootstrap-signed-dex-flow-contract",
+        "socks5-route-contract",
+        "socks5-credential-contract",
+        "socks5-native-contract",
+        "socks5-license-contract",
+        "socks5-static-dex-contract",
+        "socks5-pristine-port-substring-collision",
+        "proxy-settings-activity-contract",
+        "dex-header-integrity",
+        "exact-root-dex-inventory",
+        "dex-method-budget",
+        "endpoint-policy",
+        "exact-network-allowlist-contract",
+        "passive-index-contract",
+        "passive-refresh-contract",
+        "passive-activity-status-contract",
+        "identity-separation",
+        "mod-activity-contract",
+        "mod-activity-static-construction-contract",
+        "viewer-scope-memory-contract",
+        "drawer-settings-contract",
+        "inline-control-contract",
+        "passive-viewport-observer-contract",
+        "inline-stable-media-key-and-report-request-guard-contract",
+        "inline-post-share-single-control-topology",
+        "compact-combined-dialog-contract",
+        "single-inline-action-static-contract",
+        "ambiguous-report-label-substring-collision",
+        "inline-author-model-handoff-contract",
+        "manual-model-hint-scheduler-contract",
+        "resolved-model-id-match-contract",
+        "cache-placeholder-id-match-contract",
+        "bridge-failure-stage-vocabulary-contract",
+        "bridge-private-seam-handler-contract",
+        "stable-inline-private-seam-absence",
+        "bridge-entry-reachability-contract",
+        "release-tool-parameter-compatibility",
+        "signed-review-no-publish-contract",
+        "release-tool-evidence-compatibility",
+        "bridge-inspector-argument-count-compatibility",
+        "bridge-flow-contract-fixtures",
+        "bridge-signed-dex-flow-contract",
+        "bridge-callback-firewall-contract",
+        "bridge-caller-catch-contract",
+        "bridge-caller-callback-effect-contract",
+        "scheduler-wake-enqueue-contract",
+        "passive-visible-scheduler-contract",
+        "uncertain-mutation-review-contract",
+        "closed-block-diagnostic-contract",
+        "inline-profile-username-label-contract",
+        "configurable-limit-contract",
+        "report-explicit-combined-submit",
+        "report-submit-owner-binding",
+        "report-retired-ui-absence",
+        "report-post-permalink-contract",
+        "report-payload-contract",
+        "report-pseudonym-contract",
+        "report-outbox-retry-contract",
+        "report-outbox-review-contract",
+        "report-database-contract",
+        "report-database-v1-to-v2-migration-contract",
+        "report-success-response-contract",
+        "report-disclosure-contract",
+        "report-cancel-race-contract",
+        "report-endpoint-policy",
+        "report-post-dex-call-semantics",
+        "report-block-independence",
+        "update-host-fixtures",
+        "update-endpoint-policy",
+        "update-manifest-contract",
+        "update-dialog-contract",
+        "update-installer-contract",
+        "update-signed-dex-contract",
+        "update-manifest-rewrite-contract",
+        "targeted-jadx-recovery",
+        "zipalign-16k",
+        "apk-signature",
+        "signer-certificate",
+        "aapt2-package-contract",
+        "final-sha256",
+        "pre-publish-input-freeze",
+        "post-publish-input-drift-rollback",
+        "published-artifact-sha-binding",
+        "rollback-residue-truthful-failure",
+        "post-commit-outer-rollback",
+        "failure-report-no-publish"
+      ]
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "resolution-sha-matches-input",
+      "check": "source-apk-sha256-equals-resolution",
+      "pointer": "/source/sha256",
+      "severity": "error"
+    },
+    {
+      "id": "all-series-patchlets-completed",
+      "check": "apply-ledger-has-success-or-idempotent-noop-for-each-patchlet",
+      "pointer": "/patchlets",
+      "severity": "error"
+    }
+  ],
+  "postconditions": [
+    {
+      "id": "split-source-and-derived-bindings-are-complete",
+      "check": "pipeline-report-binds-exact-source-set-member-and-aggregate-sha256-two-identical-derived-sha256-values-and-final-signed-output-sha256",
+      "severity": "error"
+    },
+    {
+      "id": "split-universalization-precedes-normal-replay",
+      "check": "catalog-and-pipeline-prove-patchlet-005-runs-before-source-decode-and-every-later-patchlet-binds-the-derived-standalone-apk",
+      "severity": "error"
+    },
+    {
+      "id": "updater-install-permission-is-manifest-only",
+      "check": "resolution-and-release-gates-require-exactly-one-direct-manifest-child-request-install-packages-permission-while-excluding-that-manifest-only-name-from-required-hook-calls-and-decoded-xml-and-aapt2-xmltree-negatives-reject-missing-duplicate-wrong-element-unnamespaced-nested-and-wrong-parent-decoys",
+      "severity": "error"
+    },
+    {
+      "id": "updater-semantic-digest-is-dex-encoding-stable",
+      "check": "generated-d8-and-final-signed-apk-updater-graphs-canonicalize-reviewed-const-string-and-goto-widths-and-raw-branch-switch-try-catch-offsets-to-semantic-instruction-indices-while-only-unreferenced-terminal-preceded-payload-alignment-nops-are-excluded-and-a-generated-try-switch-branch-carrier-retains-the-same-digest-after-forced-const-string-jumbo-reassembly",
+      "severity": "error"
+    },
+    {
+      "id": "signed-in-app-update-is-verified-before-installer",
+      "check": "reviewed-raw-primary-dex-cfg-and-value-flow-inspector-with-one-generated-d8-positive-and-95-exact-bypass-negatives-proves-update-verification-file-provenance-required-and-optional-dialog-controls-eligibility-cached-required-arbitration-current-binary-atomic-handoff-antirollback-synchronous-commit-uncertainty-and-all-covering-exceptional-successors-before-installer-launch-with-ast-proof-that-the-fixture-functions-typed-expected-class-count-parameter-occupies-the-reviewed-inspector-slot-and-is-resolution-bound-by-its-caller-and-the-identical-inspector-must-pass-an-exact-nonpublishing-signed-review-candidate-before-human-promotion-then-pass-the-fresh-final-signed-candidate-again-before-publication",
+      "severity": "error"
+    },
+    {
+      "id": "signed-review-evidence-cannot-publish",
+      "check": "hash-pinned-tools-and-executable-negative-fixture-prove-signedreview-requires-review-required-and-update-review-blocker-true-signs-only-below-work-runs-full-raw-signed-dex-and-exact-primary-dex-activity-ui-evidence-emits-review-only-and-release-eligible-false-and-rejects-any-publish-path-before-creating-a-run-directory-while-default-release-still-requires-verified-current-and-blocker-false-and-a-separate-resolution-mode-selected-valid-split-set-fixture-forces-only-a-post-binding-build-tools-version-mismatch-then-requires-source-set-derived-source-and-resolution-failure-report-hashes",
+      "severity": "error"
+    },
+    {
+      "id": "passive-index-is-sole-list-authority",
+      "check": "canonical-host-fixture-targeted-jadx-and-signed-dex-prove-root-signature-and-object-sha256-verification-before-any-parse, whole-chunk malformed-row rejection and one per-bucket atomically replaced bounded sqlite id/unique-username generation as sole passive membership authority with strict timestamp username and observed-generation fault semantics plus v3 total-count, bucket-bits and exact per-replaced-bucket new-id-count metadata; only the reviewed v1-to-v2 migration may retain a pre-feature generation with minus-one unknown count and only the reviewed v2-to-v3 migration may move a retained generation into fresh tables, first install counts every row, 304 records zero, and retired shared-preference list and limit state remains deletion-only",
+      "severity": "error"
+    },
+    {
+      "id": "passive-refresh-never-creates-block-work",
+      "check": "canonical-host-fixture-targeted-jadx-and-signed-dex-prove-the-checked-foreground-ten-minute-freshest-verified-github-jsdelivr-aws-manifest-root-refresh-lane-whose-group-and-chunk-objects-are-fetched-only-through-pattern-validated-names-from-the-three-reviewed-object-bases-reads-the-durable-deadline-with-exception-safe-raw-type-exact-long-validation-and-fail-closed-pause-for-read-exception-wrong-type-overflow-or-implausible-value-persists-each-attempts-not-before-deadline-across-pause-resume-and-process-recreation-before-releasing-or-waking-the-lane-re-advances-the-durable-deadline-from-worker-start-rejection-time-ordinary-resume-honors-the-remaining-delay-and-only-direct-idle-or-bounded-viewer-scoped-force-may-bypass-without-clearing-or-transferring-the-deadline-and-refresh-remains-independent-of-block-limits-with-no-target-enqueue-block-run-construction-or-bridge-call",
+      "severity": "error"
+    },
+    {
+      "id": "passive-activity-status-is-truthful",
+      "check": "canonical-and-signed-dex-prove-activity-and-settings-current-status render bounded live fetch verify index complete or retained-failure state total and exact-new records or unavailable database generation/index state and fixed inline-render diagnostics through checked one-second polling removed on pause or destruction while disclosing foreground ten-minute post-reply visible-only coverage without claiming background or profile-header observation; the exact-primary-dex emulator probe securely parses bounded dtd-free ui xml requires viewport-intersecting nonzero-bounds fixed labels by exact node text and the five nonempty status values as one contiguous ordered decoded multiline sequence and rejects content-description mid-line wrong-order missing malformed-xml zero-bounds offscreen empty-value and split-node bypass fixtures",
+      "severity": "error"
+    },
+    {
+      "id": "passive-viewport-observer-is-version-bound",
+      "check": "resolution-canonical-template-and-signed-dex-prove-one-request-and-author-model-keyed-post-reply-action-row-observer-idempotently-reestablishes-registration-on-every-geometry-callback-derives-the-exact-version-no-argument-boolean-attached-and-empty-rectangle-predicate-tokens-requires-attached-nonempty-clipped-root-bounds-transition-dedupes-and-unregisters-on-forgotten-or-abandoned-with-no-compose-thread-database-or-mutation-work",
+      "severity": "error"
+    },
+    {
+      "id": "targeted-jadx-visibility-callsite-counts-are-version-bound",
+      "check": "resolution-selected-inline-visibility-template-and-targeted-jadx-metadata-have-identical-exact-register-update-unregister-callsites-with-444-two-one-three-and-415-two-one-one-and-release-contract-rejects-a-count-drift-fixture",
+      "severity": "error"
+    },
+    {
+      "id": "passive-jadx-wrapper-requirements-are-resolution-bound",
+      "check": "resolution-schema-pins-the-exact-eleven-autoblocksync-wrapper-requirement-strings-with-currentpassivematch-and-the-release-contract-ast-proves-the-patched-apk-wrapper-identical-while-stale-missing-duplicate-and-nonliteral-negative-fixtures-fail-closed",
+      "severity": "error"
+    },
+    {
+      "id": "passive-visible-admission-is-finally-rechecked",
+      "check": "canonical-positive-and-negative-fixtures-targeted-jadx-and-signed-dex-prove main-thread authority grants lock-serialized off-main revocation one currently visible immutable id per fresh manual-first owner observed-generation and username conflict fail-closed semantics callback-free native already-blocked preflight before passive-running or delay reservation and complete current authority immediately before running persistence passive delay/attempt reservation and bridge dispatch under generation replacement lock; reservation atomically records the selected two-field passive deadline before dispatch and no later exit clears or shortens it; manual attempts bypass passive pacing and no retired target run hour or day admission remains",
+      "severity": "error"
+    },
+    {
+      "id": "socks5-bootstrap-is-signed-dex-bound",
+      "check": "hash-pinned-raw-signed-dex-inspector-and-negative-fixtures-prove-the-exact-application-attach-entry-parameter-moves-super-call-immediately-adjacent-proxy-bootstrap-call-original-next-field-read-sole-bootstrap-caller-same-context-register-no-alternate-entry-no-install-covering-try-and-exact-fallback-reference-absence-with-the-resolution-field-owner-name-type-tuple-exactly-once-in-the-matching-reviewed-dex-layout-branch-and-canonical-full-reference-reconstruction-while-targeted-jadx-enables-reviewed-inconsistent-code-recovery-only-as-secondary-readable-evidence",
+      "severity": "error"
+    },
+    {
+      "id": "combined-modal-report-contract-is-proven",
+      "check": "canonical-and-signed-dex-prove-one-block-and-report-modal-with-reason-excerpt-persisted-also-block-checkbox-sole-dynamic-positive-action-always-distinct-durable-report-enqueue-optional-scheduler-only-block-initiating-context-binding-and-no-dedicated-report-editor-review-consent-or-one-click-bypass",
+      "severity": "error"
+    },
+    {
+      "id": "report-post-permalink-is-signed-dex-bound",
+      "check": "canonical-host-harness-resolution-targeted-jadx-and-the-dedicated signed-primary-dex cfg/value-flow inspector prove exact A75 code A7o fallback and A31/Ckk caption calls on the same captured Media, row label/code/permalink flow into the stable canonical resolver, resolver output into constructor permalink slot, raw-or-empty caption into the stable excerpt resolver and its result into the excerpt slot, zero composition-time current-viewer calls in factory and adapter, strict final permalink/new-queue/payload targetUrl/sole-evidence equality, fixed no-text fallback behavior, queue guards, and bypass-negative receiver argument clobber helper and root topology",
+      "severity": "error"
+    },
+    {
+      "id": "report-permalink-inspector-bindings-remain-compatible",
+      "check": "hash-pinned-ast-contract-proves-the-signed-apk-wrapper-and-positive-fixture-harness-pass-the-identical resolution-owned ordered semantic references including code caption label permalink and excerpt helpers plus APK to the resolution-pinned inspector command with no missing duplicate nonliteral reordered or divergent member",
+      "severity": "error"
+    },
+    {
+      "id": "descriptor-bound-smali-case-collision-proof-is-exact",
+      "check": "resolution-schema-core-evaluator-catalog-and-release-contract-require-exactly-two-reviewed-candidate-paths-select-exactly-one-lx-02ja-target-by-its-class-declaration-require-exactly-one-lx-02jA-sibling-count-the-null-seed-callsite-only-in-the-selected-target-and-reject-a-proven-absent-candidate-by-the-exact-missing-file-condition-plus-duplicate-extra-mixed-or-malformed-mappings-under-both-apktool-suffix-orders",
+      "severity": "error"
+    },
+    {
+      "id": "every-release-gate-passed",
+      "check": "ordered-release-gates-all-pass",
+      "severity": "error"
+    },
+    {
+      "id": "release-tool-parameters-remain-compatible",
+      "check": "hash-pinned-ast-contract-proves-every-transitive-release-tool-and-fixture-invocation-uses-the-exact-reviewed-ordered-subset-of-declared-callee-parameters-with-no-splat-duplicate-positional-missing-or-unowned-call",
+      "severity": "error"
+    },
+    {
+      "id": "release-tool-evidence-remains-compatible",
+      "check": "hash-pinned-ast-contract-proves-wrapper-generated-current-harness-and-legacy-regression-harness-use-identical-resolution-pinned-prepare-model-passive-preflight-and-dual-cache-seam-counts-plus-passive-native-preflight-fail-closed-checks-the-current-lane-retains-the-reviewed-single-target-three-terminal-zero-paced-and-complete-callback-effect-literals-the-legacy-batch-five-terminal-one-paced-branch-remains-fixture-only-both-use-one-resolution-pinned-total-of-328-cases-all-27-semantic-members-form-the-identically-ordered-28-argument-inspector-command-and-current-versus-legacy-lanes-cannot-cross-with-negative-missing-duplicate-nonliteral-divergence-reorder-substitution-and-branch-misplacement-fixtures",
+      "severity": "error"
+    },
+    {
+      "id": "bridge-inspector-argument-count-remains-compatible",
+      "check": "hash-pinned-contract-proves-exactly-one-dex-bridge-inspector-args-length-literal-equals-the-resolution-pinned-28-argument-command-and-stale-nonliteral-missing-or-duplicate-guards-fail-negative-fixtures",
+      "severity": "error"
+    },
+    {
+      "id": "ambiguous-report-label-collision-stays-excluded",
+      "check": "broad-final-dex-forbidden-list-excludes-send-report-because-pristine-send-reports-blocking-collides-under-case-insensitive-substring-matching-while-one-control-zero-legacy-render-tag-and-retired-class-proofs-remain-authoritative",
+      "severity": "error"
+    },
+    {
+      "id": "ambiguous-pristine-socks-port-collision-stays-excluded",
+      "check": "broad-final-dex-forbidden-list-excludes-socksproxyport-because-the-exact-sha-pristine-getSocksProxyPort-method-collides-under-case-insensitive-substring-matching-while-canonical-source-and-every-signed-targeted-proxy-class-forbid-the-exact-lowercase-fallback-key-and-all-other-global-forbidden-strings-remain-blocking",
+      "severity": "error"
+    },
+    {
+      "id": "installable-output-only-after-gates",
+      "check": "normal-release-published-artifact-created-after-gate-success-and-signed-review-never-publishes",
+      "severity": "error"
+    },
+    {
+      "id": "release-report-recorded",
+      "check": "release-report-binds-source-output-and-resolution-sha256",
+      "severity": "error"
+    },
+    {
+      "id": "release-inputs-remain-frozen",
+      "check": "snapshotted-source-resolution-canonical-patchlets-and-tool-inputs-hash-match-with-file-locks-and-persistent-tree-drift-monitoring-through-publication",
+      "severity": "error"
+    },
+    {
+      "id": "post-publish-drift-rolls-back",
+      "check": "post-move-failure-removes-the-exact-target-before-non-artifact-report-or-records-truthful-residue-evidence",
+      "severity": "error"
+    },
+    {
+      "id": "failure-report-is-non-artifact",
+      "check": "pipeline-failure-report-artifact-produced-false-after-verified-cleanup-or-truthfully-records-exact-rollback-residue",
+      "severity": "error"
+    },
+    {
+      "id": "published-bytes-match-gated-output",
+      "check": "post-move-read-locked-dist-file-sha256-equals-output-binding-before-success-commit",
+      "severity": "error"
+    },
+    {
+      "id": "loaded-entry-bytes-remain-attested",
+      "check": "parsed-pipeline-and-imported-module-bytes-are-read-locked-and-bound-into-the-complete-freeze",
+      "severity": "error"
+    },
+    {
+      "id": "decoded-build-input-remains-proven",
+      "check": "canonical-complete-file-and-directory-inventory-is-zero-exception-locked-before-idempotency-and-remains-unchanged-through-publication",
+      "severity": "error"
+    },
+    {
+      "id": "canonical-decoded-lock-remains-zero-exception",
+      "check": "every-canonical-decoded-lock-acquisition-and-assertion-forbids-all-tree-and-file-mutation-exceptions",
+      "severity": "error"
+    },
+    {
+      "id": "apktool-build-working-copy-is-bound",
+      "check": "fresh-disjoint-real-file-copy-including-empty-directories-matches-canonical-and-idempotency-sha256-files-directories-and-entries-before-build",
+      "severity": "error"
+    },
+    {
+      "id": "apktool-working-mutations-remain-exact",
+      "check": "all-stable-working-files-are-read-locked-and-structural-monitors-permit-only-exact-root-build-subtree-and-root-manifest-or-manifest-orig-files-with-overflow-fail-closed",
+      "severity": "error"
+    },
+    {
+      "id": "apktool-working-copy-restores-and-seals",
+      "check": "candidate-is-locked-then-exact-build-cache-is-removed-manifest-orig-is-absent-complete-working-inventory-is-restored-and-zero-exception-sealed-before-release-gates",
+      "severity": "error"
+    },
+    {
+      "id": "failed-working-build-is-evidenced-truthfully",
+      "check": "failure-report-records-canonical-freeze-and-lock-status-plus-working-manifest-manifest-orig-build-cache-readable-hashes-inventory-and-monitor-residue-before-lock-release",
+      "severity": "error"
+    },
+    {
+      "id": "candidate-bytes-remain-single-flight",
+      "check": "intermediate-consumers-and-final-release-gates-read-continuously-locked-artifact-bytes",
+      "severity": "error"
+    },
+    {
+      "id": "report-post-call-is-instruction-bound",
+      "check": "signed-dex-owner-method-has-exactly-one-https-set-request-method-call-with-immediate-post-const-string-to-the-exact-argument-register-and-no-alternate-entry",
+      "severity": "error"
+    },
+    {
+      "id": "mod-activity-construction-is-signed-dex-bound",
+      "check": "canonical-shell-before-state-and-parent-layout-contract-plus-signed-dex-required-ordered-and-forbidden-string-recovery",
+      "severity": "error"
+    },
+    {
+      "id": "artifact-paths-remain-confined",
+      "check": "safe-basename-and-resolved-output-paths-stay-under-the-fresh-run-output-directory",
+      "severity": "error"
+    },
+    {
+      "id": "archive-entry-identity-is-unambiguous",
+      "check": "source-and-candidate-have-unique-canonical-zip-entry-names-and-exact-root-dex-name-inventory-with-the-duplicate-root-dex-negative-seeded-only-from-the-resolution-hash-pinned-smali-carrier",
+      "severity": "error"
+    },
+    {
+      "id": "post-commit-failure-removes-owned-target",
+      "check": "failure-after-publication-return-removes-the-exact-run-owned-target-or-reports-residue-and-hash",
+      "severity": "error"
+    },
+    {
+      "id": "asset-exclusions-are-bounded",
+      "check": "exact-asset-file-exclusions-have-replacement-gates",
+      "severity": "error"
+    },
+    {
+      "id": "inline-model-handoff-remains-fail-closed",
+      "check": "signed-dex-proves-opaque-row-model-flow-only-after-durable-manual-state-and-reservation-plus-id-match-before-mutation-and-null-to-cache-first-session-get-or-create-by-id-placeholder-fallback",
+      "severity": "error"
+    },
+    {
+      "id": "closed-block-diagnostics-remain-safe",
+      "check": "canonical-and-signed-dex-prove-narrow-private-seam-result-flows-an-asynchronous-all-bridge-callback-firewall-and-a-closed-stage-map-without-identifier-url-throwable-or-unknown-stage-echo-and-with-bounded-detail-status-log-and-single-alert-persistence",
+      "severity": "error"
+    },
+    {
+      "id": "stable-inline-private-seams-are-signed-dex-absent",
+      "check": "signed-primary-dex-scans-every-threadsmod-and-com-threadsmod-class-and-rejects-any-private-media-lookup-author-lookup-or-username-call-while-retaining-exactly-one-author-id-and-one-already-blocked-call-in-the-reviewed-bridge-methods",
+      "severity": "error"
+    },
+    {
+      "id": "direct-id-bridge-signed-dex-flow-is-exact",
+      "check": "signed-dex-and-positive-negative-flow-fixtures-prove-exact-automatic-manual-and-bridge-caller-provenance-with-no-other-callers-automatic-and-manual-true-ownership-handoff-and-false-return-before-single-entry-bridge-selection-argument-load-and-invocation-only-throwable-catches-with-fixed-bridge-exception-routing-delivery-callback-consumers-run-directly-with-cfg-reachable-applicable-subpath-postdominating-reviewed-started-failure-success-save-exception-to-quarantine-normal-and-exceptional-release-cfg-dominating-live-reaching-definitions-and-no-scalar-or-wide-clobber-for-all-reviewed-arguments-all-covering-catch-handlers-as-exceptional-successors-with-normal-handler-tail-entry-rejected-no-return-catch-return-or-backward-cycle-before-accepted-branch-save-saved-automatic-success-waiting-clear-followed-by-ownership-release-with-current-pace-deadline-and-no-same-owner-next-target-selection-list-cursor-loop-or-blockrun-next-method-with-only-a-fresh-manual-first-drain-selecting-any-further-passive-target-exact-reviewed-owner-provenance-for-every-resolution-supplied-private-seam-call-with-no-extra-mod-namespace-callers-and-exact-host-inline-snapshot-resolution-leaving-no-stable-inline-or-report-private-author-id-caller-resolution-supplied-passive-preflight-cache-lookup-factory-null-seed-get-or-put-and-shared-callback-free-model-preparation-fixed-result-routing-before-passive-running-persistence-and-atomic-attempt-plus-delay-reservation-direct-and-resolved-entry-flow-post-preflight-authority-rechecks-target-id-guard-repeated-native-already-blocked-preparation-before-mutation-exact-dispatcher-and-delivery-caller-provenance-asynchronous-terminal-callback-firewall-exact-native-callback-interface-and-sole-native-mutation-identity",
+      "severity": "error"
+    },
+    {
+      "id": "confirmed-success-never-retries-automatically",
+      "check": "canonical-and-signed-dex-prove-completion-persistence-installs-strict-bounded-quarantine-before-release-has-distinct-saved-or-local-failclosed-diagnostics-and-has-no-backoff-wake-or-automatic-queue-path",
+      "severity": "error"
+    },
+    {
+      "id": "scheduler-enqueue-rejection-fails-closed",
+      "check": "canonical-and-signed-dex-prove-every-scheduler-critical-handler-enqueue-tests-the-boolean-result-and-rejection-releases-or-records-a-bounded-durable-work-pause-with-only-best-effort-toast-exempt",
+      "severity": "error"
+    },
+    {
+      "id": "uncertain-mutation-never-retries-automatically",
+      "check": "canonical-and-signed-dex-prove-watchdog-silence-or-enqueue-rejection-after-bridge-dispatch-installs-viewer-target-review-quarantine-before-release-never-enters-backoff-or-automatic-retry-and-leaves-inline-work-abandoned-until-explicit-atomic-retry",
+      "severity": "error"
+    },
+    {
+      "id": "inline-pre-enqueue-failures-remain-diagnosable",
+      "check": "canonical-and-signed-dex-prove-each-pre-enqueue-terminal-controller-branch-records-one-closed-diagnostic-before-ui-failure-post-queue-failures-remain-scheduler-owned-and-the-exact inline adapter reports only fixed identifier-free hook request-unavailable render and adapter-exception counters exposed in Current status",
+      "severity": "error"
+    },
+    {
+      "id": "inline-username-remains-display-only",
+      "check": "signed-dex-proves-the-sha-bound-author-username-accessor-produces-only-a-trimmed-at-prefixed-bounded-label-while-numeric-target-id-remains-mutation-authority",
+      "severity": "error"
+    },
+    {
+      "id": "network-order-and-write-authority-remain-exact",
+      "check": "read-order-is-github-raw-then-jsdelivr-then-aws-with-tree55-absent-and-report-write-is-only-the-exact-aws-v1-reports-url-with-no-fallback",
+      "severity": "error"
+    },
+    {
+      "id": "socks5-transport-remains-fail-closed",
+      "check": "canonical-manifest-host-signed-dex-and-native-evidence-prove-default-disabled-system-consent-one-app-vpn-numeric-bypass-encrypted-credentials-no-direct-fallback-exact-bootstrap-private-components-pinned-aarch64-16k-library-distinct-new-guard-retained-guard-retained-forwarding-no-tun-and-enabled-config-disabled-runtime-status-lifecycle-bounded-live-settings-refresh-and-truthful-packet-capture-boundary",
+      "severity": "error"
+    },
+    {
+      "id": "socks5-license-distribution-is-exact",
+      "check": "signed-apk-contains-one-hash-pinned-combined-hev-mit-and-lwip-sics-bsd-notice-at-the-resolution-owned-asset-path",
+      "severity": "error"
+    }
+  ],
+  "releaseGates": [
+    "report-post-permalink-contract",
+    "all-static-release-gates"
+  ],
+  "ai": {
+    "allowed": true,
+    "taskTemplate": "../../ai/tasks/REVIEW-RELEASE-DRIFT.md",
+    "output": "proposal-json-only",
+    "mayEditProductionTree": false,
+    "mayRelaxChecks": false
+  }
+}

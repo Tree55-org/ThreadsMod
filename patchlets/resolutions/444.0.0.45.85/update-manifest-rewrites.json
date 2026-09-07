@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "register-update-install-permission",
+      "path": "AndroidManifest.xml",
+      "beforeFile": "anchors/update-permission.before.xml",
+      "afterFile": "anchors/update-permission.after.xml",
+      "expectedCount": 1
+    },
+    {
+      "id": "set-clone-update-version",
+      "path": "apktool.yml",
+      "beforeFile": "anchors/update-version.before.yml",
+      "afterFile": "anchors/update-version.after.yml",
+      "expectedCount": 1
+    }
+  ]
+}

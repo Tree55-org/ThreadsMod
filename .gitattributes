@@ -1,0 +1,23 @@
+# Rules are evaluated last-match-wins, so the `patchlets/` rule must stay last.
+
+# The repository is LF throughout. Pin it so a Windows clone with the default
+# core.autocrlf=true does not check files out as CRLF.
+* text=auto eol=lf
+
+# Binary payloads: never diffed, never EOL-converted.
+*.apk  binary
+*.jar  binary
+*.so   binary
+*.dex  binary
+*.gz   binary
+*.png  binary
+*.mp4  binary
+*.zip  binary
+
+# The canonical tree is hash-pinned. resolution.json records SHA-256 hashes of
+# 46 assets under patchlets/, several as whole-tree digests with filter '*'
+# (patchlets/assets/socks5-proxy/native and the block-list fixture tree), and
+# the pipeline re-hashes them as a precondition. Any EOL conversion here changes
+# the bytes, so the hash check fails and the build stops -- reporting APK drift
+# rather than a line-ending problem. Store and check out these bytes verbatim.
+patchlets/** -text

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "inline-media-id-field",
+      "path": "smali_classes2/X/03gT.smali",
+      "beforeFile": "anchors/inline-media-field.before.smali",
+      "afterFile": "anchors/inline-media-field.after.smali",
+      "expectedCount": 1
+    },
+    {
+      "id": "inline-media-id-bind",
+      "path": "smali_classes2/X/03gS.smali",
+      "beforeFile": "anchors/inline-media-bind.before.smali",
+      "afterFile": "anchors/inline-media-bind.after.smali",
+      "expectedCount": 1
+    },
+    {
+      "id": "inline-action-row-hook",
+      "path": "smali_classes2/X/03ga.1.smali",
+      "beforeFile": "anchors/inline-action-row.before.smali",
+      "afterFile": "anchors/inline-action-row.after.smali",
+      "expectedCount": 1
+    },
+    {
+      "id": "inline-author-snapshot-host-method",
+      "path": "smali_classes2/X/03gS.smali",
+      "beforeFile": "anchors/inline-author-snapshot-host.before.smali",
+      "afterFile": "anchors/inline-author-snapshot-host.after.smali",
+      "expectedCount": 1
+    }
+  ]
+}

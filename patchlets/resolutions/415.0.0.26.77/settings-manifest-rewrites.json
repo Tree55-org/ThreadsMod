@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "register-clone-blocker-activities",
+      "path": "AndroidManifest.xml",
+      "beforeFile": "anchors/settings-manifest.before.xml",
+      "afterFile": "anchors/settings-manifest.after.xml",
+      "expectedCount": 1
+    }
+  ]
+}

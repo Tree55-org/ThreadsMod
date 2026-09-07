@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "register-socks5-special-use-permission",
+      "path": "AndroidManifest.xml",
+      "beforeFile": "anchors/proxy-permission.before.xml",
+      "afterFile": "anchors/proxy-permission.after.xml",
+      "expectedCount": 1
+    },
+    {
+      "id": "register-socks5-proxy-components",
+      "path": "AndroidManifest.xml",
+      "beforeFile": "anchors/proxy-components.before.xml",
+      "afterFile": "anchors/proxy-components.after.xml",
+      "expectedCount": 1
+    },
+    {
+      "id": "bootstrap-socks5-proxy",
+      "path": "smali_classes10/com/instagram/barcelona/app/BarcelonaAppShell.smali",
+      "beforeFile": "anchors/proxy-bootstrap.before.smali",
+      "afterFile": "anchors/proxy-bootstrap.after.smali",
+      "expectedCount": 1
+    }
+  ]
+}

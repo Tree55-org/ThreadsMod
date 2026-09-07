@@ -1,0 +1,1982 @@
+{
+  "$schema": "../../schemas/resolution.schema.json",
+  "schemaVersion": 1,
+  "resolutionId": "threads-415.0.0.26.77-arm64",
+  "status": "verified-current",
+  "resolvedAt": "2026-09-03T11:01:14+07:00",
+  "source": {
+    "fileName": "com.instagram.barcelona-444-0-0-45-85-arm64-v8a-android60.apk",
+    "sha256": "0f6b4515902f78ea194b1bc0563bfcab07f2559d8e80cf6f329d3d1ef786487e",
+    "applicationId": "com.instagram.barcelona",
+    "versionName": "415.0.0.26.77",
+    "versionCode": 508504469,
+    "minSdk": 28,
+    "targetSdk": 36,
+    "abis": ["arm64-v8a"],
+    "rootDexCount": 12
+  },
+  "target": {
+    "applicationId": "com.threadsmod.barcelona",
+    "label": "Threads Mod Demo",
+    "artifactBaseName": "ThreadsMod-CloneBlocker-415.0.0.26.77-arm64-v8a-update-mod1",
+    "versionCode": 508504470,
+    "versionName": "415.0.0.26.77-threadsmod.1",
+    "modBuild": 1
+  },
+  "patchlets": [
+    "010-clone-identity",
+    "020-autoblock-runtime",
+    "030-native-block-bridge",
+    "040-main-activity-hooks",
+    "050-mod-settings-ui",
+    "070-consented-reporting",
+    "060-inline-block-controls",
+    "080-socks5-proxy",
+    "085-in-app-update",
+    "090-release-gates"
+  ],
+  "rewriteSets": [
+    "identity-rewrites.json",
+    "hook-rewrites.json",
+    "settings-manifest-rewrites.json",
+    "drawer-settings-rewrites.json",
+    "inline-control-rewrites.json",
+    "proxy-manifest-rewrites.json",
+    "update-manifest-rewrites.json"
+  ],
+  "activity": {
+    "path": "smali/com/instagram/barcelona/mainactivity/BarcelonaActivity.smali",
+    "descriptor": "Lcom/instagram/barcelona/mainactivity/BarcelonaActivity;",
+    "sessionField": "A01",
+    "sessionDescriptor": "Lcom/instagram/common/session/UserSession;",
+    "onResumeSessionRegister": "v6",
+    "hookRationale": "The onResume anchor is after invoke-super while v6 still contains the non-null A01 UserSession proven by the preceding null check. The onPause hook needs only p0."
+  },
+  "uiComponents": {
+    "settingsActivity": {
+      "name": "com.threadsmod.CloneBlockerSettingsActivity",
+      "descriptor": "Lcom/threadsmod/CloneBlockerSettingsActivity;",
+      "exported": false
+    },
+    "activityActivity": {
+      "name": "com.threadsmod.CloneBlockerActivity",
+      "descriptor": "Lcom/threadsmod/CloneBlockerActivity;",
+      "exported": false
+    },
+    "rewriteSet": "settings-manifest-rewrites.json"
+  },
+  "drawerSettings": {
+    "rewriteSet": "drawer-settings-rewrites.json",
+    "templateRoot": "assets/settings-ui/templates",
+    "rows": [
+      {
+        "path": "smali_classes3/X/0MO.smali",
+        "method": "invoke(Ljava/lang/Object;)Ljava/lang/Object;",
+        "hookRuleId": "drawer-settings-button-hook",
+        "key": "feed-menu-bottom-spacer",
+        "label": "Clone Blocker settings"
+      }
+    ],
+    "symbols": {
+      "clickInterface": "LX/Flo;",
+      "unitSingletonField": "LX/34S;->A00:LX/34S;",
+      "composerDescriptor": "LX/8qj;",
+      "modifierDescriptor": "LX/8eh;",
+      "drawerBaseModifierField": "LX/9ch;->A02:LX/9ci;",
+      "drawerRowModifierMethod": "LX/9ch;->A0N(LX/8eh;FF)LX/8eh;",
+      "nativeDrawerRowMethod": "LX/0M9;->A01(LX/8qj;LX/8eh;Ljava/lang/String;LX/Flo;LX/3jI;IIZ)V"
+    }
+  },
+  "bridge": {
+    "templateRoot": "assets/autoblock/bridge-templates",
+    "referenceRoot": "assets/bridge-reference-415",
+    "symbols": {
+      "sessionDescriptor": "Lcom/instagram/common/session/UserSession;",
+      "modelDescriptor": "LX/2fp;",
+      "authorIdMethod": "LX/2fp;->getId()Ljava/lang/String;",
+      "cacheLookupMethod": "LX/023;->A0f(Lcom/instagram/common/session/UserSession;Ljava/lang/String;)LX/2fp;",
+      "userCacheFactoryMethod": "LX/2gx;->A00(Lcom/instagram/common/session/UserSession;)LX/2gy;",
+      "userCacheGetOrPutMethod": "LX/2gy;->A02(LX/2fh;Ljava/lang/String;)LX/2fp;",
+      "alreadyBlockedMethod": "LX/2gb;->A0M(LX/2fp;)Z",
+      "mutationCallbackInterface": "LX/Mwt;",
+      "mutationStartedCallback": "DFF",
+      "mutationFailureCallback": "DKv",
+      "mutationEndedCallback": "Dg7",
+      "mutationCancelCallback": "onCancel",
+      "mutationSuccessCallback": "onSuccess",
+      "blockMutationMethod": "LX/DNo;->A00(Landroid/content/Context;Lcom/instagram/common/session/UserSession;LX/2fp;LX/Mwt;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+      "surface": "ig_text_feed_profile"
+    }
+  },
+  "inlineControls": {
+    "rewriteSet": "inline-control-rewrites.json",
+    "templateRoot": "assets/inline-control/templates",
+    "carrier": {
+      "path": "smali_classes2/X/0rU.smali",
+      "descriptor": "LX/0rU;",
+      "mediaIdField": "threadsmodMediaId:Ljava/lang/String;"
+    },
+    "actionRow": {
+      "path": "smali_classes2/X/0sC.smali",
+      "method": "A02(LX/Azm;LX/8qj;LX/0wC;LX/0rU;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;LX/Flo;LX/Flo;LX/Flo;LX/Flo;LX/Flo;LX/Flo;LX/Flo;LX/Flo;Lkotlin/jvm/functions/Function1;LX/3jI;FIIIIIIIIIIJJZZZZZZZZZZ)V",
+      "hookRuleId": "inline-action-row-hook",
+      "snapshotHookRuleId": "inline-author-snapshot-host-method",
+      "snapshotMethod": "threadsmodResolveAuthorSnapshot(LX/0rU;Lcom/instagram/common/session/UserSession;)Lthreadsmod/inlinecontrol/InlineBlockRequest;"
+    },
+    "presentation": {
+      "mode": "single-block-entry-combined-modal",
+      "visibleControlCount": 1,
+      "separateReportControlCount": 0,
+      "modalActions": ["dynamic-positive", "cancel"]
+    },
+    "symbols": {
+      "inlineClickInterface": "LX/Flo;",
+      "unitSingletonField": "LX/34S;->A00:LX/34S;",
+      "ufiStyleDescriptor": "LX/8xf;",
+      "composerDescriptor": "LX/8qj;",
+      "ufiConfigDescriptor": "LX/0rU;",
+      "sessionDescriptor": "Lcom/instagram/common/session/UserSession;",
+      "ufiMediaIdField": "LX/0rU;->threadsmodMediaId:Ljava/lang/String;",
+      "mediaLookupMethod": "LX/023;->A0e(Lcom/instagram/common/session/UserSession;Ljava/lang/String;)LX/6wn;",
+      "mediaAuthorMethod": "LX/021;->A0z(LX/6wn;)LX/2fp;",
+      "authorIdMethod": "LX/2fp;->getId()Ljava/lang/String;",
+      "authorUsernameMethod": "LX/021;->A1B(LX/2fp;)Ljava/lang/String;",
+      "composerEmptyField": "LX/8rw;->A00:Ljava/lang/Object;",
+      "snapshotPolicyField": "LX/6rl;->A00:LX/6rl;",
+      "baseModifierField": "LX/8eh;->A00:LX/8fd;",
+      "testTagMethod": "LX/APo;->A00(LX/8eh;Ljava/lang/String;)LX/8eh;",
+      "nativeActionAnimationDescriptor": "LX/0sW;",
+      "nativeActionAnimationConstructor": "LX/0sW;-><init>(LX/Flo;Z)V",
+      "modifierComposedInspectorField": "LX/8zw;->A00:Lkotlin/jvm/functions/Function1;",
+      "modifierComposedMethod": "LX/9AK;->A02(LX/8eh;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;)LX/8eh;",
+      "visibilityModifierMethod": "LX/A2m;->A00(LX/8eh;Lkotlin/jvm/functions/Function1;)LX/8eh;",
+      "visibilityModifierElementDescriptor": "LX/A2n;",
+      "visibilityCallbackNodeDescriptor": "LX/Bul;",
+      "rememberObserverInterface": "LX/5mg;",
+      "layoutCoordinatesDescriptor": "LX/8hm;",
+      "layoutAttachedMethod": "LX/8hm;->Cku()Z",
+      "clippedBoundsMethod": "LX/0qD;->A02(LX/8hm;Z)LX/8ok;",
+      "rectDescriptor": "LX/8ok;",
+      "rectEmptyMethod": "LX/8ok;->A0A()Z",
+      "blockIconResourceId": "0x7f080164",
+      "successIconResourceId": "0x7f0800e7",
+      "ufiButtonMethod": "LX/0sH;->A00(LX/8xf;LX/8qj;LX/8eh;Ljava/lang/String;Ljava/lang/String;LX/Flo;LX/Flo;IIIIIJJZZZZZ)V"
+    }
+  },
+  "reporting": {
+    "writeEndpoint": "https://h0w1lwun39.execute-api.ap-southeast-1.amazonaws.com/v1/reports",
+    "templateRoot": "assets/reporting/templates",
+    "templateNames": [
+      "InlineReportActionFactory.smali.tmpl"
+    ],
+    "quoteMaxUtf16": 280,
+    "launchMode": "single-combined-modal-durable-queue",
+    "canonicalPermalinkPrefix": "https://www.threads.com/@",
+    "permalinkPathMarker": "/post/",
+    "acceptedLegacyPermalinkHost": "www.threads.net",
+    "symbols": {
+      "mediaDescriptor": "LX/6wn;",
+      "mediaBackingField": "LX/6wn;->A04:LX/7A3;",
+      "mediaPermalinkMethod": "LX/7A4;->Bwc()Ljava/lang/String;",
+      "mediaCaptionMethod": "LX/7A4;->B2O()LX/6yd;",
+      "captionTextMethod": "LX/6yd;->CRt()Ljava/lang/String;"
+    }
+  },
+  "proxy": {
+    "settingsActivity": {
+      "name": "com.threadsmod.ProxySettingsActivity",
+      "descriptor": "Lcom/threadsmod/ProxySettingsActivity;",
+      "exported": false
+    },
+    "vpnService": {
+      "name": "threadsmod.proxy.Socks5VpnService",
+      "descriptor": "Lthreadsmod/proxy/Socks5VpnService;",
+      "exported": false,
+      "permission": "android.permission.BIND_VPN_SERVICE",
+      "action": "android.net.VpnService",
+      "foregroundServiceType": "specialUse",
+      "foregroundServicePermission": "android.permission.FOREGROUND_SERVICE_SPECIAL_USE",
+      "specialUseSubtype": "App-scoped SOCKS5 tunnel for Threads Mod"
+    },
+    "bootstrapHook": {
+      "path": "smali_classes10/com/instagram/barcelona/app/BarcelonaAppShell.smali",
+      "method": "attachBaseContext(Landroid/content/Context;)V",
+      "anchorAfterSuper": "invoke-super {v4, v0}, Landroid/content/ContextWrapper;->attachBaseContext(Landroid/content/Context;)V",
+      "call": "invoke-static {v0}, Lthreadsmod/proxy/ProxyBootstrap;->install(Landroid/content/Context;)V"
+    },
+    "rewriteSet": "proxy-manifest-rewrites.json",
+    "nativeLibrary": {
+      "assetPath": "assets/socks5-proxy/native/arm64-v8a/libhev-socks5-tunnel.so",
+      "decodedPath": "lib/arm64-v8a/libhev-socks5-tunnel.so",
+      "apkPath": "lib/arm64-v8a/libhev-socks5-tunnel.so",
+      "abi": "arm64-v8a",
+      "sha256": "3e46332a5ab97d5e14db869c5dd5945429c6345c80e78d326baa9a14da466099",
+      "elfMachine": 183,
+      "minimumLoadAlignment": 16384
+    },
+    "licenseAsset": {
+      "assetPath": "assets/socks5-proxy/native/NOTICE.hev-socks5-tunnel-and-lwip.txt",
+      "decodedPath": "assets/threadsmod/licenses/hev-socks5-tunnel-and-lwip.txt",
+      "apkPath": "assets/threadsmod/licenses/hev-socks5-tunnel-and-lwip.txt",
+      "sha256": "c6f7f6dbe54e21b0844f0b85887d6ce741b524d0f506179db1e83221c802e521"
+    }
+  },
+  "update": {
+    "rewriteSet": "update-manifest-rewrites.json",
+    "currentModBuild": 1,
+    "metadataPurpose": "threadsmod-app-update",
+    "metadataPublicKey": "fYcRAV8CRof15IAinUoDOZuBbqqDtDXDPl3lwSLoMhk",
+    "metadataEndpoints": [
+      "https://raw.githubusercontent.com/nsc55/cloneblocker-mirror/published/threadsmod-update.json",
+      "https://cdn.jsdelivr.net/gh/nsc55/cloneblocker-mirror@published/threadsmod-update.json",
+      "https://h0w1lwun39.execute-api.ap-southeast-1.amazonaws.com/threadsmod-update.json"
+    ],
+    "requestInstallPermission": "android.permission.REQUEST_INSTALL_PACKAGES",
+    "fileProviderAuthority": "com.threadsmod.barcelona.fileprovider",
+    "fileProviderCachePath": "shared/updates",
+    "requiredSignerCertificateSha256": "317e3f3813f3b1ec324717faf1bb78f954f49a12122181a85b42338ca10dd079"
+  },
+  "proofs": [
+    {
+      "id": "update-fileprovider-cache-path",
+      "path": "res/xml/barcelona_file_provider_paths.xml",
+      "contains": "<cache-path name=\"shared\" path=\"shared/\" />",
+      "minimumCount": 1
+    },
+    {
+      "id": "proxy-application-attach-super-anchor",
+      "path": "smali_classes10/com/instagram/barcelona/app/BarcelonaAppShell.smali",
+      "contains": "invoke-super {v4, v0}, Landroid/content/ContextWrapper;->attachBaseContext(Landroid/content/Context;)V",
+      "minimumCount": 1
+    },
+    {
+      "id": "proxy-manifest-application-class",
+      "path": "AndroidManifest.xml",
+      "contains": "android:name=\"com.instagram.barcelona.app.BarcelonaAppShell\"",
+      "minimumCount": 1
+    },
+    {
+      "id": "proxy-manifest-special-use-anchor",
+      "path": "AndroidManifest.xml",
+      "contains": "<uses-permission android:name=\"android.permission.FOREGROUND_SERVICE\"/>",
+      "minimumCount": 1
+    },
+    {
+      "id": "proxy-pristine-socks-port-substring-collision",
+      "path": "smali_classes11/com/facebook/proxyservice/observer/ProxyServiceBroadcaster.smali",
+      "contains": ".method public final declared-synchronized getSocksProxyPort()I",
+      "minimumCount": 1
+    },
+    {
+      "id": "activity-session-field",
+      "path": "smali/com/instagram/barcelona/mainactivity/BarcelonaActivity.smali",
+      "contains": "iget-object v6, p0, Lcom/instagram/barcelona/mainactivity/BarcelonaActivity;->A01:Lcom/instagram/common/session/UserSession;",
+      "minimumCount": 1
+    },
+    {
+      "id": "cache-lookup-signature",
+      "path": "smali_classes4/X/023.smali",
+      "contains": ".method public static A0f(Lcom/instagram/common/session/UserSession;Ljava/lang/String;)LX/2fp;",
+      "minimumCount": 1
+    },
+    {
+      "id": "user-cache-factory-signature",
+      "path": "smali/X/2gx.smali",
+      "contains": ".method public static final A00(Lcom/instagram/common/session/UserSession;)LX/2gy;",
+      "minimumCount": 1
+    },
+    {
+      "id": "user-cache-get-or-put-signature",
+      "path": "smali/X/2gy.smali",
+      "contains": ".method public final A02(LX/2fh;Ljava/lang/String;)LX/2fp;",
+      "minimumCount": 1
+    },
+    {
+      "id": "user-cache-get-or-put-placeholder-factory",
+      "path": "smali/X/2gy.smali",
+      "contains": "new-instance v2, LX/3Hp;\n\n    .line 54\n    .line 55\n    invoke-direct {v2, v0, v4, p0, p1}, LX/3Hp;-><init>(ILjava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V",
+      "minimumCount": 1
+    },
+    {
+      "id": "user-cache-placeholder-model-construction",
+      "path": "smali_classes4/X/3Hp.smali",
+      "contains": "new-instance v2, LX/2fh;\n\n    invoke-direct {v2, v0}, LX/2fh;-><init>(Ljava/lang/String;)V\n\n    :cond_0\n    new-instance v5, LX/2fp;\n\n    invoke-direct {v5, v2}, LX/2fp;-><init>(LX/2fi;)V",
+      "minimumCount": 1
+    },
+    {
+      "id": "user-cache-placeholder-session-initialization",
+      "path": "smali_classes4/X/3Hp.smali",
+      "contains": "iget-object v1, v4, LX/2gy;->A00:Lcom/instagram/common/session/UserSession;\n\n    const/4 v0, 0x0\n\n    if-nez v6, :cond_2\n\n    const/4 v0, 0x1\n\n    :cond_2\n    invoke-virtual {v5, v1, v2, v3, v0}, LX/2fp;->A06(Lcom/instagram/common/session/UserSession;LX/2hk;LX/Mys;Z)V",
+      "minimumCount": 1
+    },
+    {
+      "id": "native-user-id-wrapper-label",
+      "path": "smali_classes7/X/1R1.smali",
+      "contains": "const-string v0, \"UserId(id=\"",
+      "minimumCount": 1
+    },
+    {
+      "id": "user-cache-null-seed-user-id-callsite",
+      "path": "smali_classes4/X/3Oy.1.smali",
+      "contains": "instance-of v0, p1, LX/1R1;\n\n    const/4 v2, 0x0\n\n    if-eqz v0, :cond_0\n\n    invoke-static {p0}, LX/2gx;->A00(Lcom/instagram/common/session/UserSession;)LX/2gy;\n\n    move-result-object v1\n\n    check-cast p1, LX/1R1;\n\n    iget-object v0, p1, LX/1R1;->A00:Ljava/lang/String;\n\n    invoke-virtual {v1, v2, v0}, LX/2gy;->A02(LX/2fh;Ljava/lang/String;)LX/2fp;",
+      "minimumCount": 1
+    },
+    {
+      "id": "already-blocked-signature",
+      "path": "smali/X/2gb.smali",
+      "contains": ".method public static final A0M(LX/2fp;)Z",
+      "minimumCount": 1
+    },
+    {
+      "id": "block-endpoint",
+      "path": "smali_classes7/X/DNo.smali",
+      "contains": "friendships/block/%s/",
+      "minimumCount": 1
+    },
+    {
+      "id": "block-mutation-signature",
+      "path": "smali_classes7/X/DNo.smali",
+      "contains": ".method public static A00(Landroid/content/Context;Lcom/instagram/common/session/UserSession;LX/2fp;LX/Mwt;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+      "minimumCount": 1
+    },
+    {
+      "id": "mutation-pre-start-guard-topology",
+      "path": "smali_classes7/X/DNo.smali",
+      "contains": "if-eqz v0, :cond_0\n\n    invoke-static {}, LX/00p;->A0N()Ljava/lang/StringBuilder;\n\n    move-result-object v1\n\n    const-string v0, \"User type:  \"\n\n    invoke-static {v2, v0, v1}, LX/01D;->A0D(Ljava/lang/Object;Ljava/lang/String;Ljava/lang/StringBuilder;)Ljava/lang/String;\n\n    move-result-object v1\n\n    const-string v0, \"Invalid user type\"\n\n    invoke-static {v0, v1}, LX/1G9;->A03(Ljava/lang/String;Ljava/lang/String;)V\n\n    return-void\n\n    :cond_0\n    invoke-virtual {v3}, LX/2fp;->getId()Ljava/lang/String;\n\n    move-result-object v11\n\n    move-object/from16 v17, p3\n\n    invoke-interface/range {v17 .. v17}, LX/Mwt;->DFF()V",
+      "minimumCount": 1
+    },
+    {
+      "id": "mutation-callback-interface",
+      "path": "smali_classes7/X/Mwt.smali",
+      "contains": ".method public abstract onSuccess()V",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-carrier-constructor",
+      "path": "smali_classes2/X/0rU.smali",
+      "contains": ".method public constructor <init>(LX/8xf;LX/8xf;LX/7aN;LX/0sL;FZZZZZZZ)V",
+      "minimumCount": 1
+    },
+    {
+      "id": "drawer-feed-menu-items",
+      "path": "smali_classes3/X/0MO.smali",
+      "contains": "feed-menu-bottom-spacer",
+      "minimumCount": 1
+    },
+    {
+      "id": "drawer-native-row-signature",
+      "path": "smali_classes3/X/0M9.smali",
+      "contains": ".method public static final A01(LX/8qj;LX/8eh;Ljava/lang/String;LX/Flo;LX/3jI;IIZ)V",
+      "minimumCount": 1
+    },
+    {
+      "id": "drawer-row-modifier",
+      "path": "smali_classes3/X/0M9.smali",
+      "contains": "invoke-static {v7, v6, v3}, LX/9ch;->A0N(LX/8eh;FF)LX/8eh;",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-media-id-source",
+      "path": "smali_classes2/X/0rR.smali",
+      "contains": ".field public final synthetic A0A:Ljava/lang/String;",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-carrier-flow",
+      "path": "smali_classes2/X/0rR.smali",
+      "contains": "invoke-static/range {v18 .. v52}, LX/0sC;->A03(LX/8qj;LX/8eh;LX/0wC;LX/0rU;",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-dense-ufi-method",
+      "path": "smali_classes2/X/0sC.smali",
+      "contains": ".method public static final A02(LX/Azm;LX/8qj;LX/0wC;LX/0rU;",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-share-anchor",
+      "path": "smali_classes2/X/0sC.smali",
+      "contains": "invoke-static/range {v75 .. v95}, LX/0sH;->A00(LX/8xf;LX/8qj;LX/8eh;Ljava/lang/String;Ljava/lang/String;LX/Flo;LX/Flo;IIIIIJJZZZZZ)V",
+      "minimumCount": 2
+    },
+    {
+      "id": "inline-share-test-tag",
+      "path": "smali_classes2/X/0sC.smali",
+      "contains": "feed_post_ufi_share_button",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-share-container-close",
+      "path": "smali_classes2/X/0sC.smali",
+      "contains": ":goto_1f\n    move/from16 v0, v35\n\n    invoke-static {v11, v0}, LX/8qi;->A0H(LX/8qi;Z)V\n\n    move/from16 v0, v31\n\n    invoke-static {v11, v0}, LX/8qi;->A0H(LX/8qi;Z)V",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-share-popup-register-overwrite",
+      "path": "smali_classes2/X/0sC.smali",
+      "contains": "sget-object v44, LX/BAL;->A04:LX/BAL;",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-visibility-modifier-factory",
+      "path": "smali/X/A2m.smali",
+      "contains": ".method public static final A00(LX/8eh;Lkotlin/jvm/functions/Function1;)LX/8eh;\n    .locals 1\n\n    .line 0\n    new-instance v0, LX/A2n;\n\n    .line 1\n    .line 2\n    invoke-direct {v0, p1}, LX/A2n;-><init>(Lkotlin/jvm/functions/Function1;)V",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-visibility-modifier-node-binding",
+      "path": "smali/X/A2n.smali",
+      "contains": "new-instance v0, LX/Bul;\n\n    .line 3\n    .line 4\n    invoke-direct {v0}, LX/8ec;-><init>()V\n\n    .line 5\n    .line 6\n    .line 7\n    iput-object v1, v0, LX/Bul;->A00:Lkotlin/jvm/functions/Function1;",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-visibility-node-callback-dispatch",
+      "path": "smali/X/Bul.smali",
+      "contains": ".method public final DNR(LX/8hm;)V\n    .locals 1\n\n    .line 0\n    iget-object v0, p0, LX/Bul;->A00:Lkotlin/jvm/functions/Function1;\n\n    .line 1\n    .line 2\n    invoke-interface {v0, p1}, Lkotlin/jvm/functions/Function1;->invoke(Ljava/lang/Object;)Ljava/lang/Object;",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-visibility-remember-observer-lifecycle",
+      "path": "smali/X/5mg.smali",
+      "contains": ".method public abstract onAbandoned()V\n.end method\n\n.method public abstract onForgotten()V\n.end method\n\n.method public abstract onRemembered()V",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-visibility-layout-attached-predicate",
+      "path": "smali/X/8hm.smali",
+      "contains": ".method public abstract Cku()Z\n.end method",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-visibility-clipped-root-bounds",
+      "path": "smali_classes2/X/0qD.1.smali",
+      "contains": ".method public static final A02(LX/8hm;Z)LX/8ok;\n    .locals 16\n\n    move-object/from16 v6, p0\n\n    invoke-static {v6}, LX/0qD;->A03(LX/8hm;)LX/8hm;",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-visibility-clipped-root-flag-flow",
+      "path": "smali_classes2/X/0qD.1.smali",
+      "contains": "move/from16 v1, p1\n\n    invoke-interface {v11, v6, v1}, LX/8hm;->D0P(LX/8hm;Z)LX/8ok;\n\n    move-result-object v7\n\n    const/4 v6, 0x0\n\n    iget v4, v7, LX/8ok;->A01:F\n\n    if-eqz p1, :cond_1",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-visibility-empty-rect-predicate",
+      "path": "smali/X/8ok.smali",
+      "contains": ".method public final A0A()Z\n    .locals 4\n\n    .line 0\n    iget v1, p0, LX/8ok;->A01:F\n\n    .line 1\n    .line 2\n    iget v0, p0, LX/8ok;->A02:F",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-media-lookup",
+      "path": "smali_classes4/X/023.smali",
+      "contains": ".method public static A0e(Lcom/instagram/common/session/UserSession;Ljava/lang/String;)LX/6wn;",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-author-lookup",
+      "path": "smali_classes4/X/021.smali",
+      "contains": ".method public static A0z(LX/6wn;)LX/2fp;",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-author-id",
+      "path": "smali/X/2fp.smali",
+      "contains": ".method public final getId()Ljava/lang/String;",
+      "minimumCount": 1
+    },
+    {
+      "id": "bridge-model-id",
+      "path": "smali/X/2fp.smali",
+      "contains": ".method public final getId()Ljava/lang/String;",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-host-author-username",
+      "path": "smali_classes4/X/021.smali",
+      "contains": ".method public static A1B(LX/2fp;)Ljava/lang/String;",
+      "minimumCount": 1
+    },
+    {
+      "id": "report-media-backing",
+      "path": "smali/X/6wn.smali",
+      "contains": ".field public A04:LX/7A3;",
+      "minimumCount": 1
+    },
+    {
+      "id": "report-media-permalink-interface",
+      "path": "smali/X/7A4.smali",
+      "contains": ".method public abstract Bwc()Ljava/lang/String;",
+      "minimumCount": 1
+    },
+    {
+      "id": "report-media-permalink-accessor",
+      "path": "smali/X/7A2.smali",
+      "contains": ".method public final Bwc()Ljava/lang/String;\n    .locals 1\n\n    .line 0\n    iget-object v0, p0, LX/7A2;->A7U:Ljava/lang/String;",
+      "minimumCount": 1
+    },
+    {
+      "id": "report-media-permalink-field-literal",
+      "path": "smali/X/7A2.smali",
+      "contains": "iget-object v1, p1, LX/7A2;->A7U:Ljava/lang/String;\n\n    .line 921\n    .line 922\n    if-eqz v1, :cond_4f\n\n    .line 923\n    .line 924\n    const-string v0, \"permalink\"",
+      "minimumCount": 1
+    },
+    {
+      "id": "report-caption-accessor",
+      "path": "smali/X/7A4.smali",
+      "contains": ".method public abstract B2O()LX/6yd;",
+      "minimumCount": 1
+    },
+    {
+      "id": "report-caption-field-semantics",
+      "path": "smali/X/7A2.smali",
+      "contains": "const-string v0, \"caption\"",
+      "minimumCount": 1
+    },
+    {
+      "id": "report-caption-text-accessor",
+      "path": "smali/X/6yc.smali",
+      "contains": ".method public final CRt()Ljava/lang/String;",
+      "minimumCount": 1
+    },
+    {
+      "id": "report-caption-text-semantics",
+      "path": "smali/X/6yA.smali",
+      "contains": "const-string/jumbo v0, \"text\"",
+      "minimumCount": 1
+    },
+    {
+      "id": "report-feed-caption-flow",
+      "path": "smali_classes2/X/0CF.smali",
+      "contains": "invoke-interface {v0}, LX/6yd;->CRt()Ljava/lang/String;",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-working-animation",
+      "path": "smali_classes2/X/0sW.1.smali",
+      "contains": ".method public constructor <init>(LX/Flo;Z)V",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-ufi-button",
+      "path": "smali_classes2/X/0sH.1.smali",
+      "contains": ".method public static final A00(LX/8xf;LX/8qj;LX/8eh;Ljava/lang/String;Ljava/lang/String;LX/Flo;LX/Flo;IIIIIJJZZZZZ)V",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-block-icon",
+      "path": "res/values/public.xml",
+      "contains": "<public type=\"drawable\" name=\"barcelona_user_block_outline_20\" id=\"0x7f080164\" />",
+      "minimumCount": 1
+    },
+    {
+      "id": "inline-success-icon",
+      "path": "res/values/public.xml",
+      "contains": "<public type=\"drawable\" name=\"barcelona_check_filled_20\" id=\"0x7f0800e7\" />",
+      "minimumCount": 1
+    }
+  ],
+  "assets": {
+    "eddsaJarSha256": "3bc2c8922a52de7ecad21e9a34d2594b473f18598b7a2b8bd7d4b68ed6cc4dbf",
+    "smaliCarrierSha256": "ee24d1cbee11555c72bd0cf061552377099c62dbe0bb4afcf0875d74010c419e",
+    "signedBlocklistFixtureSha256": "e749542ce99347011098d94c2224f87521284cc8b6521b863cfb7b62de1ca2f0",
+    "autoblockJavaTreeSha256": "d309731ed4cdbfa38af17805ceed73a60b4cb7f7e16345dc4fab8123523cb596",
+    "updateJavaTreeSha256": "281873c422bf4f21ec52da9012fbd8cc0bea62c354049c39b6a4a0754ccca720",
+    "proxyJavaTreeSha256": "37f49b90534286be378db4d056f67fde7ab14930dd7e1beeac8c44cc024b3e0a",
+    "socks5NativeAssetTreeSha256": "961d2d09014c0e8a752d8c9f93e34e953279cc8f65118af29919c5122e4b395b",
+    "socks5NativeBuildToolSha256": "e66abbacd49e6923c4994fe56e5f9f860bc152f2d7f32735c2978f35b89d826b",
+    "reportJavaTreeSha256": "4093c7e3393f680223d482aecb1ee7a80d1d6854c2aec17dc5fe07a1f0fda93e",
+    "bridgeTemplateTreeSha256": "40aa57e0a92fa6ae91adb254d19f59e56cd0b49182e5102e62ca3c06a5561710",
+    "bridgeReferenceTreeSha256": "bf8e88759d8c2f6dcae341e2f94e0bd1a0e37f18924fa47d49df164d2e8c7845",
+    "inlineTemplateTreeSha256": "061b0d6f0cd79719ccc545c06c729e0d8d6dd2eb52df6e4424f6dec7efc4fa24",
+    "reportTemplateTreeSha256": "ddd9eebc3ca2df3d2f863a0bb81a8195475afcd90060885303a745ae80d29991",
+    "settingsUiTemplateTreeSha256": "002f1875e5858e8f7f87b7eccaed57b6c3bc7fd574b32faa269f71788213d235",
+    "hostHarnessTreeSha256": "c45e3b1e76637bf4440d484b9c25636566866b0b1d351fe75fb0ab12d9a1d786",
+    "patchletCoreModuleSha256": "08d595b306ac72042ea1d4fb91a7d7849964e1252c855873eb324866cbaa8438",
+    "resolutionSchemaSha256": "2344d02913e2374af85f59a9f79070f64e3c8ab4b0a578414ac84b1ab116d576",
+    "patchletSchemaSha256": "8b5c84e157c2251d41f3798fc6fe6a6f3e1363b7834a9126e524a90fdc52d469",
+    "patchletCatalogTestSourceSha256": "de906c4d9c27dd03de5fabff311216729b1ec619433342bfe481282fd93994c4",
+    "targetedJadxRecoverySourceSha256": "505cbc5bc2e1d6cfc35d40fc8279128d6035ec5fdbb324e89b8357bf46d0976b",
+    "releaseContractTestSourceSha256": "349ead2149283e7ad77df01d10c60c279c8558b849225630cc06a55f3ed74fc8",
+    "dexInspectorSourceSha256": "ef528ff790ef3cdef297f95d99e31055793ca0befdaad200bbb2793b3052543e",
+    "dexLiteralCallInspectorSourceSha256": "19c4f5709bb814ce4dea8dbbc1fff97b05b6dce80bc802b13a585f9fdf4fefca",
+    "dexLiteralCallInspectorTestSourceSha256": "f385c49681996f0e818062a0558293d8dbb6fe3c028112ee14a5414ce8c74079",
+    "dexLiteralCallFixtureTreeSha256": "588a654569ee3aeaca4a7fc33b7a880d98c57448186ebd524248d8e1b0d35613",
+    "dexProxyBootstrapFlowInspectorSourceSha256": "f6126b93daff2b1f968e5c5c7212766685d31007ec3fd1e69a5a7459dfe7292c",
+    "dexProxyBootstrapFlowInspectorTestSourceSha256": "5e70d880671045eec9dc6b5040feac8d991db04bd395b55c4760a77dd354ea5a",
+    "dexProxyBootstrapFlowFixtureTreeSha256": "74047a685d12fdff73510195355bc520c52ba8ddce35561fcc27e1221a19d577",
+    "dexBridgeFlowInspectorSourceSha256": "3c6641e5383d5c760de7db407a71a4cc5f39f5d1bcf5a4c93a05d5f50d86f345",
+    "dexBridgeFlowFixtureAssemblerSourceSha256": "df2ef57f632432faf7f619e156519da928a3e7f7f0ec797c637320cfdfa2f38b",
+    "dexBridgeFlowInspectorTestSourceSha256": "66d795beba8146a7a79a19ce4b43f89e1c7592f571efa981a272db6ee197250d",
+    "dexBridgeFlowFixtureTreeSha256": "d88e37bb85450fd21a23b77d7f6aa44f32252dee724eb0c830af13db29b0edf0",
+    "dexReportPermalinkFlowInspectorSourceSha256": "b086003a20e784351e720d125c707d31692d125d31519362465a7b538744641a",
+    "dexReportPermalinkFlowInspectorTestSourceSha256": "721849f4c1ec32d6c3a8d4fcc2aed2590bda3a6cd72d165192b582414d2c5c48",
+    "dexReportPermalinkFlowFixtureTreeSha256": "0974cd89cda485f4087a73b949cd8da6c49c0ab2c0ad569aadcf91aa474cb81d",
+    "dexUpdateFlowInspectorSourceSha256": "e12a11f2cf03931d4d82b430b9ff8e6395584564fb843a75c1561820a5db69c5",
+    "dexUpdateFlowInspectorTestSourceSha256": "90aa7440b0c47b4b437563233aad9e6961230ad95f965efefefaec880c27af6c",
+    "dexUpdateFlowFixtureTreeSha256": "ee5441c65921167823df949fa42c381cdd39273f1556e9f7140020ceab09f7ca",
+    "releaseToolContractModuleSha256": "8284cb6f055833087e14acdf2961ea03e067b560623a5b31f0ecc6e60978c2c5",
+    "activityUiEmulatorTestSourceSha256": "33e42a32a6d903b1c08ee0ae72722e0092987ce9dc4d12ad33776461f74fafe4",
+    "activityUiProbeManifestSha256": "e8b2381c37ea43770f8959130bf96c660d078979aedc5f1bf8235c5cb43c5851",
+    "patchedApkTestSourceSha256": "2a5415abf0fede4da4a01baba510d78cd7c54e83982f620d66f0966a37932ded",
+    "patchletPipelineSourceSha256": "5a0fbab2b3a4957f69dfa94812332e73576fe7c5df38e76a996e79623e770e2c",
+    "buildPatchedApkSourceSha256": "bbef0788ab5ef36a3c80cc217b6632352c2a33ece1772bb151c60683789dcb8e"
+  },
+  "toolchain": {
+    "apktoolVersion": "3.0.3",
+    "apktoolJarSha256": "dbf930b076c6b9be08d57c449cacefc3bdd6b71ebd59b3066fc0e1f5b14f9423",
+    "frameworkApkSha256": "5dd984016ed5a5eb0eef866e2c6e8cd352e1427828ec23adb18005cf5648f3d7",
+    "androidPlatform": 36,
+    "buildToolsVersion": "36.0.0",
+    "d8JarSha256": "4097ff9c46c185c6e7214da7fe9b1befb5adeea5cc9ca349270e0249904f9240",
+    "apksignerJarSha256": "3716d9311e55d2b0918a2fd9d54ba9e406c5f6abeea700b287f11259bc163dec",
+    "jadxVersion": "1.5.6",
+    "jadxJarSha256": "fe3e12c45acf75f92369685fd02d1d7a7323385dc725680a9b98a0dac0ea554b"
+  },
+  "release": {
+    "maximumPrimaryMethodReferences": 65535,
+    "expectedDexBridgeFlowFixtureCount": 325,
+    "expectedDexReportPermalinkFlowFixtureCount": 20,
+    "expectedReviewedTerminalRoutes": 5,
+    "expectedCurrentReviewedTerminalRoutes": 3,
+    "expectedCurrentAutomaticPacedNextPosts": 0,
+    "expectedCurrentAutomaticOwnerMode": "single-target",
+    "requiredPassiveJadxWrapperAutoBlockStrings": [
+      "BlocklistStore.replaceVerified(",
+      "BlocklistStore.lookupId(",
+      "BlocklistStore.isCurrentIdMatch(",
+      "LIST_REFRESH_RUNNING.compareAndSet(false, true)",
+      "postDelayed(LIST_REFRESH_WAKE",
+      "new ListRefreshWorker(",
+      "new FetchWorker(",
+      "registerVisibleControl(",
+      "updateVisibleControl(",
+      "unregisterVisibleControl(",
+      "currentPassiveMatch("
+    ],
+    "expectedDexBridgeFlowInspectorArgumentCount": 28,
+    "expectedDexReportPermalinkFlowInspectorArgumentCount": 21,
+    "expectedDexProxyBootstrapFlowInspectorArgumentCount": 11,
+    "expectedDexProxyBootstrapFlowFixtureCount": 13,
+    "expectedDexUpdateFlowInspectorArgumentCount": 12,
+    "expectedDexUpdateFlowFixtureCount": 96,
+    "requiredSignerCertificateSha256": "317e3f3813f3b1ec324717faf1bb78f954f49a12122181a85b42338ca10dd079",
+    "updateSignedDexReviewRequired": false,
+    "requiredDexUpdateFlow": {
+      "id": "threadsmod-update-flow-v1",
+      "expectedDexName": "classes.dex",
+      "classPrefix": "Lthreadsmod/update/",
+      "expectedSemanticSha256": "107247bf54dabb7c83cdf52c85cf8ef0b65b70f2ca8b4cd00289de04ee05c9e4",
+      "expectedSemanticClassCount": 24,
+      "orderedRootDescriptors": [
+        "Lthreadsmod/update/UpdateController;",
+        "Lthreadsmod/update/UpdateEndpoints;",
+        "Lthreadsmod/update/UpdateJson;",
+        "Lthreadsmod/update/UpdateManifest;",
+        "Lthreadsmod/update/UpdateSignature;",
+        "Lthreadsmod/update/UpdateStore;",
+        "Lthreadsmod/bootstrap/ModBootstrap;"
+      ]
+    },
+    "requiredReadEndpoints": [
+      "https://raw.githubusercontent.com/nsc55/cloneblocker-mirror/published/blocklist.json",
+      "https://cdn.jsdelivr.net/gh/nsc55/cloneblocker-mirror@published/blocklist.json",
+      "https://h0w1lwun39.execute-api.ap-southeast-1.amazonaws.com/blocklist.json"
+    ],
+    "requiredWriteEndpoint": "https://h0w1lwun39.execute-api.ap-southeast-1.amazonaws.com/v1/reports",
+    "assetPreservationExclusions": [
+      {
+        "path": "assets/longtail/classes.dex",
+        "reason": "Apktool --all-src deterministically reassembles the longtail DEX instead of copying its ZIP bytes.",
+        "replacementGate": "dex-header-integrity"
+      }
+    ],
+    "requiredDexDirectStringCalls": [
+      {
+        "id": "report-client-post",
+        "ownerClassDescriptor": "Lthreadsmod/reporting/ReportClient;",
+        "ownerMethodName": "post",
+        "ownerMethodDescriptor": "(Lthreadsmod/reporting/ReportPayload;Ljava/lang/String;I)Lthreadsmod/reporting/ReportClient$TransportResult;",
+        "calleeClassDescriptor": "Ljavax/net/ssl/HttpsURLConnection;",
+        "calleeMethodName": "setRequestMethod",
+        "calleeMethodDescriptor": "(Ljava/lang/String;)V",
+        "invokeOpcode": "INVOKE_VIRTUAL",
+        "stringParameterIndex": 0,
+        "literal": "POST",
+        "expectedOccurrences": 1,
+        "requireImmediateConstString": true,
+        "requireOnlyCalleeOccurrence": true
+      }
+    ],
+    "requiredDexProxyBootstrapFlow": {
+      "id": "socks5-bootstrap-signed-dex-flow-contract",
+      "expectedDexName": "classes10.dex",
+      "ownerClassDescriptor": "Lcom/instagram/barcelona/app/BarcelonaAppShell;",
+      "ownerMethodName": "attachBaseContext",
+      "ownerMethodDescriptor": "(Landroid/content/Context;)V",
+      "superClassDescriptor": "Landroid/content/ContextWrapper;",
+      "superMethodName": "attachBaseContext",
+      "superMethodDescriptor": "(Landroid/content/Context;)V",
+      "bootstrapClassDescriptor": "Lthreadsmod/proxy/ProxyBootstrap;",
+      "bootstrapMethodName": "install",
+      "bootstrapMethodDescriptor": "(Landroid/content/Context;)V",
+      "originalNextFieldReference": "LX/319;->A05:LX/319;",
+      "forbiddenMethodReferences": [
+        "Landroid/net/VpnService$Builder;->allowBypass()Landroid/net/VpnService$Builder;",
+        "Ljava/lang/System;->setProperty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+        "Ljava/net/ProxySelector;->setDefault(Ljava/net/ProxySelector;)V"
+      ],
+      "forbiddenStringLiterals": [
+        "socksProxyHost",
+        "socksProxyPort",
+        "java.net.useSystemProxies"
+      ],
+      "requireExactEntryPrefix": true,
+      "requireSoleBootstrapCaller": true,
+      "requireParameterRegisterFlow": true,
+      "requireImmediateAdjacency": true,
+      "requireNoAlternateEntry": true,
+      "requireNoBootstrapTryCoverage": true,
+      "requireOriginalNextField": true,
+      "requireExactFallbackAbsence": true
+    },
+    "requiredDexReportPermalinkFlow": {
+      "id": "report-post-permalink-contract",
+      "expectedDexName": "classes.dex",
+      "mediaPermalinkMethodPointer": "/reporting/symbols/mediaPermalinkMethod",
+      "resolvedMediaGetterReference": "Lthreadsmod/inlinecontrol/InlineBlockRequest;->getResolvedMediaModel()Ljava/lang/Object;",
+      "mediaBackingFieldPointer": "/reporting/symbols/mediaBackingField",
+      "mediaCaptionMethodPointer": "/reporting/symbols/mediaCaptionMethod",
+      "factoryMethodReference": "Lthreadsmod/reporting/InlineReportActionFactory;->createRequest(Lthreadsmod/inlinecontrol/InlineBlockRequest;)Lthreadsmod/reporting/ReportRequest;",
+      "requestConstructorReference": "Lthreadsmod/reporting/ReportRequest;-><init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
+      "permalinkSanitizerMethodReference": "Lthreadsmod/reporting/ReportValues;->httpsThreadsPermalink(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+      "requestPermalinkFieldReference": "Lthreadsmod/reporting/ReportRequest;->permalink:Ljava/lang/String;",
+      "requestNewQueueValidityMethodReference": "Lthreadsmod/reporting/ReportRequest;->isValidForNewQueue()Z",
+      "requestBaseValidityMethodReference": "Lthreadsmod/reporting/ReportRequest;->isValid()Z",
+      "requestPermalinkGetterReference": "Lthreadsmod/reporting/ReportRequest;->getPermalink()Ljava/lang/String;",
+      "payloadToJsonMethodReference": "Lthreadsmod/reporting/ReportPayload;->toJson()Lorg/json/JSONObject;",
+      "payloadRequestFieldReference": "Lthreadsmod/reporting/ReportPayload;->request:Lthreadsmod/reporting/ReportRequest;",
+      "jsonPutMethodReference": "Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;",
+      "jsonArrayPutMethodReference": "Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;",
+      "jsonArrayConstructorMethodReference": "Lorg/json/JSONArray;-><init>()V",
+      "stringLengthMethodReference": "Ljava/lang/String;->length()I",
+      "controllerQueueMethodReference": "Lthreadsmod/reporting/ReportController;->queueFromForeground(Landroid/app/Activity;Ljava/lang/String;Lthreadsmod/reporting/ReportRequest;Ljava/lang/String;Lthreadsmod/reporting/ReportResultCallback;)V",
+      "clientQueueMethodReference": "Lthreadsmod/reporting/ReportClient;->queueExplicit(Landroid/content/Context;Ljava/lang/String;Lthreadsmod/reporting/ReportRequest;Ljava/lang/String;Lthreadsmod/reporting/ReportResultCallback;)V",
+      "threadStartMethodReference": "Ljava/lang/Thread;->start()V"
+    },
+    "requiredDexBridgeFlows": [
+      {
+        "id": "threads-block-bridge-flow-v1",
+        "ownerClassDescriptor": "Lthreadsmod/autoblock/ThreadsBlockBridge;",
+        "blockMethodName": "block",
+        "passivePreflightMethodName": "passivePreflight",
+        "blockResolvedMethodName": "blockResolved",
+        "blockModelMethodName": "blockModel",
+        "prepareModelMethodName": "prepareModel",
+        "automaticCallerClassDescriptor": "Lthreadsmod/autoblock/AutoBlockSync$BlockRun;",
+        "manualCallerClassDescriptor": "Lthreadsmod/autoblock/AutoBlockSync$ManualBlockRun;",
+        "fetchWorkerRunMethodReference": "Lthreadsmod/autoblock/AutoBlockSync$FetchWorker;->run()V",
+      "scheduleManualDrainMethodReference": "Lthreadsmod/autoblock/AutoBlockSync;->scheduleManualDrain(J)V",
+      "symbolsPointer": "/bridge/symbols",
+      "inlineSymbolsPointer": "/inlineControls/symbols",
+        "expectedDexName": "classes.dex",
+        "expectedBlockInvokeCount": 3,
+        "expectedPassivePreflightInvokeCount": 1,
+        "expectedBlockResolvedInvokeCount": 1,
+        "expectedBlockModelInvokeCount": 2,
+        "expectedPrepareModelInvokeCount": 2,
+        "expectedCacheLookupInvokeCount": 2,
+        "expectedCacheFactoryInvokeCount": 2,
+        "expectedCachePlaceholderInvokeCount": 2,
+        "requireNarrowSeamHandlers": true,
+        "requirePassivePreflightBeforeReservation": true,
+        "requirePreparationResultFlow": true,
+        "requireCallerProvenance": true,
+        "requireCallerCatchTopology": true,
+        "requireDirectCallerCallbackExecution": true,
+        "requireCallerCallbackEffectTopology": true,
+        "requireCallbackExceptionalControlFlow": true,
+        "requireBridgeEntryReachability": true,
+        "requireSchedulerEnqueueAcceptance": true,
+        "requireUncertainMutationQuarantine": true,
+      "requirePrivateSeamCallProvenance": true,
+      "requireStableInlinePrivateSeamAbsence": true,
+        "requireDispatcherCallProvenance": true,
+        "requireAsyncCallbackFirewall": true,
+        "requireTerminalCallbackMap": true,
+        "requireImmutableTargetFlow": true,
+        "requireModelIdGuard": true,
+        "requireNativeMutationIdentity": true
+      }
+    ],
+    "targetedJadxClasses": [
+      {
+        "className": "com.instagram.barcelona.mainactivity.BarcelonaActivity",
+        "requiredStrings": [
+          "ModBootstrap.onResume(",
+          "ModBootstrap.onPause("
+        ]
+      },
+      {
+        "className": "X.0MO",
+        "requiredStrings": [
+          "threadsmod-drawer-settings",
+          "DrawerSettingsItem.INSTANCE",
+          "feed-menu-bottom-spacer"
+        ]
+      },
+    {
+      "className": "X.0sC",
+      "requiredStrings": [
+        "threadsmodResolveAuthorSnapshot(",
+        "InlineBlockRequest.createHostBound(",
+        "InlineActionRowAdapter.render("
+      ],
+      "exactStringCounts": {
+        "InlineBlockRequest.createHostBound(": 1,
+        "InlineActionRowAdapter.render(": 1
+        },
+        "forbiddenStrings": [
+          "InlineReportRowAdapter.render(",
+          "InlineReportActionFactory.createAction("
+        ]
+      },
+      {
+        "className": "com.threadsmod.CloneBlockerActivity",
+        "requiredStrings": [
+          "\"Activity data needs review\"",
+          "\"Current status\"",
+          "\"Overview\"",
+          "\"Passive block list\"",
+          "\"Refreshes every 10 minutes while Threads is foreground. Only listed profiles whose post or reply action row is actually visible are admitted to blocking.\"",
+          "AutoBlockSync.isRefreshingList()",
+          "\"Report outbox\"",
+          "\"Manual queue\"",
+          "\"History\""
+        ],
+        "orderedStrings": [
+          "setContentView(this.scroll);",
+          "ModStateStore.snapshot(this);"
+        ],
+        "forbiddenStrings": [
+          "setLayoutParams(null)"
+        ]
+      },
+      {
+        "className": "threadsmod.bootstrap.ModBootstrap",
+        "requiredStrings": [
+          "AutoBlockSync.onResume(",
+          "UpdateController.onResume(",
+          "DemoDialog.showOnce(",
+          "UpdateController.onPause(",
+          "AutoBlockSync.onPause("
+        ],
+        "orderedStrings": [
+          "AutoBlockSync.onResume(",
+          "UpdateController.onResume(",
+          "DemoDialog.showOnce("
+        ]
+      },
+      {
+        "className": "threadsmod.autoblock.ThreadsBlockBridge",
+        "requiredStrings": [
+          "passivePreflight(",
+          ".A00(userSession).A02(null,",
+          ".A02(null,",
+          "new MutationCallback(",
+          "ig_text_feed_profile",
+          "model_id_mismatch",
+          "placeholder_model_invalid",
+          "session_model_exception",
+          "cache_lookup_exception",
+          "cache_factory_exception",
+          "cache_placeholder_exception",
+          "bridge_dispatch_exception",
+          "model_id_exception",
+          "already_blocked_exception",
+          "mutation_exception",
+          "already_blocked_success"
+        ],
+        "exactStringCounts": {
+          ".A00(userSession).A02(null,": 2,
+          ".A02(null,": 2,
+          "placeholder_model_invalid": 2,
+          "session_model_exception": 3,
+          "cache_lookup_exception": 2,
+          "cache_factory_exception": 2,
+          "cache_placeholder_exception": 2,
+          "bridge_dispatch_exception": 2,
+          "model_id_exception": 1,
+          "already_blocked_exception": 1,
+          "mutation_exception": 1,
+          "already_blocked_success": 2
+        },
+        "orderedStrings": [
+          ".A00(userSession).A02(null,",
+          "\"placeholder_model_invalid\"",
+          "blockModel(",
+          "new MutationCallback("
+        ],
+        "forbiddenStrings": [
+          "UserFetchCallback",
+          "lookup_failure",
+          "lookup_busy",
+          "users/%s/info/",
+          "Not initialized variable reg:",
+          "strOnBridgeFailure"
+        ]
+      },
+      {
+        "className": "threadsmod.autoblock.BlockDiagnostic",
+        "requiredStrings": [
+          "CB-BRG-106",
+          "CB-BRG-107",
+          "CB-BRG-108",
+          "CB-BRG-109",
+          "CB-BRG-110",
+          "CB-BRG-111",
+          "CB-BRG-112",
+          "CB-BRG-113",
+          "placeholder_model_invalid",
+          "session_model_exception",
+          "cache_lookup_exception",
+          "cache_factory_exception",
+          "cache_placeholder_exception",
+          "bridge_dispatch_exception",
+          "model_id_exception",
+          "already_blocked_exception",
+          "bridge=r6",
+          "mirror=n/a",
+          "route=",
+          "mutation=",
+          "retry=",
+          "review-saved",
+          "review-local-failclosed"
+        ],
+        "forbiddenStrings": [
+          "lookup_failure",
+          "lookup_busy",
+          "UserFetchCallback",
+          "signed_list_block_failed"
+        ]
+      },
+    {
+      "className": "threadsmod.inlinecontrol.InlineActionRowAdapter",
+      "requiredStrings": [
+        "getAuthorId()",
+        "getLabel()",
+        "getResolvedAuthorModel()",
+        "InlineReportActionFactory.createRequest(",
+        "new InlineVisibilityCallback("
+      ],
+      "exactStringCounts": {
+        "getAuthorId()": 1,
+        "getLabel()": 1,
+        "getResolvedAuthorModel()": 1,
+        "InlineReportActionFactory.createRequest(": 1,
+        "new InlineVisibilityCallback(": 1
+      },
+      "forbiddenStrings": [
+        ".getId()",
+        "AnonymousClass023.A0e(",
+        "AnonymousClass021.A0z(",
+        "AnonymousClass021.A1B(",
+        "AnonymousClass2GB.A0M("
+      ]
+      },
+      {
+        "className": "threadsmod.inlinecontrol.InlineActionClick",
+        "requiredStrings": [
+          "getResolvedAuthorModel()",
+          "InlineBlockController.onClick("
+        ]
+      },
+      {
+        "className": "threadsmod.inlinecontrol.InlineVisibilityCallback",
+        "requiredStrings": [
+          "AutoBlockSync.registerVisibleControl(this,",
+          "AutoBlockSync.updateVisibleControl(this,",
+          "AutoBlockSync.unregisterVisibleControl(this)",
+          "Cku()",
+          "A0A()"
+        ],
+        "exactStringCounts": {
+          "AutoBlockSync.registerVisibleControl(this,": 2,
+          "AutoBlockSync.updateVisibleControl(this,": 1,
+          "AutoBlockSync.unregisterVisibleControl(this)": 1
+        },
+        "forbiddenStrings": [
+          "BlocklistStore",
+          "ThreadsBlockBridge",
+          "SharedPreferences",
+          "SQLite"
+        ]
+      },
+      {
+      "className": "threadsmod.inlinecontrol.InlineBlockController",
+      "requiredStrings": [
+        "getResolvedAuthorModel()",
+        "ReportController.queueFromForeground(",
+        "AutoBlockSync.enqueueManual(",
+        "AutoBlockSync.recordInlinePreEnqueueFailure("
+      ],
+      "exactStringCounts": {
+        "ReportController.queueFromForeground(": 1,
+        "AutoBlockSync.enqueueManual(": 1
+      }
+      },
+      {
+        "className": "threadsmod.autoblock.AutoBlockSync",
+        "requiredStrings": [
+          "takeResolvedAuthorModel(",
+          "ThreadsBlockBridge.passivePreflight(",
+          "ThreadsBlockBridge.blockResolved(",
+          "ThreadsBlockBridge.block(",
+          "attempt_reservation",
+          "completion_persistence",
+          "quarantineCompletionReview(",
+          "isLocalCompletionReviewPaused(",
+          "BlocklistStore.replaceVerified(",
+          "BlocklistStore.lookupId(",
+          "BlocklistStore.isCurrentIdMatch(",
+          "PASSIVE_ADMISSION_LOCK",
+          "LIST_REFRESH_RUNNING.compareAndSet(false, true)",
+          "LIST_FORCE_REFRESH_VIEWERS",
+          "postDelayed(LIST_REFRESH_WAKE",
+          "new ListRefreshWorker(",
+          "requestListForceRefresh(",
+          "KEY_LIST_REFRESH_NOT_BEFORE",
+          "LIST_REFRESH_DEADLINE_LOCK",
+          "readListRefreshDeadline(",
+          "advanceListRefreshDeadline(",
+          "millisUntilNextListRefresh(",
+          "isUsableBlocklistSnapshot(",
+          "blocklist_refresh_worker_start_rejected",
+          "public mirrors failed while a prior verified generation was retained",
+          "Conditional fetch metadata will retry later.",
+          "new FetchWorker(",
+          "loadTarget(",
+          "finishAndResume(",
+          "handleAlreadyBlockedBeforeReservation(",
+          "handlePreflightFailure(",
+          "registerVisibleControl(",
+          "updateVisibleControl(",
+          "unregisterVisibleControl(",
+          "PassiveAuthority",
+          "currentPassiveAuthority(",
+          "currentPassiveMatch(",
+          "latchPassiveStorePause(",
+          "clearPassiveStorePauseAfterVerifiedGeneration(",
+          "visibleUsernameMatchesStored",
+          "removeForegroundPassiveTarget(",
+          "latchPassiveStorePause(context, str, idMatchLookupId.generation)",
+          "threadsmod.autoblock.AutoBlockSync.latchPassiveStorePause(r8.context, r4, r2.generation)",
+          "latchPassiveStorePause(context, str, idMatchIsCurrentIdMatch.generation)",
+          "if (j <= 0 || !snapshot.valid || snapshot.generation <= j)",
+          "if (passiveStorePaused && j > passiveStorePauseGeneration)",
+          "Map<String, ?> all = sharedPreferences.getAll()",
+          "readDeadline(prefs(context), KEY_LIST_REFRESH_NOT_BEFORE, j, MAX_LIST_REFRESH_DEADLINE_FUTURE_MS)",
+          "signed list contains a malformed target row",
+          "signed list target has malformed platform metadata",
+          "str2.length() == 0 || !str2.equals(str2.trim())",
+          "if (\"threads\".equals(str2))",
+          "signed Threads target has malformed numeric id",
+          "signed Threads target has malformed username metadata",
+          "signed Threads targets contain a duplicate numeric id",
+          "doneIdsForScheduler(",
+          "setDoneIds == null",
+          "Completed-target state needs review; automatic work remains paused."
+        ],
+        "exactStringCounts": {
+          "ThreadsBlockBridge.blockResolved(": 1,
+          "ThreadsBlockBridge.passivePreflight(": 1,
+          "BlocklistStore.replaceVerified(": 1,
+          "BlocklistStore.isCurrentIdMatch(": 1,
+          "new BlockRun(": 1,
+          "PASSIVE_ADMISSION_LOCK": 7,
+          "KEY_LIST_REFRESH_NOT_BEFORE": 3,
+          "LIST_REFRESH_DEADLINE_LOCK": 3,
+          "readListRefreshDeadline(": 3,
+          "advanceListRefreshDeadline(": 4,
+          "currentPassiveAuthority(": 5,
+          "currentPassiveMatch(": 5,
+          "latchPassiveStorePause(": 5,
+          "clearPassiveStorePauseAfterVerifiedGeneration(": 2,
+          "removeForegroundPassiveTarget(": 2,
+          "latchPassiveStorePause(context, str, idMatchLookupId.generation)": 1,
+          "threadsmod.autoblock.AutoBlockSync.latchPassiveStorePause(r8.context, r4, r2.generation)": 1,
+          "latchPassiveStorePause(context, str, idMatchIsCurrentIdMatch.generation)": 1,
+          "if (j <= 0 || !snapshot.valid || snapshot.generation <= j)": 1,
+          "if (passiveStorePaused && j > passiveStorePauseGeneration)": 1,
+          "Map<String, ?> all = sharedPreferences.getAll()": 2,
+          "readDeadline(prefs(context), KEY_LIST_REFRESH_NOT_BEFORE, j, MAX_LIST_REFRESH_DEADLINE_FUTURE_MS)": 1,
+          "signed list contains a malformed target row": 1,
+          "signed list target has malformed platform metadata": 2,
+          "str2.length() == 0 || !str2.equals(str2.trim())": 1,
+          "if (\"threads\".equals(str2))": 1,
+          "signed Threads target has malformed numeric id": 2,
+          "signed Threads target has malformed username metadata": 4,
+          "signed Threads targets contain a duplicate numeric id": 1,
+          "doneIdsForScheduler(": 1,
+          "Completed-target state needs review; automatic work remains paused.": 1,
+          "Conditional fetch metadata will retry later.": 1
+        },
+        "orderedStrings": [
+          "new PassiveRegistration(",
+          "updateVisibleControl(",
+          "isMainLooperThread()",
+          "PASSIVE_REGISTRATIONS.remove(",
+          "latchPassiveStorePause(",
+          "visibleUsernameMatchesStored(",
+          "readListRefreshDeadline(",
+          "LIST_REFRESH_RUNNING.compareAndSet(false, true)",
+          "advanceListRefreshDeadline(",
+          "new ListRefreshWorker(",
+          "synchronized (PASSIVE_ADMISSION_LOCK)",
+          "BlocklistStore.replaceVerified(",
+          "clearPassiveStorePauseAfterVerifiedGeneration(",
+          "synchronized (AutoBlockSync.PASSIVE_ADMISSION_LOCK)",
+          "AutoBlockSync.currentPassiveMatch(",
+          "ThreadsBlockBridge.passivePreflight(",
+          "currentPassiveAuthority(false, false)",
+          "AutoBlockSync.admitForegroundPassiveTarget(",
+          "ModStateStore.markPassiveRunning(",
+          "currentPassiveAuthority(true, false)",
+          "AutoBlockSync.reserveAttempt(",
+          "currentPassiveAuthority(true, true)",
+          "ThreadsBlockBridge.block("
+        ],
+        "forbiddenStrings": [
+          "encodeTargets(",
+          "decodeTargets(",
+          "verified.targetIds",
+          "safeMessage(",
+          "getMessage(",
+          "getLocalizedMessage(",
+          "printStackTrace(",
+          "getStackTraceString(",
+          "loadTargets(",
+          "visibleIds",
+          "private void next()"
+        ]
+      },
+      {
+        "className": "threadsmod.autoblock.BlocklistStore",
+        "evidenceBoundary": "JADX local-variable recovery is non-authoritative for observed-generation catch paths; release authority is the raw primary-DEX bridge-flow proof.",
+        "requiredStrings": [
+          "CREATE TABLE blocklist_targets (",
+          "target_id TEXT PRIMARY KEY NOT NULL",
+          "CREATE INDEX blocklist_targets_username_idx",
+          "CREATE TABLE blocklist_metadata (",
+          "replaceVerified(",
+          "beginTransaction()",
+          "setTransactionSuccessful()",
+          "lookupId(",
+          "isCurrentIdMatch(",
+          "lookupUsernameMetadata(",
+          "IdMatch",
+          "storeValid",
+          "matched",
+          "normalizeUsername(",
+          "Instant.parse(",
+          "count(DISTINCT username_key)",
+          "requireUniqueUsername("
+        ],
+        "exactStringCounts": {
+          "CREATE INDEX blocklist_targets_username_idx": 1,
+          "replaceVerified(": 1,
+          "lookupId(": 1,
+          "isCurrentIdMatch(": 1,
+          "lookupUsernameMetadata(": 1,
+          "normalizeUsername(": 5,
+          "Instant.parse(": 2,
+          "count(DISTINCT username_key)": 1,
+          "requireUniqueUsername(": 3
+        },
+        "orderedStrings": [
+          "username_key = lower(username)",
+          "requireUniqueUsername(",
+          "Instant.parse(",
+          "count(DISTINCT username_key)"
+        ],
+        "forbiddenStrings": [
+          "encodeTargets(",
+          "decodeTargets(",
+          "ThreadsBlockBridge",
+          "list_threads_targets"
+        ]
+      },
+      {
+      "className": "threadsmod.autoblock.ModStateStore",
+      "requiredStrings": [
+        "ui_also_block_profile",
+        "isAlsoBlockProfileEnabled(",
+        "setAlsoBlockProfileEnabled(",
+        "completion_review_threads_",
+          "quarantineCompletionReview(",
+          "readCompletionReview(",
+          "putCompletionReview(",
+          "clearLocalCompletionReviewAfterRetry(",
+          "done_threads_",
+          "doneIdsForScheduler(",
+          "readDoneIds(",
+          ".getAll()",
+          "instanceof Set",
+          "MAX_DONE_IDS",
+          "markAutomaticDone(",
+          "BlocklistStore.snapshot(",
+          ".targetCount",
+          ".fetchedAtMs",
+          ".verifiedUpdatedAt"
+        ],
+        "forbiddenStrings": [
+          "getStringSet(",
+          "safeMessage(",
+          "getMessage(",
+          "getLocalizedMessage(",
+          "printStackTrace(",
+          "getStackTraceString("
+        ]
+      },
+      {
+        "className": "threadsmod.autoblock.CloneBlockerEndpoints",
+        "requiredStrings": [
+          "https://raw.githubusercontent.com/nsc55/cloneblocker-mirror/published/blocklist.json",
+          "https://cdn.jsdelivr.net/gh/nsc55/cloneblocker-mirror@published/blocklist.json",
+          "https://h0w1lwun39.execute-api.ap-southeast-1.amazonaws.com/blocklist.json"
+        ],
+        "orderedStrings": [
+          "https://raw.githubusercontent.com/nsc55/cloneblocker-mirror/published/blocklist.json",
+          "https://cdn.jsdelivr.net/gh/nsc55/cloneblocker-mirror@published/blocklist.json",
+          "https://h0w1lwun39.execute-api.ap-southeast-1.amazonaws.com/blocklist.json"
+        ]
+      },
+    {
+      "className": "threadsmod.reporting.InlineReportActionFactory",
+      "requiredStrings": [
+        "getAuthorId()",
+        "getLabel()",
+        "getResolvedMediaModel()",
+        "Bwc()",
+        "getPermalink()",
+        "new ReportRequest("
+      ],
+      "exactStringCounts": {
+        "getAuthorId()": 1,
+        "getLabel()": 1,
+        "getResolvedMediaModel()": 1,
+        "Bwc()": 1,
+        "getPermalink()": 1,
+        "new ReportRequest(": 1
+      },
+      "forbiddenStrings": [
+        "threadsmod_inline_report",
+        "InlineReportRowAdapter.render(",
+        ".getId()",
+        "AnonymousClass023.A0e(",
+        "AnonymousClass021.A0z(",
+        "AnonymousClass021.A1B("
+        ]
+      },
+      {
+        "className": "threadsmod.reporting.ReportController",
+        "requiredStrings": [
+          "ReportClient.queueExplicit(",
+          "isValidForNewQueue()",
+          "AutoBlockSync.getForegroundActivity()",
+          "AutoBlockSync.getCurrentViewer()",
+          "The report target, reason, or foreground activity is invalid."
+        ],
+        "exactStringCounts": {
+          "ReportClient.queueExplicit(": 1,
+          "isValidForNewQueue()": 1
+        },
+        "forbiddenStrings": [
+          "ReportDialog",
+          "showFromForeground(",
+          "prepareExplicit(",
+          "submitPrepared("
+        ]
+      },
+      {
+        "className": "threadsmod.reporting.ReportPayload",
+        "requiredStrings": [
+          "getPermalink()",
+          "targetUrl",
+          "evidence"
+        ],
+        "forbiddenStrings": [
+          "postUrl",
+          "postId",
+          "itemKey"
+        ]
+      },
+      {
+        "className": "threadsmod.reporting.ReportStore",
+        "requiredStrings": [
+          "report_outbox_v1",
+          "report database migration row count mismatch",
+          "report database upgrade requires reviewed migration"
+        ],
+        "forbiddenStrings": [
+          "A report for this profile is already queued"
+        ]
+      },
+      {
+        "className": "threadsmod.reporting.ReportValues",
+        "requiredStrings": [
+          "httpsThreadsPermalink(",
+          "normalizeUsername(",
+          "new URI(",
+          "getScheme()",
+          "getHost()",
+          "isOpaque()",
+          "getUserInfo()",
+          "getPort()",
+          "getRawQuery()",
+          "getRawFragment()",
+          "getRawPath()",
+          "www.threads.com",
+          "www.threads.net",
+          "getRawAuthority()",
+          "/@",
+          "/post/",
+          "https://www.threads.com/@"
+        ],
+        "orderedStrings": [
+          "normalizeUsername(",
+          "new URI(",
+          "getScheme()",
+          "getHost()",
+          "isOpaque()",
+          "getUserInfo()",
+          "getPort()",
+          "getRawQuery()",
+          "getRawFragment()",
+          "getRawPath()",
+          "www.threads.com",
+        "www.threads.net",
+        "getRawAuthority()",
+        "/@",
+          "/post/",
+          "https://www.threads.com/@"
+        ],
+        "exactStringCounts": {
+          "httpsThreadsPermalink(": 1,
+          "new URI(": 1,
+          "www.threads.net": 1,
+          "https://www.threads.com/@": 1
+        },
+        "forbiddenStrings": [
+          "http://",
+          "tree55.com"
+        ]
+      },
+      {
+        "className": "threadsmod.reporting.ReportClient",
+        "requiredStrings": [
+          "isValidForNewQueue()",
+          "ReportStore.reserveNextDue(",
+          "ReportEndpoint.writeUrl()",
+          "setRequestMethod(",
+          "setInstanceFollowRedirects(false)",
+          "getOutputStream()"
+        ],
+        "exactStringCounts": {
+          "isValidForNewQueue()": 1
+        }
+      },
+      {
+        "className": "com.instagram.barcelona.app.BarcelonaAppShell",
+        "requiredStrings": [
+          "super.attachBaseContext(",
+          "ProxyBootstrap.install("
+        ],
+        "exactStringCounts": {
+          "super.attachBaseContext(": 1,
+          "ProxyBootstrap.install(": 1
+        },
+        "orderedStrings": [
+          "super.attachBaseContext(",
+          "ProxyBootstrap.install("
+        ],
+        "forbiddenStrings": [
+          "allowBypass(",
+          "System.setProperty(",
+          "ProxySelector.setDefault(",
+          "socksProxyHost",
+          "socksProxyPort",
+          "java.net.useSystemProxies",
+          "Method dump skipped",
+          "Method not decompiled: com.instagram.barcelona.app.BarcelonaAppShell.attachBaseContext(android.content.Context):void"
+        ]
+      },
+      {
+        "className": "com.threadsmod.ProxySettingsActivity",
+        "requiredStrings": [
+          "\"SOCKS5 proxy\"",
+          "\"Proxy status\"",
+          "\"Bypass proxy\"",
+          "ProxyController.requestConnect(",
+          "usernameInput.setSaveEnabled(false)",
+          "usernameInput.setImportantForAutofill(",
+          "usernameInput.setImportantForAutofill(8)",
+          "passwordInput.setSaveEnabled(false)",
+          "passwordInput.setImportantForAutofill(",
+          "passwordInput.setImportantForAutofill(8)",
+          "protected void onResume()",
+          "protected void onPause()",
+          "authSwitch.isChecked()",
+          "sensitiveFieldsCleared = true",
+          "restoreSensitiveFieldsIfNeeded()",
+          "usernameInput.setText(\"\")",
+          "passwordInput.setText(\"\")",
+          "Socks5VpnService.runtimeState()",
+          "observedRuntimeState = Socks5VpnService.runtimeState()",
+          "ProxyController.status(this)",
+          "statusHandler.postDelayed(",
+          "statusHandler.removeCallbacks(",
+          "startStatusPolling()",
+          "stopStatusPolling()",
+          "showStatusRefreshUnavailable()",
+          "statusPolling = true",
+          "Unavailable: live proxy status refresh stopped. Reopen this page before relying on proxy status."
+        ],
+        "exactStringCounts": {
+          "usernameInput.setSaveEnabled(false)": 1,
+          "usernameInput.setImportantForAutofill(8)": 1,
+          "passwordInput.setSaveEnabled(false)": 1,
+          "passwordInput.setImportantForAutofill(8)": 1,
+          "restoreSensitiveFieldsIfNeeded()": 2,
+          "authSwitch.isChecked()": 3,
+          "sensitiveFieldsCleared = true": 1,
+          "usernameInput.setText(\"\")": 2,
+          "passwordInput.setText(\"\")": 5,
+          "Socks5VpnService.runtimeState()": 2,
+          "observedRuntimeState = Socks5VpnService.runtimeState()": 1,
+          "ProxyController.status(this)": 1,
+          "statusHandler.postDelayed(": 2,
+          "statusHandler.removeCallbacks(": 2,
+          "startStatusPolling()": 2,
+          "stopStatusPolling()": 2,
+          "showStatusRefreshUnavailable()": 3,
+          "statusPolling = true": 1,
+          "Unavailable: live proxy status refresh stopped. Reopen this page before relying on proxy status.": 1
+        },
+        "orderedStrings": [
+          "protected void onResume()",
+          "refreshStatus()",
+          "startStatusPolling()",
+          "protected void onPause()",
+          "stopStatusPolling()",
+          "\"Username\"",
+          "usernameInput.setSaveEnabled(false)",
+          "usernameInput.setImportantForAutofill(8)",
+          "\"Password\"",
+          "passwordInput.setSaveEnabled(false)",
+          "passwordInput.setImportantForAutofill(8)",
+          "restoreSensitiveFieldsIfNeeded()",
+          "authSwitch.isChecked()",
+          "usernameInput.setText(",
+          "passwordInput.setText(\"\")",
+          "sensitiveFieldsCleared = false",
+          "observedRuntimeState = Socks5VpnService.runtimeState()",
+          "ProxyController.status(this)",
+          "private void startStatusPolling()",
+          "statusHandler.removeCallbacks(",
+          "statusPolling = true",
+          "statusHandler.postDelayed("
+        ],
+        "forbiddenStrings": [
+          "setLayoutParams(null)",
+          "usernameInput.setSaveEnabled(true)",
+          "passwordInput.setSaveEnabled(true)",
+          "usernameInput.setImportantForAutofill(0)",
+          "passwordInput.setImportantForAutofill(0)",
+          "usernameInput.setImportantForAutofill(1)",
+          "passwordInput.setImportantForAutofill(1)",
+          "usernameInput.setAutofillHints(",
+          "passwordInput.setAutofillHints(",
+          "onSaveInstanceState(",
+          "savedInstanceState.getString(",
+          "passwordInput.setText(config",
+          "passwordInput.setText(existing",
+          "passwordInput.setText(new String",
+          "allowBypass(",
+          "System.setProperty(",
+          "ProxySelector.setDefault(",
+          "socksProxyHost",
+          "socksProxyPort",
+          "java.net.useSystemProxies"
+        ]
+      },
+      {
+        "className": "threadsmod.proxy.ProxyBootstrap",
+        "requiredStrings": [
+          "enabledRequested",
+          "VpnService.prepare(",
+          "Socks5VpnService.requestConnect("
+        ],
+        "forbiddenStrings": [
+          "startActivity(",
+          "allowBypass(",
+          "System.setProperty(",
+          "ProxySelector.setDefault(",
+          "socksProxyHost",
+          "socksProxyPort",
+          "java.net.useSystemProxies"
+        ]
+      },
+      {
+        "className": "threadsmod.proxy.ProxyConfig",
+        "requiredStrings": [
+          "ProxyBypassPolicy.parse(",
+          "SOCKS5 port must be between 1 and 65535.",
+          "must use printable ASCII only."
+        ],
+        "forbiddenStrings": [
+          "allowBypass(",
+          "System.setProperty(",
+          "ProxySelector.setDefault(",
+          "socksProxyHost",
+          "socksProxyPort",
+          "java.net.useSystemProxies"
+        ]
+      },
+      {
+        "className": "threadsmod.proxy.ProxyBypassPolicy",
+        "requiredStrings": [
+          "Bypass rules may contain at most ",
+          "must be a numeric IPv4/IPv6 address or CIDR.",
+          "Canonical bypass rules exceed the storage limit."
+        ],
+        "forbiddenStrings": [
+          "allowBypass(",
+          "System.setProperty(",
+          "ProxySelector.setDefault(",
+          "socksProxyHost",
+          "socksProxyPort",
+          "java.net.useSystemProxies"
+        ]
+      },
+      {
+        "className": "threadsmod.proxy.ProxyConfigStore",
+        "requiredStrings": [
+          "threadsmod_proxy_credentials_ciphertext",
+          "threadsmod_proxy_credentials_iv",
+          "threadsmod_proxy_fail_closed",
+          "AndroidKeyStore",
+          "AES/GCM/NoPadding",
+          "setRandomizedEncryptionRequired(true)"
+        ],
+        "forbiddenStrings": [
+          "threadsmod_proxy_username",
+          "threadsmod_proxy_password",
+          "allowBypass(",
+          "System.setProperty(",
+          "ProxySelector.setDefault(",
+          "socksProxyHost",
+          "socksProxyPort",
+          "java.net.useSystemProxies"
+        ]
+      },
+      {
+        "className": "threadsmod.proxy.ProxyController",
+        "requiredStrings": [
+          "ProxyConfigStore.save(",
+          "VpnService.prepare(",
+          "Socks5VpnService.requestConnect(",
+          "endpoint reachability is not verified.",
+          "Paused: a full-route guard is active; app traffic remains blocked.",
+          "Paused: the prior full-route guard is retained; app traffic remains blocked.",
+          "Unprotected: Android refused the fresh full-route guard; prior VPN routing is retained and earlier numeric DIRECT exclusions may remain.",
+          "Unprotected: Android could not establish the VPN; direct traffic may continue.",
+          "Unprotected: proxy service is inactive; direct traffic may continue."
+        ],
+        "exactStringCounts": {
+          "Paused: a full-route guard is active; app traffic remains blocked.": 1,
+          "Paused: the prior full-route guard is retained; app traffic remains blocked.": 1,
+          "Unprotected: Android refused the fresh full-route guard; prior VPN routing is retained and earlier numeric DIRECT exclusions may remain.": 1,
+          "Unprotected: Android could not establish the VPN; direct traffic may continue.": 1,
+          "Unprotected: proxy service is inactive; direct traffic may continue.": 1
+        },
+        "orderedStrings": [
+          "Paused: the SOCKS5 tunnel engine is unavailable.",
+          "Paused: a full-route guard is active; app traffic remains blocked.",
+          "Paused: the prior full-route guard is retained; app traffic remains blocked.",
+          "Unprotected: Android refused the fresh full-route guard; prior VPN routing is retained and earlier numeric DIRECT exclusions may remain.",
+          "Unprotected: Android could not establish the VPN; direct traffic may continue.",
+          "Unprotected: proxy service is inactive; direct traffic may continue."
+        ],
+        "forbiddenStrings": [
+          "allowBypass(",
+          "System.setProperty(",
+          "ProxySelector.setDefault(",
+          "socksProxyHost",
+          "socksProxyPort",
+          "java.net.useSystemProxies"
+        ]
+      },
+      {
+        "className": "threadsmod.proxy.ProxyRoutePlanner",
+        "requiredStrings": [
+          "Build.VERSION.SDK_INT >= 33",
+          "excludeRoute(",
+          "addRoute("
+        ],
+        "forbiddenStrings": [
+          "allowBypass(",
+          "System.setProperty(",
+          "ProxySelector.setDefault(",
+          "socksProxyHost",
+          "socksProxyPort",
+          "java.net.useSystemProxies"
+        ]
+      },
+      {
+        "className": "threadsmod.proxy.Socks5VpnService",
+        "requiredStrings": [
+          "addAllowedApplication(",
+          "addDnsServer(",
+          "ProxyRoutePlanner.create(",
+          "TProxyStartService(",
+          "TProxyStopService(",
+          "System.loadLibrary(\"hev-socks5-tunnel\")",
+          "enterBlackhole(",
+          "scheduleLivenessCheck(",
+          "nativeLifecycleUncertain",
+          "retainNativeTunLocked(",
+          "STATE_PAUSED_GUARD_ACTIVE",
+          "paused_guard_active",
+          "STATE_PAUSED_GUARD_RETAINED",
+          "paused_guard_retained",
+          "STATE_UNPROTECTED_PRIOR_ROUTING",
+          "unprotected_prior_routing",
+          "Traffic remains paused; prior full-route guard retained",
+          "Prior VPN routing retained; earlier numeric DIRECT exclusions may remain",
+          "VPN guard unavailable; direct traffic may continue",
+          "Traffic paused; full-route guard active",
+          "VPN routes + SOCKS5 worker live; endpoint unverified"
+        ],
+        "exactStringCounts": {
+          "paused_guard_active": 1,
+          "paused_guard_retained": 1,
+          "unprotected_prior_routing": 1,
+          "Traffic paused; full-route guard active": 1
+        },
+        "orderedStrings": [
+          "STATE_PAUSED_GUARD_ACTIVE",
+          "paused_guard_active",
+          "STATE_PAUSED_GUARD_RETAINED",
+          "paused_guard_retained",
+          "STATE_UNPROTECTED_PRIOR_ROUTING",
+          "unprotected_prior_routing",
+          "Traffic remains paused; prior full-route guard retained",
+          "Prior VPN routing retained; earlier numeric DIRECT exclusions may remain",
+          "VPN guard unavailable; direct traffic may continue",
+          "Traffic paused; full-route guard active"
+        ],
+        "forbiddenStrings": [
+          "allowBypass(",
+          "System.setProperty(",
+          "ProxySelector.setDefault(",
+          "socksProxyHost",
+          "socksProxyPort",
+          "java.net.useSystemProxies",
+          "VPN replacement unavailable; prior routing retained",
+          "tree55.com"
+        ]
+      },
+      {
+        "className": "threadsmod.update.UpdateController",
+        "requiredStrings": [
+          "CURRENT_MOD_BUILD",
+          "com.threadsmod.barcelona",
+          "com.threadsmod.barcelona.fileprovider",
+          "UpdateStore.checkNotBefore(",
+          "UpdateStore.setCheckNotBefore(",
+          "scheduleCheckWake(",
+          "runScheduledCheck(",
+          "MAIN.removeCallbacks(checkWake)",
+          "UpdateEndpoints.metadataMirrorCount()",
+          "UpdateStore.installVerified(",
+        "handleCheckStartFailure()",
+          "METADATA_ATTEMPT_TIMEOUT_MS",
+          "METADATA_OPERATION_TIMEOUT_MS",
+          "DOWNLOAD_ATTEMPT_TIMEOUT_MS",
+          "DOWNLOAD_OPERATION_TIMEOUT_MS",
+          "SystemClock.elapsedRealtime()",
+          "timeoutBefore(",
+          "disconnectAtDeadline(",
+          "CookieHandler.getDefault()",
+          "Accept-Encoding",
+          "identity",
+          "Required update",
+          "Later",
+        "dialog != null && dialog.isShowing()",
+        "downloadAuthorizedActivity = new WeakReference<>(activity)",
+        "UpdateStore.runIfCurrentBinary(",
+        "The latest update policy cannot be verified. Try again.",
+          "A previous update download is finishing. Try Update again shortly.",
+          "The update download could not start. Try again.",
+          "threadsmod-update.apk",
+          "threadsmod-update.apk.part",
+        "getPackageArchiveInfo(",
+        "getApkContentsSigners()",
+        "androidx.core.content.FileProvider",
+        "new Intent(\"android.intent.action.VIEW\")",
+        "application/vnd.android.package-archive"
+      ],
+        "forbiddenStrings": [
+          "DownloadManager",
+          "setInstanceFollowRedirects(true)",
+          "activity.getPackageName() + \".fileprovider\"",
+          "UpdateStore.retainedRequiredForEnforcement(",
+          "new File(directory, manifest.apkName)",
+          "Authorization",
+          "Referer",
+          "Saved update verification state is invalid and cannot yet be repaired.",
+          "Update verification failed and saved policy state is invalid.",
+          "Update verification could not start and saved policy state is invalid.",
+          "tree55.com"
+        ]
+      },
+      {
+        "className": "threadsmod.update.UpdateEndpoints",
+        "requiredStrings": [
+          "https://raw.githubusercontent.com/nsc55/cloneblocker-mirror/published/threadsmod-update.json",
+          "https://cdn.jsdelivr.net/gh/nsc55/cloneblocker-mirror@published/threadsmod-update.json",
+          "https://h0w1lwun39.execute-api.ap-southeast-1.amazonaws.com/threadsmod-update.json",
+          "release-assets.githubusercontent.com",
+          "objects.githubusercontent.com",
+        "^[a-z0-9]{1,63}\\\\.cloudfront\\\\.net$",
+          ".s3.",
+          "lastIndexOf(\".s3.\")",
+          "nsc55/cloneblocker-mirror/releases/download",
+          "MAX_REDIRECT_LOCATION_CHARS",
+          "MAX_REDIRECT_URL_CHARS",
+          "MAX_REDIRECT_PATH_CHARS"
+        ],
+        "orderedStrings": [
+          "https://raw.githubusercontent.com/nsc55/cloneblocker-mirror/published/threadsmod-update.json",
+          "https://cdn.jsdelivr.net/gh/nsc55/cloneblocker-mirror@published/threadsmod-update.json",
+          "https://h0w1lwun39.execute-api.ap-southeast-1.amazonaws.com/threadsmod-update.json"
+        ],
+        "forbiddenStrings": [
+          "http://",
+          "tree55.com"
+        ]
+      },
+      {
+        "className": "threadsmod.update.UpdateJson",
+        "requiredStrings": [
+          "CodingErrorAction.REPORT",
+          "isCompleteObject(",
+          "extractTopLevelValue(",
+          "Character.isHighSurrogate(",
+          "Character.isLowSurrogate("
+        ],
+        "forbiddenStrings": [
+          "new String(input)",
+          "tree55.com"
+        ]
+      },
+      {
+        "className": "threadsmod.update.UpdateManifest",
+        "requiredStrings": [
+          "threadsmod-app-update",
+        "UpdateSignature.verifyProduction(",
+        "CANONICAL_TIMESTAMP.format(",
+        "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+        "downloadUrls",
+        "sameSignedRelease(",
+          "sameBinary("
+        ],
+        "forbiddenStrings": [
+          "publishedAtMs\"",
+          "artifactName\"",
+          "applicationId\"",
+          "apkName.equals(other.apkName)",
+          "tree55.com"
+        ]
+      },
+      {
+        "className": "threadsmod.update.UpdateSignature",
+        "requiredStrings": [
+          "fYcRAV8CRof15IAinUoDOZuBbqqDtDXDPl3lwSLoMhk",
+          "verifyProduction(",
+          "decodeCanonicalSignature(",
+        "verifyWithKey(",
+          "isCanonicalScalar(",
+          "EdDSAEngine"
+        ],
+        "forbiddenStrings": [
+          "BEGIN PUBLIC KEY",
+          "tree55.com"
+        ]
+      },
+      {
+        "className": "threadsmod.update.UpdateStore",
+        "requiredStrings": [
+          "update_verified_envelope",
+          "update_revision",
+          "update_mod_build",
+          "update_check_not_before",
+          "update_dismissed_revision",
+          "getAll()",
+          "instanceof Long",
+          "update rollback floors are corrupt",
+          "update manifest repair requires newer revision",
+        "update policy persistence is uncertain",
+        "policyPersistenceFloor",
+        "update policy persistence floor is unavailable",
+        "lastVerifiedManifestForEnforcement",
+        "hasRetainedRequiredForEnforcement(",
+        "cadencePersistenceUncertain",
+        "dismissalPersistenceUncertain",
+        "runIfCurrentBinary(",
+        ".commit()"
+        ],
+        "forbiddenStrings": [
+          ".apply()",
+          "getLong(KEY_REVISION",
+          "getLong(KEY_MOD_BUILD",
+          "tree55.com"
+        ]
+      }
+    ],
+    "requiredProviderAuthorities": [
+      { "authority": "com.threadsmod.barcelona.securefileprovider", "expectedCount": 1 },
+      { "authority": "com.threadsmod.barcelona.fileprovider", "expectedCount": 1 },
+      { "authority": "com.threadsmod.barcelona.liteprovider.BarcelonaLiteContentProvider", "expectedCount": 1 },
+      { "authority": "com.threadsmod.barcelona.provider.phoneid", "expectedCount": 1 },
+      { "authority": "com.threadsmod.barcelona.androidx-startup", "expectedCount": 1 }
+    ],
+    "requiredTaskAffinities": [
+      "com.threadsmod.barcelona.affinity.ClipsMusicShareHandlerActivity",
+      "com.threadsmod.barcelona.affinity.ClipsThreadShareHandlerActivity",
+      "com.threadsmod.barcelona.affinity.NotesMusicShareHandlerActivity",
+      "com.threadsmod.barcelona.affinity.BarcelonaShareHandlerActivity",
+      "com.threadsmod.barcelona.affinity.BarcelonaUrlHandlerActivity"
+    ],
+    "requiredCustomPermissions": [
+      "com.threadsmod.barcelona.permission.SYSTEM_ONLY",
+      "com.threadsmod.barcelona.permission.RECEIVE_ADM_MESSAGE",
+      "com.threadsmod.barcelona.permission.CROSS_PROCESS_BROADCAST_MANAGER",
+      "com.threadsmod.barcelona.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+    ],
+    "requiredAuthenticatorAccountType": "com.threadsmod.barcelona",
+    "requiredLauncherActivity": "com.instagram.barcelona.mainactivity.BarcelonaActivity",
+    "requiredInjectedActivities": [
+      "com.threadsmod.CloneBlockerActivity",
+      "com.threadsmod.CloneBlockerSettingsActivity",
+      "com.threadsmod.ProxySettingsActivity"
+    ],
+    "requiredClassDescriptors": [
+      "Lcom/threadsmod/DemoDialog;",
+      "Lcom/threadsmod/CloneBlockerActivity;",
+      "Lcom/threadsmod/CloneBlockerSettingsActivity;",
+      "Lcom/threadsmod/ProxySettingsActivity;",
+      "Lcom/threadsmod/CloneBlockerUi;",
+      "Lthreadsmod/proxy/ProxyBootstrap;",
+      "Lthreadsmod/proxy/ProxyBypassPolicy;",
+      "Lthreadsmod/proxy/ProxyConfig;",
+      "Lthreadsmod/proxy/ProxyConfigStore;",
+      "Lthreadsmod/proxy/ProxyController;",
+      "Lthreadsmod/proxy/ProxyRoutePlanner;",
+      "Lthreadsmod/proxy/Socks5VpnService;",
+      "Lthreadsmod/drawer/DrawerSettingsClick;",
+      "Lthreadsmod/drawer/DrawerSettingsItem;",
+      "Lthreadsmod/drawer/DrawerSettingsRowAdapter;",
+      "Lthreadsmod/bootstrap/ModBootstrap;",
+      "Lthreadsmod/update/UpdateController;",
+      "Lthreadsmod/update/UpdateEndpoints;",
+      "Lthreadsmod/update/UpdateJson;",
+      "Lthreadsmod/update/UpdateManifest;",
+      "Lthreadsmod/update/UpdateSignature;",
+      "Lthreadsmod/update/UpdateStore;",
+      "Lthreadsmod/autoblock/AutoBlockSync;",
+      "Lthreadsmod/autoblock/BlocklistStore;",
+      "Lthreadsmod/autoblock/BlockDiagnostic;",
+      "Lthreadsmod/autoblock/BlockLimits;",
+      "Lthreadsmod/autoblock/BlockLimitsStore;",
+      "Lthreadsmod/autoblock/BridgeCallback;",
+      "Lthreadsmod/autoblock/BridgeCallbackDispatcher;",
+      "Lthreadsmod/autoblock/CloneBlockerEndpoints;",
+      "Lthreadsmod/autoblock/ModStateStore;",
+      "Lthreadsmod/autoblock/ManualBlockCallback;",
+      "Lthreadsmod/autoblock/ThreadsBlockBridge;",
+      "Lthreadsmod/autoblock/MutationCallback;",
+      "Lthreadsmod/inlinecontrol/InlineBlockController;",
+      "Lthreadsmod/inlinecontrol/InlineBlockDialog;",
+      "Lthreadsmod/inlinecontrol/InlineBlockRequest;",
+      "Lthreadsmod/inlinecontrol/InlineBlockStrings;",
+      "Lthreadsmod/inlinecontrol/InlineBlockUiCallback;",
+      "Lthreadsmod/inlinecontrol/InlineActionClick;",
+      "Lthreadsmod/inlinecontrol/InlineVisibilityCallback;",
+      "Lthreadsmod/inlinecontrol/InlineActionRowAdapter;",
+      "Lthreadsmod/reporting/ReportClient;",
+    "Lthreadsmod/reporting/ReportController;",
+    "Lthreadsmod/reporting/ReportEndpoint;",
+    "Lthreadsmod/reporting/ReportJson;",
+    "Lthreadsmod/reporting/ReportPayload;",
+      "Lthreadsmod/reporting/ReportRequest;",
+      "Lthreadsmod/reporting/ReportResult;",
+      "Lthreadsmod/reporting/ReportResultCallback;",
+      "Lthreadsmod/reporting/ReportStore;",
+      "Lthreadsmod/reporting/ReportValues;",
+      "Lthreadsmod/reporting/InlineReportActionFactory;"
+    ],
+  "requiredHookCalls": [
+    "threadsmodMediaId",
+    "threadsmodResolveAuthorSnapshot",
+    "createHostBound",
+      "threadsmod_inline_block",
+      "Block user",
+      "Block and report",
+      "Also block this profile",
+      "Post excerpt",
+      "Report reason",
+      "https://www.threads.com/@",
+      "ui_also_block_profile",
+      "report_outbox_v1",
+      "placeholder_model_invalid",
+      "CB-BRG-106",
+      "cache_placeholder_exception",
+      "CB-BRG-110",
+      "model_id_exception",
+      "CB-BRG-112",
+      "already_blocked_exception",
+      "CB-BRG-113",
+      "bridge=r6",
+      "limit_automatic_per_hour",
+      "Refresh the signed index every 10 minutes in the foreground, then block only listed profiles whose post or reply action row becomes visible.",
+      "Clone Blocker settings"
+      ,"threadsmod-app-update"
+      ,"Required update"
+      ,"application/vnd.android.package-archive"
+    ],
+    "forbiddenDexStrings": [
+      "tree55.com",
+      "threadsmod_inline_report",
+      "Safe processing",
+      "Before exact review",
+      "Block or report?",
+      "Review report",
+      "Review exact payload",
+      "Consent and queue",
+      "I consent to send exactly this report",
+      "InlineReportClick",
+      "ReportDialog",
+      "ui_one_click_block",
+      "ui_dismiss_after_block",
+      "lookup_failure",
+      "lookup_busy",
+      "UserFetchCallback",
+      "signed_list_block_failed"
+      ,"allowBypass"
+      ,"socksProxyHost"
+      ,"java.net.useSystemProxies"
+      ,"threadsmod_proxy_username"
+      ,"threadsmod_proxy_password"
+    ]
+  }
+}

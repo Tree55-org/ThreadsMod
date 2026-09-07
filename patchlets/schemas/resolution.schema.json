@@ -1,0 +1,1536 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://threadsmod.local/schemas/resolution.schema.json",
+  "title": "APK-SHA-bound Threads symbol resolution",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "resolutionId",
+    "status",
+    "resolvedAt",
+    "source",
+    "target",
+    "patchlets",
+    "rewriteSets",
+    "activity",
+    "bridge",
+    "proofs",
+    "assets",
+    "toolchain",
+    "release"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "minLength": 1 },
+    "schemaVersion": { "const": 1 },
+    "resolutionId": { "$ref": "#/$defs/id" },
+    "status": {
+      "enum": ["proposed", "review-required", "verified-current", "retired"]
+    },
+    "resolvedAt": { "type": "string", "format": "date-time" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fileName",
+        "sha256",
+        "applicationId",
+        "versionName",
+        "versionCode",
+        "minSdk",
+        "targetSdk",
+        "abis",
+        "rootDexCount"
+      ],
+      "properties": {
+        "fileName": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "applicationId": { "$ref": "#/$defs/javaPackage" },
+        "versionName": { "type": "string", "minLength": 1 },
+        "versionCode": { "type": "integer", "minimum": 1 },
+        "minSdk": { "type": "integer", "minimum": 1 },
+        "targetSdk": { "type": "integer", "minimum": 1 },
+        "abis": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "rootDexCount": { "type": "integer", "minimum": 1 }
+        ,
+        "delivery": { "enum": ["standalone-apk", "split-apk-set"] },
+        "splitSetSha256": { "$ref": "#/$defs/sha256" },
+        "nativeLibraryCount": { "type": "integer", "minimum": 1 },
+        "densityResourceCount": { "type": "integer", "minimum": 1 },
+        "splitMembers": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "prefixItems": [
+            { "$ref": "#/$defs/baseSplitMember" },
+            { "$ref": "#/$defs/abiSplitMember" },
+            { "$ref": "#/$defs/densitySplitMember" }
+          ],
+          "items": false
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "applicationId",
+        "label",
+        "artifactBaseName",
+        "versionCode",
+        "versionName",
+        "modBuild"
+      ],
+      "properties": {
+        "applicationId": { "$ref": "#/$defs/javaPackage" },
+        "label": { "type": "string", "minLength": 1 },
+        "versionCode": { "type": "integer", "minimum": 1 },
+        "versionName": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "modBuild": { "type": "integer", "minimum": 1 },
+        "artifactBaseName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9._-]{0,126}[A-Za-z0-9])?$"
+        }
+      }
+    },
+    "patchlets": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/id" }
+    },
+    "rewriteSets": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[^/]+\\.json$" }
+    },
+    "activity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "descriptor",
+        "sessionField",
+        "sessionDescriptor",
+        "onResumeSessionRegister",
+        "hookRationale"
+      ],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "descriptor": { "$ref": "#/$defs/descriptor" },
+        "sessionField": { "type": "string", "minLength": 1 },
+        "sessionDescriptor": { "$ref": "#/$defs/descriptor" },
+        "onResumeSessionRegister": { "type": "string", "pattern": "^[vp][0-9]+$" },
+        "hookRationale": { "type": "string", "minLength": 1 }
+      }
+    },
+    "uiComponents": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["settingsActivity", "activityActivity", "rewriteSet"],
+      "properties": {
+        "settingsActivity": { "$ref": "#/$defs/nonExportedActivity" },
+        "activityActivity": { "$ref": "#/$defs/nonExportedActivity" },
+        "rewriteSet": {
+          "type": "string",
+          "pattern": "^[^/]+\\.json$"
+        }
+      }
+    },
+    "drawerSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rewriteSet", "templateRoot", "rows", "symbols"],
+      "properties": {
+        "rewriteSet": {
+          "type": "string",
+          "pattern": "^[^/]+\\.json$"
+        },
+        "templateRoot": {
+          "type": "string",
+          "pattern": "^(?:assets/settings-ui/templates|assets/versioned/[A-Za-z0-9](?:[A-Za-z0-9._-]{0,126}[A-Za-z0-9])?/settings)$"
+        },
+        "rows": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "method", "hookRuleId", "key", "label"],
+            "properties": {
+              "path": { "type": "string", "minLength": 1 },
+              "method": { "type": "string", "minLength": 1 },
+              "hookRuleId": { "$ref": "#/$defs/id" },
+              "key": { "type": "string", "minLength": 1 },
+              "label": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "symbols": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "bridge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["templateRoot", "referenceRoot", "symbols"],
+      "properties": {
+        "templateRoot": {
+          "type": "string",
+          "pattern": "^(?:assets/autoblock/bridge-templates|assets/versioned/[A-Za-z0-9](?:[A-Za-z0-9._-]{0,126}[A-Za-z0-9])?/bridge)$"
+        },
+        "referenceRoot": {
+          "type": "string",
+          "pattern": "^(?:assets/bridge-reference-415|assets/versioned/[A-Za-z0-9](?:[A-Za-z0-9._-]{0,126}[A-Za-z0-9])?/bridge-reference)$"
+        },
+        "symbols": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "inlineControls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rewriteSet", "templateRoot", "carrier", "actionRow", "symbols", "presentation"],
+      "properties": {
+        "rewriteSet": {
+          "type": "string",
+          "pattern": "^[^/]+\\.json$"
+        },
+        "templateRoot": {
+          "type": "string",
+          "pattern": "^(?:assets/inline-control/templates|assets/versioned/[A-Za-z0-9](?:[A-Za-z0-9._-]{0,126}[A-Za-z0-9])?/inline)$"
+        },
+        "carrier": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "descriptor", "mediaIdField"],
+          "properties": {
+            "path": { "type": "string", "minLength": 1 },
+            "descriptor": { "$ref": "#/$defs/descriptor" },
+            "mediaIdField": { "type": "string", "minLength": 1 }
+          }
+        },
+        "symbols": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": "string", "minLength": 1 }
+        },
+        "actionRow": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "method",
+            "hookRuleId",
+            "snapshotHookRuleId",
+            "snapshotMethod"
+          ],
+          "properties": {
+            "path": { "type": "string", "minLength": 1 },
+            "method": { "type": "string", "minLength": 1 },
+            "hookRuleId": { "$ref": "#/$defs/id" },
+            "snapshotHookRuleId": { "$ref": "#/$defs/id" },
+            "snapshotMethod": { "type": "string", "minLength": 1 }
+          }
+        },
+        "presentation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "visibleControlCount", "separateReportControlCount", "modalActions"],
+          "properties": {
+            "mode": { "const": "single-block-entry-combined-modal" },
+            "visibleControlCount": { "const": 1 },
+            "separateReportControlCount": { "const": 0 },
+            "modalActions": { "const": ["dynamic-positive", "cancel"] }
+          }
+        }
+      }
+    },
+    "reporting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "writeEndpoint",
+        "symbols",
+        "templateRoot",
+        "templateNames",
+        "quoteMaxUtf16",
+        "launchMode",
+        "canonicalPermalinkPrefix",
+        "permalinkPathMarker",
+        "acceptedLegacyPermalinkHost"
+      ],
+      "properties": {
+        "writeEndpoint": {
+          "const": "https://h0w1lwun39.execute-api.ap-southeast-1.amazonaws.com/v1/reports"
+        },
+        "templateRoot": {
+          "type": "string",
+          "pattern": "^(?:assets/reporting/templates|assets/versioned/[A-Za-z0-9](?:[A-Za-z0-9._-]{0,126}[A-Za-z0-9])?/reporting)$"
+        },
+        "symbols": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": "string", "minLength": 1 }
+        },
+        "templateNames": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[^/]+\\.smali\\.tmpl$" }
+        },
+        "quoteMaxUtf16": { "const": 280 },
+        "launchMode": { "const": "single-combined-modal-durable-queue" },
+        "canonicalPermalinkPrefix": { "const": "https://www.threads.com/@" },
+        "permalinkPathMarker": { "const": "/post/" },
+        "acceptedLegacyPermalinkHost": { "const": "www.threads.net" }
+      }
+    },
+    "proxy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "settingsActivity",
+        "vpnService",
+        "bootstrapHook",
+        "rewriteSet",
+        "nativeLibrary",
+        "licenseAsset"
+      ],
+      "properties": {
+        "settingsActivity": { "$ref": "#/$defs/nonExportedActivity" },
+        "vpnService": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "descriptor",
+            "exported",
+            "permission",
+            "action",
+            "foregroundServiceType",
+            "foregroundServicePermission",
+            "specialUseSubtype"
+          ],
+          "properties": {
+            "name": { "$ref": "#/$defs/javaClass" },
+            "descriptor": { "$ref": "#/$defs/descriptor" },
+            "exported": { "const": false },
+            "permission": { "const": "android.permission.BIND_VPN_SERVICE" },
+            "action": { "const": "android.net.VpnService" },
+            "foregroundServiceType": { "const": "specialUse" },
+            "foregroundServicePermission": {
+              "const": "android.permission.FOREGROUND_SERVICE_SPECIAL_USE"
+            },
+            "specialUseSubtype": { "type": "string", "minLength": 1, "maxLength": 160 }
+          }
+        },
+        "bootstrapHook": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "method", "anchorAfterSuper", "call"],
+          "properties": {
+            "path": { "type": "string", "minLength": 1 },
+            "method": { "type": "string", "minLength": 1 },
+            "anchorAfterSuper": { "type": "string", "minLength": 1 },
+            "call": { "type": "string", "minLength": 1 }
+          }
+        },
+        "rewriteSet": { "const": "proxy-manifest-rewrites.json" },
+        "nativeLibrary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "assetPath",
+            "decodedPath",
+            "apkPath",
+            "abi",
+            "sha256",
+            "elfMachine",
+            "minimumLoadAlignment"
+          ],
+          "properties": {
+            "assetPath": {
+              "type": "string",
+              "pattern": "^assets/socks5-proxy/native/arm64-v8a/lib[A-Za-z0-9._-]+\\.so$"
+            },
+            "decodedPath": {
+              "type": "string",
+              "pattern": "^lib/arm64-v8a/lib[A-Za-z0-9._-]+\\.so$"
+            },
+            "apkPath": {
+              "type": "string",
+              "pattern": "^lib/arm64-v8a/lib[A-Za-z0-9._-]+\\.so$"
+            },
+            "abi": { "const": "arm64-v8a" },
+            "sha256": { "$ref": "#/$defs/sha256" },
+            "elfMachine": { "const": 183 },
+            "minimumLoadAlignment": {
+              "type": "integer",
+              "minimum": 16384
+            }
+          }
+        },
+        "licenseAsset": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["assetPath", "decodedPath", "apkPath", "sha256"],
+          "properties": {
+            "assetPath": {
+              "const": "assets/socks5-proxy/native/NOTICE.hev-socks5-tunnel-and-lwip.txt"
+            },
+            "decodedPath": {
+              "const": "assets/threadsmod/licenses/hev-socks5-tunnel-and-lwip.txt"
+            },
+            "apkPath": {
+              "const": "assets/threadsmod/licenses/hev-socks5-tunnel-and-lwip.txt"
+            },
+            "sha256": { "$ref": "#/$defs/sha256" }
+          }
+        }
+      }
+    },
+    "update": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rewriteSet",
+        "currentModBuild",
+        "metadataPurpose",
+        "metadataPublicKey",
+        "metadataEndpoints",
+        "requestInstallPermission",
+        "fileProviderAuthority",
+        "fileProviderCachePath",
+        "requiredSignerCertificateSha256"
+      ],
+      "properties": {
+        "rewriteSet": { "const": "update-manifest-rewrites.json" },
+        "currentModBuild": { "const": 1 },
+        "metadataPurpose": { "const": "threadsmod-app-update" },
+        "metadataPublicKey": {
+          "const": "fYcRAV8CRof15IAinUoDOZuBbqqDtDXDPl3lwSLoMhk"
+        },
+        "metadataEndpoints": {
+          "const": [
+            "https://raw.githubusercontent.com/nsc55/cloneblocker-mirror/published/threadsmod-update.json",
+            "https://cdn.jsdelivr.net/gh/nsc55/cloneblocker-mirror@published/threadsmod-update.json",
+            "https://h0w1lwun39.execute-api.ap-southeast-1.amazonaws.com/threadsmod-update.json"
+          ]
+        },
+        "requestInstallPermission": { "const": "android.permission.REQUEST_INSTALL_PACKAGES" },
+        "fileProviderAuthority": { "const": "app.tree55.threads.fileprovider" },
+        "fileProviderCachePath": { "const": "shared/updates" },
+        "requiredSignerCertificateSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "proofs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "path", "contains", "minimumCount"],
+            "properties": {
+              "id": { "$ref": "#/$defs/id" },
+              "path": { "type": "string", "minLength": 1 },
+              "contains": { "type": "string", "minLength": 1 },
+              "minimumCount": { "type": "integer", "minimum": 1 }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "candidatePaths",
+              "targetClassDescriptor",
+              "siblingClassDescriptor",
+              "contains",
+              "minimumCount"
+            ],
+            "properties": {
+              "id": { "$ref": "#/$defs/id" },
+              "candidatePaths": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "uniqueItems": true,
+                "items": { "type": "string", "minLength": 1 }
+              },
+              "targetClassDescriptor": { "$ref": "#/$defs/descriptor" },
+              "siblingClassDescriptor": { "$ref": "#/$defs/descriptor" },
+              "contains": { "type": "string", "minLength": 1 },
+              "minimumCount": { "type": "integer", "minimum": 1 }
+            }
+          }
+        ]
+      }
+    },
+    "assets": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "pattern": "^[A-Za-z][A-Za-z0-9]*Sha256$" },
+      "additionalProperties": { "$ref": "#/$defs/sha256" }
+    },
+    "toolchain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "apktoolVersion",
+        "apktoolJarSha256",
+        "frameworkApkSha256",
+        "androidPlatform",
+        "buildToolsVersion",
+        "d8JarSha256",
+        "apksignerJarSha256",
+        "jadxVersion",
+        "jadxJarSha256"
+      ],
+      "properties": {
+        "apktoolVersion": { "type": "string", "minLength": 1 },
+        "apktoolJarSha256": { "$ref": "#/$defs/sha256" },
+        "frameworkApkSha256": { "$ref": "#/$defs/sha256" },
+        "androidPlatform": { "type": "integer", "minimum": 1 },
+        "buildToolsVersion": { "type": "string", "minLength": 1 },
+        "d8JarSha256": { "$ref": "#/$defs/sha256" },
+        "apksignerJarSha256": { "$ref": "#/$defs/sha256" },
+        "jadxVersion": { "const": "1.5.6" },
+        "jadxJarSha256": { "$ref": "#/$defs/sha256" },
+        "apkEditorVersion": { "const": "1.4.9" },
+        "apkEditorArscLibVersion": { "const": "1.3.9" },
+        "apkEditorJarSha256": { "$ref": "#/$defs/sha256" },
+        "apkEditorMergeArguments": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 9,
+          "prefixItems": [
+            { "const": "m" },
+            { "const": "-i" },
+            { "const": "{sourceSet}" },
+            { "const": "-o" },
+            { "const": "{outputApk}" },
+            { "const": "-clean-meta" },
+            { "const": "-validate-modules" },
+            { "const": "-extractNativeLibs" },
+            { "const": "false" }
+          ],
+          "items": false
+        }
+      }
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maximumPrimaryMethodReferences",
+        "expectedDexBridgeFlowFixtureCount",
+        "expectedDexReportPermalinkFlowFixtureCount",
+        "expectedReviewedTerminalRoutes",
+        "expectedCurrentReviewedTerminalRoutes",
+        "expectedCurrentAutomaticPacedNextPosts",
+        "expectedCurrentAutomaticOwnerMode",
+        "requiredPassiveJadxWrapperAutoBlockStrings",
+        "expectedDexBridgeFlowInspectorArgumentCount",
+        "expectedDexReportPermalinkFlowInspectorArgumentCount",
+        "expectedDexProxyBootstrapFlowInspectorArgumentCount",
+        "expectedDexProxyBootstrapFlowFixtureCount",
+        "requiredSignerCertificateSha256",
+        "requiredReadEndpoints",
+        "requiredWriteEndpoint",
+        "requiredStatisticsEndpoint",
+        "requiredProviderAuthorities",
+        "requiredTaskAffinities",
+        "requiredCustomPermissions",
+        "requiredAuthenticatorAccountType",
+        "requiredLauncherActivity",
+        "forbiddenDexStrings",
+        "assetPreservationExclusions",
+        "requiredDexDirectStringCalls",
+        "requiredDexProxyBootstrapFlow",
+        "requiredDexBridgeFlows",
+        "requiredDexReportPermalinkFlow",
+        "targetedJadxClasses"
+      ],
+      "properties": {
+        "maximumPrimaryMethodReferences": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "expectedDexBridgeFlowFixtureCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expectedDexReportPermalinkFlowFixtureCount": {
+          "const": 41
+        },
+        "expectedReviewedTerminalRoutes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expectedCurrentReviewedTerminalRoutes": {
+          "const": 3
+        },
+        "expectedCurrentAutomaticPacedNextPosts": {
+          "const": 0
+        },
+        "expectedCurrentAutomaticOwnerMode": {
+          "const": "single-target"
+        },
+        "requiredPassiveJadxWrapperAutoBlockStrings": {
+          "type": "array",
+          "minItems": 11,
+          "maxItems": 11,
+          "prefixItems": [
+            { "const": "BlocklistStore.replaceVerified(" },
+            { "const": "BlocklistStore.lookupId(" },
+            { "const": "BlocklistStore.isCurrentIdMatch(" },
+            { "const": "LIST_REFRESH_RUNNING.compareAndSet(false, true)" },
+            { "const": "postDelayed(LIST_REFRESH_WAKE" },
+            { "const": "new ListRefreshWorker(" },
+            { "const": "new FetchWorker(" },
+            { "const": "registerVisibleControl(" },
+            { "const": "updateVisibleControl(" },
+            { "const": "unregisterVisibleControl(" },
+            { "const": "currentPassiveMatch(" }
+          ],
+          "items": false
+        },
+        "expectedDexBridgeFlowInspectorArgumentCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expectedDexReportPermalinkFlowInspectorArgumentCount": {
+          "const": 33
+        },
+        "expectedDexProxyBootstrapFlowInspectorArgumentCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expectedDexProxyBootstrapFlowFixtureCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expectedDexUpdateFlowInspectorArgumentCount": {
+          "const": 12
+        },
+        "expectedDexUpdateFlowFixtureCount": {
+          "const": 96
+        },
+        "requiredSignerCertificateSha256": { "$ref": "#/$defs/sha256" },
+        "updateSignedDexReviewRequired": { "type": "boolean" },
+        "requiredReadEndpoints": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "prefixItems": [
+            {
+              "const": "https://raw.githubusercontent.com/nsc55/cloneblocker-mirror/published/blocklist/v3/manifest.json"
+            },
+            {
+              "const": "https://cdn.jsdelivr.net/gh/nsc55/cloneblocker-mirror@published/blocklist/v3/manifest.json"
+            },
+            {
+              "const": "https://h0w1lwun39.execute-api.ap-southeast-1.amazonaws.com/blocklist/v3/manifest.json"
+            }
+          ],
+          "items": false
+        },
+        "requiredWriteEndpoint": {
+          "const": "https://h0w1lwun39.execute-api.ap-southeast-1.amazonaws.com/v1/reports"
+        },
+        "requiredStatisticsEndpoint": {
+          "const": "https://h0w1lwun39.execute-api.ap-southeast-1.amazonaws.com/v1/installs"
+        },
+        "requiredProviderAuthorities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["authority", "expectedCount"],
+            "properties": {
+              "authority": { "type": "string", "minLength": 1 },
+              "expectedCount": { "type": "integer", "minimum": 1, "maximum": 16 }
+            }
+          }
+        },
+        "requiredTaskAffinities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "requiredCustomPermissions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "requiredAuthenticatorAccountType": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requiredLauncherActivity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requiredInjectedActivities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/javaClass" }
+        },
+        "requiredClassDescriptors": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/descriptor" }
+        },
+        "requiredHookCalls": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "forbiddenDexStrings": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 },
+          "contains": { "const": "tree55.com" }
+        },
+        "assetPreservationExclusions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "reason", "replacementGate"],
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^assets/(?!.*(?:^|/)\\.\\.(?:/|$))[^*?]+\\.dex$"
+              },
+              "reason": { "type": "string", "minLength": 20 },
+              "replacementGate": { "const": "dex-header-integrity" }
+            }
+          }
+        },
+        "requiredDexDirectStringCalls": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "ownerClassDescriptor",
+              "ownerMethodName",
+              "ownerMethodDescriptor",
+              "calleeClassDescriptor",
+              "calleeMethodName",
+              "calleeMethodDescriptor",
+              "invokeOpcode",
+              "stringParameterIndex",
+              "literal",
+              "expectedOccurrences",
+              "requireImmediateConstString",
+              "requireOnlyCalleeOccurrence"
+            ],
+            "properties": {
+              "id": { "$ref": "#/$defs/id" },
+              "ownerClassDescriptor": { "$ref": "#/$defs/descriptor" },
+              "ownerMethodName": { "type": "string", "pattern": "^[A-Za-z_$<>][A-Za-z0-9_$<>]*$" },
+              "ownerMethodDescriptor": { "type": "string", "pattern": "^\\([^)]*\\).+$" },
+              "calleeClassDescriptor": { "$ref": "#/$defs/descriptor" },
+              "calleeMethodName": { "type": "string", "pattern": "^[A-Za-z_$<>][A-Za-z0-9_$<>]*$" },
+              "calleeMethodDescriptor": { "type": "string", "pattern": "^\\([^)]*\\).+$" },
+              "invokeOpcode": { "const": "INVOKE_VIRTUAL" },
+              "stringParameterIndex": { "const": 0 },
+              "literal": { "const": "POST" },
+              "expectedOccurrences": { "const": 1 },
+              "requireImmediateConstString": { "const": true },
+              "requireOnlyCalleeOccurrence": { "const": true }
+            }
+          }
+        },
+        "requiredDexProxyBootstrapFlow": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "expectedDexName",
+            "ownerClassDescriptor",
+            "ownerMethodName",
+            "ownerMethodDescriptor",
+            "superClassDescriptor",
+            "superMethodName",
+            "superMethodDescriptor",
+            "bootstrapClassDescriptor",
+            "bootstrapMethodName",
+            "bootstrapMethodDescriptor",
+            "originalNextFieldReference",
+            "forbiddenMethodReferences",
+            "forbiddenStringLiterals",
+            "requireExactEntryPrefix",
+            "requireSoleBootstrapCaller",
+            "requireParameterRegisterFlow",
+            "requireImmediateAdjacency",
+            "requireNoAlternateEntry",
+            "requireNoBootstrapTryCoverage",
+            "requireOriginalNextField",
+            "requireExactFallbackAbsence"
+          ],
+          "properties": {
+            "id": { "const": "socks5-bootstrap-signed-dex-flow-contract" },
+            "expectedDexName": {
+              "type": "string",
+              "pattern": "^classes(?:[2-9]|[1-9][0-9]+)?\\.dex$"
+            },
+            "ownerClassDescriptor": {
+              "const": "Lcom/instagram/barcelona/app/BarcelonaAppShell;"
+            },
+            "ownerMethodName": { "const": "attachBaseContext" },
+            "ownerMethodDescriptor": {
+              "const": "(Landroid/content/Context;)V"
+            },
+            "superClassDescriptor": { "const": "Landroid/content/ContextWrapper;" },
+            "superMethodName": { "const": "attachBaseContext" },
+            "superMethodDescriptor": {
+              "const": "(Landroid/content/Context;)V"
+            },
+            "bootstrapClassDescriptor": { "const": "Lthreadsmod/proxy/ProxyBootstrap;" },
+            "bootstrapMethodName": { "const": "install" },
+            "bootstrapMethodDescriptor": {
+              "const": "(Landroid/content/Context;)V"
+            },
+            "originalNextFieldReference": {
+              "type": "string",
+              "pattern": "^L[^;]+;->[A-Za-z_$][A-Za-z0-9_$]*:L[^;]+;$"
+            },
+            "forbiddenMethodReferences": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "prefixItems": [
+                { "const": "Landroid/net/VpnService$Builder;->allowBypass()Landroid/net/VpnService$Builder;" },
+                { "const": "Ljava/lang/System;->setProperty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;" },
+                { "const": "Ljava/net/ProxySelector;->setDefault(Ljava/net/ProxySelector;)V" }
+              ],
+              "items": false
+            },
+            "forbiddenStringLiterals": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "prefixItems": [
+                { "const": "socksProxyHost" },
+                { "const": "socksProxyPort" },
+                { "const": "java.net.useSystemProxies" }
+              ],
+              "items": false
+            },
+            "requireExactEntryPrefix": { "const": true },
+            "requireSoleBootstrapCaller": { "const": true },
+            "requireParameterRegisterFlow": { "const": true },
+            "requireImmediateAdjacency": { "const": true },
+            "requireNoAlternateEntry": { "const": true },
+            "requireNoBootstrapTryCoverage": { "const": true },
+            "requireOriginalNextField": { "const": true },
+            "requireExactFallbackAbsence": { "const": true }
+          }
+        },
+        "requiredDexUpdateFlow": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "expectedDexName",
+            "classPrefix",
+            "expectedSemanticSha256",
+            "expectedSemanticClassCount",
+            "orderedRootDescriptors"
+          ],
+          "properties": {
+            "id": { "const": "threadsmod-update-flow-v1" },
+            "expectedDexName": { "const": "classes.dex" },
+            "classPrefix": { "const": "Lthreadsmod/update/" },
+            "expectedSemanticSha256": { "$ref": "#/$defs/sha256" },
+            "expectedSemanticClassCount": { "const": 24 },
+            "orderedRootDescriptors": {
+              "type": "array",
+              "minItems": 7,
+              "maxItems": 7,
+              "prefixItems": [
+                { "const": "Lthreadsmod/update/UpdateController;" },
+                { "const": "Lthreadsmod/update/UpdateEndpoints;" },
+                { "const": "Lthreadsmod/update/UpdateJson;" },
+                { "const": "Lthreadsmod/update/UpdateManifest;" },
+                { "const": "Lthreadsmod/update/UpdateSignature;" },
+                { "const": "Lthreadsmod/update/UpdateStore;" },
+                { "const": "Lthreadsmod/bootstrap/ModBootstrap;" }
+              ],
+              "items": false
+            }
+          }
+        },
+        "requiredDexBridgeFlows": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "ownerClassDescriptor",
+              "blockMethodName",
+              "passivePreflightMethodName",
+              "blockResolvedMethodName",
+              "blockModelMethodName",
+              "prepareModelMethodName",
+              "automaticCallerClassDescriptor",
+              "manualCallerClassDescriptor",
+              "fetchWorkerRunMethodReference",
+              "scheduleManualDrainMethodReference",
+              "symbolsPointer",
+              "inlineSymbolsPointer",
+              "expectedDexName",
+              "expectedBlockInvokeCount",
+              "expectedPassivePreflightInvokeCount",
+              "expectedBlockResolvedInvokeCount",
+              "expectedBlockModelInvokeCount",
+              "expectedPrepareModelInvokeCount",
+              "expectedCacheLookupInvokeCount",
+              "expectedCacheFactoryInvokeCount",
+              "expectedCachePlaceholderInvokeCount",
+              "requireNarrowSeamHandlers",
+              "requirePassivePreflightBeforeReservation",
+              "requirePreparationResultFlow",
+              "requireCallerProvenance",
+              "requireCallerCatchTopology",
+              "requireDirectCallerCallbackExecution",
+              "requireCallerCallbackEffectTopology",
+              "requireCallbackExceptionalControlFlow",
+              "requireBridgeEntryReachability",
+              "requireSchedulerEnqueueAcceptance",
+              "requireUncertainMutationQuarantine",
+              "requirePrivateSeamCallProvenance",
+              "requireStableInlinePrivateSeamAbsence",
+              "requireDispatcherCallProvenance",
+              "requireAsyncCallbackFirewall",
+              "requireTerminalCallbackMap",
+              "requireImmutableTargetFlow",
+              "requireModelIdGuard",
+              "requireNativeMutationIdentity"
+            ],
+            "properties": {
+              "id": { "const": "threads-block-bridge-flow-v1" },
+              "ownerClassDescriptor": { "const": "Lthreadsmod/autoblock/ThreadsBlockBridge;" },
+              "blockMethodName": { "const": "block" },
+              "passivePreflightMethodName": { "const": "passivePreflight" },
+              "blockResolvedMethodName": { "const": "blockResolved" },
+              "blockModelMethodName": { "const": "blockModel" },
+              "prepareModelMethodName": { "const": "prepareModel" },
+              "automaticCallerClassDescriptor": {
+                "const": "Lthreadsmod/autoblock/AutoBlockSync$BlockRun;"
+              },
+              "manualCallerClassDescriptor": {
+                "const": "Lthreadsmod/autoblock/AutoBlockSync$ManualBlockRun;"
+              },
+              "fetchWorkerRunMethodReference": {
+                "const": "Lthreadsmod/autoblock/AutoBlockSync$FetchWorker;->run()V"
+              },
+              "scheduleManualDrainMethodReference": {
+                "const": "Lthreadsmod/autoblock/AutoBlockSync;->scheduleManualDrain(J)V"
+              },
+              "symbolsPointer": { "const": "/bridge/symbols" },
+              "inlineSymbolsPointer": { "const": "/inlineControls/symbols" },
+              "expectedDexName": { "const": "classes.dex" },
+              "expectedBlockInvokeCount": { "const": 3 },
+              "expectedPassivePreflightInvokeCount": { "const": 1 },
+              "expectedBlockResolvedInvokeCount": { "const": 1 },
+              "expectedBlockModelInvokeCount": { "const": 2 },
+              "expectedPrepareModelInvokeCount": { "const": 2 },
+              "expectedCacheLookupInvokeCount": { "const": 2 },
+              "expectedCacheFactoryInvokeCount": { "const": 2 },
+              "expectedCachePlaceholderInvokeCount": { "const": 2 },
+              "requireNarrowSeamHandlers": { "const": true },
+              "requirePassivePreflightBeforeReservation": { "const": true },
+              "requirePreparationResultFlow": { "const": true },
+              "requireCallerProvenance": { "const": true },
+              "requireCallerCatchTopology": { "const": true },
+              "requireDirectCallerCallbackExecution": { "const": true },
+              "requireCallerCallbackEffectTopology": { "const": true },
+              "requireCallbackExceptionalControlFlow": { "const": true },
+              "requireBridgeEntryReachability": { "const": true },
+              "requireSchedulerEnqueueAcceptance": { "const": true },
+              "requireUncertainMutationQuarantine": { "const": true },
+              "requirePrivateSeamCallProvenance": { "const": true },
+              "requireStableInlinePrivateSeamAbsence": { "const": true },
+              "requireDispatcherCallProvenance": { "const": true },
+              "requireAsyncCallbackFirewall": { "const": true },
+              "requireTerminalCallbackMap": { "const": true },
+              "requireImmutableTargetFlow": { "const": true },
+              "requireModelIdGuard": { "const": true },
+              "requireNativeMutationIdentity": { "const": true }
+            }
+          }
+        },
+        "requiredDexReportPermalinkFlow": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "expectedDexName",
+            "mediaPermalinkMethodPointer",
+            "mediaCodeMethodPointer",
+            "resolvedMediaGetterReference",
+            "mediaBackingFieldPointer",
+            "mediaCaptionMethodPointer",
+            "captionTextMethodPointer",
+            "factoryMethodReference",
+            "requestConstructorReference",
+            "permalinkSanitizerMethodReference",
+            "requestPermalinkFieldReference",
+            "requestNewQueueValidityMethodReference",
+            "requestBaseValidityMethodReference",
+            "requestPermalinkGetterReference",
+            "payloadToJsonMethodReference",
+            "payloadRequestFieldReference",
+            "jsonPutMethodReference",
+            "jsonArrayPutMethodReference",
+            "jsonArrayConstructorMethodReference",
+            "stringLengthMethodReference",
+            "controllerQueueMethodReference",
+            "clientQueueMethodReference",
+            "threadStartMethodReference",
+            "permalinkResolverMethodReference",
+            "excerptResolverMethodReference",
+            "rowLabelGetterReference",
+            "inlineRowRenderMethodReference",
+            "currentViewerMethodReference",
+            "ufiButtonMethodPointer",
+            "visibilityModifierMethodPointer",
+            "testTagMethodPointer",
+            "modifierComposedMethodPointer",
+            "ufiButtonDefaultMask"
+          ],
+          "properties": {
+            "id": { "const": "report-post-permalink-contract" },
+            "expectedDexName": { "const": "classes.dex" },
+            "mediaPermalinkMethodPointer": {
+              "const": "/reporting/symbols/mediaPermalinkMethod"
+            },
+            "mediaCodeMethodPointer": {
+              "const": "/reporting/symbols/mediaCodeMethod"
+            },
+            "resolvedMediaGetterReference": {
+              "const": "Lthreadsmod/inlinecontrol/InlineBlockRequest;->getResolvedMediaModel()Ljava/lang/Object;"
+            },
+            "mediaBackingFieldPointer": {
+              "const": "/reporting/symbols/mediaBackingField"
+            },
+            "mediaCaptionMethodPointer": {
+              "const": "/reporting/symbols/mediaCaptionMethod"
+            },
+            "captionTextMethodPointer": {
+              "const": "/reporting/symbols/captionTextMethod"
+            },
+            "factoryMethodReference": {
+              "const": "Lthreadsmod/reporting/InlineReportActionFactory;->createRequest(Lthreadsmod/inlinecontrol/InlineBlockRequest;)Lthreadsmod/reporting/ReportRequest;"
+            },
+            "requestConstructorReference": {
+              "const": "Lthreadsmod/reporting/ReportRequest;-><init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"
+            },
+            "permalinkSanitizerMethodReference": {
+              "const": "Lthreadsmod/reporting/ReportValues;->httpsThreadsPermalink(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;"
+            },
+            "requestPermalinkFieldReference": {
+              "const": "Lthreadsmod/reporting/ReportRequest;->permalink:Ljava/lang/String;"
+            },
+            "requestNewQueueValidityMethodReference": {
+              "const": "Lthreadsmod/reporting/ReportRequest;->isValidForNewQueue()Z"
+            },
+            "requestBaseValidityMethodReference": {
+              "const": "Lthreadsmod/reporting/ReportRequest;->isValid()Z"
+            },
+            "requestPermalinkGetterReference": {
+              "const": "Lthreadsmod/reporting/ReportRequest;->getPermalink()Ljava/lang/String;"
+            },
+            "payloadToJsonMethodReference": {
+              "const": "Lthreadsmod/reporting/ReportPayload;->toJson()Lorg/json/JSONObject;"
+            },
+            "payloadRequestFieldReference": {
+              "const": "Lthreadsmod/reporting/ReportPayload;->request:Lthreadsmod/reporting/ReportRequest;"
+            },
+            "jsonPutMethodReference": {
+              "const": "Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;"
+            },
+            "jsonArrayPutMethodReference": {
+              "const": "Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;"
+            },
+            "jsonArrayConstructorMethodReference": {
+              "const": "Lorg/json/JSONArray;-><init>()V"
+            },
+            "stringLengthMethodReference": {
+              "const": "Ljava/lang/String;->length()I"
+            },
+            "controllerQueueMethodReference": {
+              "const": "Lthreadsmod/reporting/ReportController;->queueFromForeground(Landroid/app/Activity;Ljava/lang/String;Lthreadsmod/reporting/ReportRequest;Ljava/lang/String;Lthreadsmod/reporting/ReportResultCallback;)V"
+            },
+            "clientQueueMethodReference": {
+              "const": "Lthreadsmod/reporting/ReportClient;->queueExplicit(Landroid/content/Context;Ljava/lang/String;Lthreadsmod/reporting/ReportRequest;Ljava/lang/String;Lthreadsmod/reporting/ReportResultCallback;)V"
+            },
+            "threadStartMethodReference": {
+              "const": "Ljava/lang/Thread;->start()V"
+            },
+            "permalinkResolverMethodReference": {
+              "const": "Lthreadsmod/reporting/ReportRequest;->resolveHostPermalink(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;"
+            },
+            "excerptResolverMethodReference": {
+              "const": "Lthreadsmod/reporting/ReportRequest;->resolveHostExcerpt(Ljava/lang/String;)Ljava/lang/String;"
+            },
+            "rowLabelGetterReference": {
+              "const": "Lthreadsmod/inlinecontrol/InlineBlockRequest;->getLabel()Ljava/lang/String;"
+            },
+            "inlineRowRenderMethodReference": {
+              "const": "Lthreadsmod/inlinecontrol/InlineActionRowAdapter;->render(LX/09jq;LX/09dm;LX/03gT;Lthreadsmod/inlinecontrol/InlineBlockRequest;JJ)V"
+            },
+            "currentViewerMethodReference": {
+              "const": "Lthreadsmod/autoblock/AutoBlockSync;->getCurrentViewer()Ljava/lang/String;"
+            },
+            "ufiButtonMethodPointer": {
+              "const": "/inlineControls/symbols/ufiButtonMethod"
+            },
+            "visibilityModifierMethodPointer": {
+              "const": "/inlineControls/symbols/visibilityModifierMethod"
+            },
+            "testTagMethodPointer": {
+              "const": "/inlineControls/symbols/testTagMethod"
+            },
+            "modifierComposedMethodPointer": {
+              "const": "/inlineControls/symbols/modifierComposedMethod"
+            },
+            "ufiButtonDefaultMask": {
+              "const": 63232
+            }
+          }
+        },
+        "targetedJadxClasses": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["className", "requiredStrings"],
+            "properties": {
+              "className": { "type": "string", "minLength": 1 },
+              "evidenceBoundary": { "type": "string", "minLength": 1 },
+              "requiredStrings": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": { "type": "string", "minLength": 1 }
+              },
+              "orderedStrings": {
+                "type": "array",
+                "minItems": 2,
+                "uniqueItems": true,
+                "items": { "type": "string", "minLength": 1 }
+              },
+              "forbiddenStrings": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": { "type": "string", "minLength": 1 }
+              },
+              "exactStringCounts": {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": { "type": "integer", "minimum": 0 }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "patchlets": { "contains": { "const": "005-split-source-universalization" } }
+        },
+        "required": ["patchlets"]
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "required": [
+              "delivery",
+              "splitSetSha256",
+              "splitMembers",
+              "nativeLibraryCount",
+              "densityResourceCount"
+            ],
+            "properties": {
+              "delivery": { "const": "split-apk-set" }
+            }
+          },
+          "toolchain": {
+            "required": [
+              "apkEditorVersion",
+              "apkEditorArscLibVersion",
+              "apkEditorJarSha256",
+              "apkEditorMergeArguments"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "patchlets": { "contains": { "const": "020-autoblock-runtime" } }
+        },
+        "required": ["patchlets"]
+      },
+      "then": {
+        "properties": {
+          "assets": { "required": ["autoblockJavaTreeSha256"] }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "patchlets": { "contains": { "const": "090-release-gates" } }
+        },
+        "required": ["patchlets"]
+      },
+      "then": {
+        "properties": {
+          "assets": {
+            "required": [
+              "splitUniversalizationToolSourceSha256",
+              "splitSourceContractTestSourceSha256",
+              "patchletPipelineSourceSha256",
+              "buildPatchedApkSourceSha256",
+              "targetedJadxRecoverySourceSha256",
+              "releaseContractTestSourceSha256",
+              "dexInspectorSourceSha256",
+              "dexLiteralCallInspectorSourceSha256",
+              "dexLiteralCallInspectorTestSourceSha256",
+              "dexLiteralCallFixtureTreeSha256",
+              "dexProxyBootstrapFlowInspectorSourceSha256",
+              "dexProxyBootstrapFlowInspectorTestSourceSha256",
+              "dexProxyBootstrapFlowFixtureTreeSha256",
+              "dexBridgeFlowInspectorSourceSha256",
+              "dexBridgeFlowFixtureAssemblerSourceSha256",
+              "dexBridgeFlowInspectorTestSourceSha256",
+              "dexBridgeFlowFixtureTreeSha256",
+              "dexReportPermalinkFlowInspectorSourceSha256",
+              "dexReportPermalinkFlowInspectorTestSourceSha256",
+              "dexReportPermalinkFlowFixtureTreeSha256",
+              "releaseToolContractModuleSha256",
+              "patchletCoreModuleSha256",
+              "resolutionSchemaSha256",
+              "patchletSchemaSha256",
+              "patchletCatalogTestSourceSha256",
+              "activityUiEmulatorTestSourceSha256",
+              "activityUiProbeManifestSha256",
+              "patchedApkTestSourceSha256"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "patchlets": { "contains": { "const": "030-native-block-bridge" } }
+        },
+        "required": ["patchlets"]
+      },
+      "then": {
+        "properties": {
+          "assets": { "required": ["bridgeTemplateTreeSha256", "bridgeReferenceTreeSha256"] }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "patchlets": { "contains": { "const": "050-mod-settings-ui" } }
+        },
+        "required": ["patchlets"]
+      },
+      "then": {
+        "required": ["uiComponents", "drawerSettings"],
+        "properties": {
+          "assets": { "required": ["settingsUiTemplateTreeSha256"] },
+          "release": { "required": ["requiredInjectedActivities"] }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "patchlets": { "contains": { "const": "060-inline-block-controls" } }
+        },
+        "required": ["patchlets"]
+      },
+      "then": {
+        "required": ["inlineControls"],
+        "properties": {
+          "assets": { "required": ["inlineTemplateTreeSha256"] },
+          "release": {
+            "required": ["requiredClassDescriptors", "requiredHookCalls"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "patchlets": { "contains": { "const": "070-consented-reporting" } }
+        },
+        "required": ["patchlets"]
+      },
+      "then": {
+        "required": ["reporting"],
+        "properties": {
+          "assets": { "required": ["reportJavaTreeSha256", "reportTemplateTreeSha256"] },
+          "release": {
+            "required": ["requiredWriteEndpoint", "requiredClassDescriptors", "requiredHookCalls"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "patchlets": { "contains": { "const": "080-socks5-proxy" } }
+        },
+        "required": ["patchlets"]
+      },
+      "then": {
+        "required": ["proxy"],
+        "properties": {
+          "assets": {
+            "required": [
+              "proxyJavaTreeSha256",
+              "socks5NativeAssetTreeSha256",
+              "socks5NativeBuildToolSha256"
+            ]
+          },
+          "rewriteSets": {
+            "contains": { "const": "proxy-manifest-rewrites.json" }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "patchlets": { "contains": { "const": "085-in-app-update" } }
+        },
+        "required": ["patchlets"]
+      },
+      "then": {
+        "required": ["update"],
+        "properties": {
+          "assets": {
+            "required": [
+              "updateJavaTreeSha256",
+              "dexUpdateFlowInspectorSourceSha256",
+              "dexUpdateFlowInspectorTestSourceSha256",
+              "dexUpdateFlowFixtureTreeSha256"
+            ]
+          },
+          "release": {
+            "required": [
+              "updateSignedDexReviewRequired",
+              "expectedDexUpdateFlowInspectorArgumentCount",
+              "expectedDexUpdateFlowFixtureCount",
+              "requiredDexUpdateFlow"
+            ]
+          },
+          "rewriteSets": {
+            "contains": { "const": "update-manifest-rewrites.json" }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": { "const": "verified-current" },
+          "patchlets": { "contains": { "const": "085-in-app-update" } }
+        },
+        "required": ["status", "patchlets"]
+      },
+      "then": {
+        "properties": {
+          "release": {
+            "properties": {
+              "updateSignedDexReviewRequired": { "const": false }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": { "const": "review-required" },
+          "patchlets": { "contains": { "const": "085-in-app-update" } }
+        },
+        "required": ["status", "patchlets"]
+      },
+      "then": {
+        "properties": {
+          "release": {
+            "properties": {
+              "updateSignedDexReviewRequired": { "const": true }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["update"]
+      },
+      "then": {
+        "properties": {
+          "patchlets": { "contains": { "const": "085-in-app-update" } }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["proxy"]
+      },
+      "then": {
+        "properties": {
+          "patchlets": { "contains": { "const": "080-socks5-proxy" } }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+    },
+    "javaPackage": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)+$"
+    },
+    "javaClass": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)+$"
+    },
+    "descriptor": {
+      "type": "string",
+      "pattern": "^L[^;]+;$"
+    },
+    "nonExportedActivity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "descriptor", "exported"],
+      "properties": {
+        "name": { "$ref": "#/$defs/javaClass" },
+        "descriptor": { "$ref": "#/$defs/descriptor" },
+        "exported": { "const": false }
+      }
+    },
+    "splitMember": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "fileName", "sha256", "size", "splitName", "splitType", "qualifier"],
+      "properties": {
+        "role": { "enum": ["base", "abi", "density"] },
+        "fileName": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*\\.apk$"
+        },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "size": { "type": "integer", "minimum": 1 },
+        "splitName": { "type": ["string", "null"] },
+        "splitType": { "type": ["string", "null"] },
+        "qualifier": { "type": ["string", "null"] }
+      }
+    },
+    "baseSplitMember": {
+      "allOf": [
+        { "$ref": "#/$defs/splitMember" },
+        {
+          "properties": {
+            "role": { "const": "base" },
+            "fileName": { "const": "base.apk" },
+            "splitName": { "type": "null" },
+            "splitType": { "type": "null" },
+            "qualifier": { "type": "null" }
+          }
+        }
+      ]
+    },
+    "abiSplitMember": {
+      "allOf": [
+        { "$ref": "#/$defs/splitMember" },
+        {
+          "properties": {
+            "role": { "const": "abi" },
+            "splitName": { "pattern": "^config\\.[A-Za-z0-9_]+$" },
+            "splitType": { "const": "base__abi" },
+            "qualifier": { "type": "string", "minLength": 1 }
+          }
+        }
+      ]
+    },
+    "densitySplitMember": {
+      "allOf": [
+        { "$ref": "#/$defs/splitMember" },
+        {
+          "properties": {
+            "role": { "const": "density" },
+            "splitName": { "pattern": "^config\\.[A-Za-z0-9_]+$" },
+            "splitType": { "const": "base__density" },
+            "qualifier": { "type": "string", "minLength": 1 }
+          }
+        }
+      ]
+    }
+  }
+}

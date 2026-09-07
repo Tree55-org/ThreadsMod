@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://threadsmod.local/schemas/ai-resolution.schema.json",
+  "title": "AI candidate-selection proposal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "taskId",
+    "sourceApkSha256",
+    "status",
+    "proposals",
+    "unresolved",
+    "provenance"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "minLength": 1 },
+    "schemaVersion": { "const": 1 },
+    "taskId": { "$ref": "#/$defs/id" },
+    "sourceApkSha256": { "$ref": "#/$defs/sha256" },
+    "status": { "enum": ["proposed", "needs-review", "unresolved"] },
+    "proposals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "role",
+          "selectedCandidateId",
+          "confidence",
+          "evidenceIds",
+          "alternatives",
+          "reason",
+          "requiresHumanReview"
+        ],
+        "properties": {
+          "role": { "$ref": "#/$defs/id" },
+          "selectedCandidateId": { "$ref": "#/$defs/id" },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "evidenceIds": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "$ref": "#/$defs/id" }
+          },
+          "alternatives": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "$ref": "#/$defs/id" }
+          },
+          "reason": { "type": "string", "minLength": 1 },
+          "requiresHumanReview": { "type": "boolean" }
+        }
+      }
+    },
+    "unresolved": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/id" }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "promptSha256", "createdAt"],
+      "properties": {
+        "model": { "type": "string", "minLength": 1 },
+        "promptSha256": { "$ref": "#/$defs/sha256" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

@@ -1,0 +1,582 @@
+{
+  "schemaVersion": 1,
+  "expectedFixtureCount": 49,
+  "fixtures": [
+    {
+      "id": "single-target-mutable-target-id",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_bridge_target_owner_field_finality",
+      "replacements": [
+        {
+          "before": ".field private final targetId:Ljava/lang/String;",
+          "after": ".field private targetId:Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-target-from-viewer",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_is_current_owner_target_constructor_source",
+      "replacements": [
+        {
+          "before": "    iput-object p4, p0, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->targetId:Ljava/lang/String;",
+          "after": "    iput-object p3, p0, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->targetId:Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-selection-target-mutable",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$PassiveTargetSelection.smali",
+      "expectedCode": "fetch_worker_enqueue_selection_field_shape",
+      "replacements": [
+        {
+          "before": ".field final targetId:Ljava/lang/String;",
+          "after": ".field targetId:Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-selection-target-misbinding",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$PassiveTargetSelection.smali",
+      "expectedCode": "fetch_worker_enqueue_selection_targetId_source",
+      "replacements": [
+        {
+          "before": "    iput-object p1, p0, Lthreadsmod/autoblock/AutoBlockSync$PassiveTargetSelection;->targetId:Ljava/lang/String;",
+          "after": "    iput-object p0, p0, Lthreadsmod/autoblock/AutoBlockSync$PassiveTargetSelection;->targetId:Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-fetch-selection-capture-mutable",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker$1.smali",
+      "expectedCode": "fetch_worker_enqueue_runnable_capture_fields_field_shape",
+      "replacements": [
+        {
+          "before": ".field final synthetic val$selection:Lthreadsmod/autoblock/AutoBlockSync$PassiveTargetSelection;",
+          "after": ".field synthetic val$selection:Lthreadsmod/autoblock/AutoBlockSync$PassiveTargetSelection;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-fetch-worker-viewer-mutable",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker.smali",
+      "expectedCode": "fetch_worker_enqueue_owner_field_shape",
+      "replacements": [
+        {
+          "before": ".field private final viewer:Ljava/lang/String;",
+          "after": ".field private viewer:Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-fetch-worker-viewer-misbinding",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker.smali",
+      "expectedCode": "fetch_worker_enqueue_owner_viewer_source",
+      "replacements": [
+        {
+          "before": "    iput-object p3, p0, Lthreadsmod/autoblock/AutoBlockSync$FetchWorker;->viewer:Ljava/lang/String;",
+          "after": "    iput-object p0, p0, Lthreadsmod/autoblock/AutoBlockSync$FetchWorker;->viewer:Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-admission-lock-early-exit",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_bridge_target_monitor_count",
+      "replacements": [
+        {
+          "before": "    monitor-enter v6",
+          "after": "    monitor-exit v6",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-begin-recursive-continuation",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_bridge_target_recursive",
+      "replacements": [
+        {
+          "before": "    invoke-virtual {v0, v1}, Ljava/util/concurrent/atomic/AtomicBoolean;->set(Z)V",
+          "after": "    invoke-virtual {p0}, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->begin()V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-begin-list-reference",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_bridge_target_list_reference",
+      "replacements": [
+        {
+          "before": "    invoke-interface {v0, v6}, Ljava/util/Set;->contains(Ljava/lang/Object;)Z",
+          "after": "    invoke-interface {v0, v6}, Ljava/util/List;->contains(Ljava/lang/Object;)Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-authority-allowed-factory-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$PassiveAuthority.smali",
+      "expectedCode": "automatic_caller_bridge_target_authority_result_allowed_flags",
+      "replacements": [
+        {
+          "before": "    const/4 v1, 0x1",
+          "after": "    const/4 v1, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-authority-main-thread-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_bridge_target_authority_owner_main",
+      "replacements": [
+        {
+          "before": "    .line 2616\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$3700()Z",
+          "after": "    .line 2616\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$3200()Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-authority-manual-priority-misbinding",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_bridge_target_authority_owner_manual_arguments",
+      "replacements": [
+        {
+          "before": "    .line 2628\n    :cond_2\n    iget-object v0, p0, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->viewer:Ljava/lang/String;\n\n    invoke-static {v0, v2}, Lthreadsmod/autoblock/ModStateStore;->nextQueued(Landroid/content/Context;Ljava/lang/String;)Lthreadsmod/autoblock/ModStateStore$QueueItem;",
+          "after": "    .line 2628\n    :cond_2\n    iget-object v0, p0, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->viewer:Ljava/lang/String;\n\n    invoke-static {v0, v0}, Lthreadsmod/autoblock/ModStateStore;->nextQueued(Landroid/content/Context;Ljava/lang/String;)Lthreadsmod/autoblock/ModStateStore$QueueItem;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-authority-membership-target-misbinding",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_bridge_target_authority_owner_membership_arguments",
+      "replacements": [
+        {
+          "before": "    invoke-static {p1, v0, v4}, Lthreadsmod/autoblock/AutoBlockSync;->access$4200(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Lthreadsmod/autoblock/AutoBlockSync$PassiveMatchResult;",
+          "after": "    invoke-static {p1, v0, v0}, Lthreadsmod/autoblock/AutoBlockSync;->access$4200(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Lthreadsmod/autoblock/AutoBlockSync$PassiveMatchResult;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-authority-running-state-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_bridge_target_authority_owner_running_flag_guard_count",
+      "replacements": [
+        {
+          "before": "    :cond_6\n    if-nez p1, :cond_7",
+          "after": "    :cond_6\n    if-eqz p1, :cond_7",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-authority-reservation-state-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_bridge_target_authority_owner_reservation_flag_guard_count",
+      "replacements": [
+        {
+          "before": "    :cond_9\n    if-nez p2, :cond_b",
+          "after": "    :cond_9\n    if-eqz p2, :cond_b",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-before-running-authority-argument-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_bridge_target_before_running_arguments",
+      "replacements": [
+        {
+          "before": "    invoke-direct {p0, v0, v0}, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->currentPassiveAuthority(ZZ)Lthreadsmod/autoblock/AutoBlockSync$PassiveAuthority;",
+          "after": "    invoke-direct {p0, v1, v0}, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->currentPassiveAuthority(ZZ)Lthreadsmod/autoblock/AutoBlockSync$PassiveAuthority;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-before-reservation-authority-argument-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_bridge_target_before_reservation_arguments",
+      "replacements": [
+        {
+          "before": "    invoke-direct {p0, v1, v0}, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->currentPassiveAuthority(ZZ)Lthreadsmod/autoblock/AutoBlockSync$PassiveAuthority;",
+          "after": "    invoke-direct {p0, v0, v0}, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->currentPassiveAuthority(ZZ)Lthreadsmod/autoblock/AutoBlockSync$PassiveAuthority;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-before-dispatch-authority-argument-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_bridge_target_before_dispatch_arguments",
+      "replacements": [
+        {
+          "before": "    invoke-direct {p0, v1, v1}, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->currentPassiveAuthority(ZZ)Lthreadsmod/autoblock/AutoBlockSync$PassiveAuthority;",
+          "after": "    invoke-direct {p0, v1, v0}, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->currentPassiveAuthority(ZZ)Lthreadsmod/autoblock/AutoBlockSync$PassiveAuthority;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-preflight-target-misbinding",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_bridge_target_preflight_arguments",
+      "replacements": [
+        {
+          "before": "    invoke-static {v7, v8}, Lthreadsmod/autoblock/ThreadsBlockBridge;->passivePreflight(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String;",
+          "after": "    invoke-static {v7, v7}, Lthreadsmod/autoblock/ThreadsBlockBridge;->passivePreflight(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-automatic-reservation-manual-flag",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_bridge_target_effect_arguments",
+      "replacements": [
+        {
+          "before": "    invoke-static {v2, v5, v1}, Lthreadsmod/autoblock/AutoBlockSync;->access$4300(Landroid/content/Context;Ljava/lang/String;Z)Z",
+          "after": "    invoke-static {v2, v5, v0}, Lthreadsmod/autoblock/AutoBlockSync;->access$4300(Landroid/content/Context;Ljava/lang/String;Z)Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-reservation-passive-flag",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "automatic_caller_bridge_target_manual_bypass_manual_flag",
+      "replacements": [
+        {
+          "before": "    :cond_7\n    invoke-static {v2, v4, v1}, Lthreadsmod/autoblock/AutoBlockSync;->reserveAttempt(Landroid/content/Context;Ljava/lang/String;Z)Z",
+          "after": "    :cond_7\n    const/4 v1, 0x1\n\n    invoke-static {v2, v4, v1}, Lthreadsmod/autoblock/AutoBlockSync;->reserveAttempt(Landroid/content/Context;Ljava/lang/String;Z)Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "reserve-attempt-passive-valid-guard-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "automatic_caller_bridge_target_reserve_method_valid_guard_count",
+      "replacements": [
+        {
+          "before": "    .line 3726\n    :cond_0\n    if-eqz p2, :cond_1",
+          "after": "    .line 3726\n    :cond_0\n    if-nez p2, :cond_1",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "reserve-attempt-passive-pace-guard-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "automatic_caller_bridge_target_reserve_method_pace_guard_count",
+      "replacements": [
+        {
+          "before": "    .line 3731\n    if-eqz p2, :cond_2",
+          "after": "    .line 3731\n    if-nez p2, :cond_2",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "reserve-attempt-passive-write-guard-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "automatic_caller_bridge_target_reserve_method_write_guard_count",
+      "replacements": [
+        {
+          "before": "    .line 3746\n    if-eqz p2, :cond_5",
+          "after": "    .line 3746\n    if-nez p2, :cond_5",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "reserve-attempt-history-clock-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "automatic_caller_bridge_target_reserve_method_now",
+      "replacements": [
+        {
+          "before": "    .line 3730\n    invoke-static {}, Ljava/lang/System;->currentTimeMillis()J",
+          "after": "    .line 3730\n    invoke-static {}, Ljava/lang/System;->nanoTime()J",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "reserve-attempt-history-append-value-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "automatic_caller_bridge_target_reserve_method_history_append_value",
+      "replacements": [
+        {
+          "before": "    invoke-interface {v4, v5}, Ljava/util/List;->add(Ljava/lang/Object;)Z",
+          "after": "    invoke-interface {v4, v4}, Ljava/util/List;->add(Ljava/lang/Object;)Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "reserve-attempt-history-key-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "automatic_caller_bridge_target_reserve_method_history_key",
+      "replacements": [
+        {
+          "before": "    invoke-interface {v0, v1, v4}, Landroid/content/SharedPreferences$Editor;->putString(Ljava/lang/String;Ljava/lang/String;)Landroid/content/SharedPreferences$Editor;",
+          "after": "    invoke-interface {v0, p1, v4}, Landroid/content/SharedPreferences$Editor;->putString(Ljava/lang/String;Ljava/lang/String;)Landroid/content/SharedPreferences$Editor;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "reserve-attempt-history-value-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "automatic_caller_bridge_target_reserve_method_history_value",
+      "replacements": [
+        {
+          "before": "    invoke-interface {v0, v1, v4}, Landroid/content/SharedPreferences$Editor;->putString(Ljava/lang/String;Ljava/lang/String;)Landroid/content/SharedPreferences$Editor;",
+          "after": "    invoke-interface {v0, v1, p1}, Landroid/content/SharedPreferences$Editor;->putString(Ljava/lang/String;Ljava/lang/String;)Landroid/content/SharedPreferences$Editor;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "reserve-attempt-passive-minimum-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "automatic_caller_bridge_target_reserve_method_minimum",
+      "replacements": [
+        {
+          "before": "    invoke-virtual {p0}, Lthreadsmod/autoblock/BlockLimits;->passiveMinDelayMs()I",
+          "after": "    invoke-virtual {p0}, Lthreadsmod/autoblock/BlockLimits;->hashCode()I",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "reserve-attempt-passive-maximum-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "automatic_caller_bridge_target_reserve_method_maximum",
+      "replacements": [
+        {
+          "before": "    invoke-virtual {p0}, Lthreadsmod/autoblock/BlockLimits;->passiveMaxDelayMs()I",
+          "after": "    invoke-virtual {p0}, Lthreadsmod/autoblock/BlockLimits;->hashCode()I",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "reserve-attempt-delay-bounds-swapped",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "automatic_caller_bridge_target_reserve_method_minimum_flow",
+      "replacements": [
+        {
+          "before": "    invoke-static {p2, p0}, Lthreadsmod/autoblock/AutoBlockSync;->randomDelay(II)I",
+          "after": "    invoke-static {p0, p2}, Lthreadsmod/autoblock/AutoBlockSync;->randomDelay(II)I",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "reserve-attempt-deadline-clock-clobber",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "automatic_caller_bridge_target_reserve_method_deadline_math",
+      "replacements": [
+        {
+          "before": "    int-to-long v4, p0\n\n    add-long/2addr v2, v4",
+          "after": "    int-to-long v4, p0\n\n    const-wide/16 v2, 0x0\n\n    add-long/2addr v2, v4",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "reserve-attempt-pace-key-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "automatic_caller_bridge_target_reserve_method_pace_key_flow",
+      "replacements": [
+        {
+          "before": "    invoke-interface {v0, p0, v2, v3}, Landroid/content/SharedPreferences$Editor;->putLong(Ljava/lang/String;J)Landroid/content/SharedPreferences$Editor;",
+          "after": "    invoke-interface {v0, p1, v2, v3}, Landroid/content/SharedPreferences$Editor;->putLong(Ljava/lang/String;J)Landroid/content/SharedPreferences$Editor;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "reserve-attempt-editor-chain-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "automatic_caller_bridge_target_reserve_method_commit_editor",
+      "replacements": [
+        {
+          "before": "    .line 3752\n    :cond_5\n    invoke-interface {v0}, Landroid/content/SharedPreferences$Editor;->commit()Z",
+          "after": "    .line 3752\n    :cond_5\n    invoke-interface {v1}, Landroid/content/SharedPreferences$Editor;->commit()Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-postreservation-editor-mutation",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_bridge_target_nonclearing_postreservation_mutation",
+      "replacements": [
+        {
+          "before": "    .line 2577\n    :cond_23\n    nop",
+          "after": "    .line 2577\n    :cond_23\n    invoke-interface {v2}, Landroid/content/SharedPreferences$Editor;->clear()Landroid/content/SharedPreferences$Editor;\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-started-current-guard-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_callback_started_current_branch",
+      "replacements": [
+        {
+          "before": "    .line 2782\n    invoke-direct {p0, p1}, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->isCurrent(Ljava/lang/String;)Z\n\n    move-result p1\n\n    if-nez p1, :cond_0",
+          "after": "    .line 2782\n    invoke-direct {p0, p1}, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->isCurrent(Ljava/lang/String;)Z\n\n    move-result p1\n\n    if-eqz p1, :cond_0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-success-clear-running-guard-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_callback_success_clear_passive_running_branch",
+      "replacements": [
+        {
+          "before": "    invoke-static {v1, v2, p1}, Lthreadsmod/autoblock/ModStateStore;->clearPassiveRunning(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z\n\n    move-result v1\n    :try_end_0\n    .catchall {:try_start_0 .. :try_end_0} :catchall_0\n\n    if-eqz v1, :cond_1",
+          "after": "    invoke-static {v1, v2, p1}, Lthreadsmod/autoblock/ModStateStore;->clearPassiveRunning(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z\n\n    move-result v1\n    :try_end_0\n    .catchall {:try_start_0 .. :try_end_0} :catchall_0\n\n    if-nez v1, :cond_1",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-success-completion-quarantine-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_callback_success_completion_join_branch",
+      "replacements": [
+        {
+          "before": "    :goto_1\n    if-nez v1, :cond_2\n\n    .line 2802\n    invoke-direct {p0, p1}, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->handleCompletionPersistence(Ljava/lang/String;)V",
+          "after": "    :goto_1\n    if-eqz v1, :cond_2\n\n    .line 2802\n    invoke-direct {p0, p1}, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->handleCompletionPersistence(Ljava/lang/String;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-success-same-owner-continuation",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_callback_success_unreviewed_invoke",
+      "replacements": [
+        {
+          "before": "    invoke-direct {p0, p1, v0, v1}, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->finishAndResume(Ljava/lang/String;J)V",
+          "after": "    invoke-virtual {p0}, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->begin()V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-failure-quarantine-backoff-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_failure_owner_clear_passive_running_branch",
+      "replacements": [
+        {
+          "before": "    const/4 v4, 0x1\n\n    if-nez v2, :cond_3",
+          "after": "    const/4 v4, 0x1\n\n    if-eqz v2, :cond_3",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-failure-wake-delay-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_failure_owner_wake_arguments",
+      "replacements": [
+        {
+          "before": "    .line 2876\n    const-wide/32 p1, 0x1d8a8",
+          "after": "    .line 2876\n    const-wide/16 p1, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-watchdog-rejection-guard-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_caller_enqueue_watchdog_result_branch",
+      "replacements": [
+        {
+          "before": "    .line 2609\n    if-nez v0, :cond_27",
+          "after": "    .line 2609\n    if-eqz v0, :cond_27",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-watchdog-elapsed-target-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun$1.smali",
+      "expectedCode": "automatic_caller_enqueue_watchdog_elapsed_route_target",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1}, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->access$5000(Lthreadsmod/autoblock/AutoBlockSync$BlockRun;Ljava/lang/String;)V",
+          "after": "    invoke-static {v0, v0}, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->access$5000(Lthreadsmod/autoblock/AutoBlockSync$BlockRun;Ljava/lang/String;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-uncertain-quarantine-target-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$BlockRun.smali",
+      "expectedCode": "automatic_uncertain_mutation_target_register_mutated",
+      "replacements": [
+        {
+          "before": "    .line 2886\n    iget-object v1, p0, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->viewer:Ljava/lang/String;\n\n    invoke-static {v1, v2, p1}, Lthreadsmod/autoblock/AutoBlockSync;->access$4400(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z",
+          "after": "    .line 2886\n    iget-object v1, p0, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lthreadsmod/autoblock/AutoBlockSync$BlockRun;->viewer:Ljava/lang/String;\n\n    invoke-static {v1, v2, v2}, Lthreadsmod/autoblock/AutoBlockSync;->access$4400(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-current-match-invalid-generation-clobber",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "current_passive_match_core_invalid_latch_adjacent",
+      "replacements": [
+        {
+          "before": "    .line 2116\n    iget-wide v0, v1, Lthreadsmod/autoblock/BlocklistStore$IdMatch;->generation:J\n\n    invoke-static {p0, p1, v0, v1}, Lthreadsmod/autoblock/AutoBlockSync;->latchPassiveStorePause(Landroid/content/Context;Ljava/lang/String;J)V",
+          "after": "    .line 2116\n    iget-wide v0, v1, Lthreadsmod/autoblock/BlocklistStore$IdMatch;->generation:J\n\n    const-wide/16 v0, 0x0\n\n    invoke-static {p0, p1, v0, v1}, Lthreadsmod/autoblock/AutoBlockSync;->latchPassiveStorePause(Landroid/content/Context;Ljava/lang/String;J)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-lookup-worker-invalid-generation-clobber",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$PassiveLookupWorker.smali",
+      "expectedCode": "lookup_worker_invalid_generation_invalid_latch_adjacent",
+      "replacements": [
+        {
+          "before": "    iget-wide v5, v2, Lthreadsmod/autoblock/BlocklistStore$IdMatch;->generation:J\n\n    invoke-static {v3, v4, v5, v6}, Lthreadsmod/autoblock/AutoBlockSync;->access$3200(Landroid/content/Context;Ljava/lang/String;J)V",
+          "after": "    iget-wide v5, v2, Lthreadsmod/autoblock/BlocklistStore$IdMatch;->generation:J\n\n    const-wide/16 v5, 0x0\n\n    invoke-static {v3, v4, v5, v6}, Lthreadsmod/autoblock/AutoBlockSync;->access$3200(Landroid/content/Context;Ljava/lang/String;J)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "single-target-id-match-invalid-helper-generation-zero",
+      "relativePath": "threadsmod/autoblock/BlocklistStore$IdMatch.smali",
+      "expectedCode": "id_match_invalid_generation_factory_max_arguments",
+      "replacements": [
+        {
+          "before": "    invoke-static {v1, v2, p1, p2}, Ljava/lang/Math;->max(JJ)J",
+          "after": "    invoke-static {v1, v2, v1, v2}, Ljava/lang/Math;->max(JJ)J",
+          "expectedCount": 1
+        }
+      ]
+    }
+  ]
+}

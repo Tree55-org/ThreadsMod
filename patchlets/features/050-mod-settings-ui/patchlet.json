@@ -1,0 +1,255 @@
+{
+  "$schema": "../../schemas/patchlet.schema.json",
+  "schemaVersion": 1,
+  "id": "050-mod-settings-ui",
+  "revision": 17,
+  "title": "Clone Blocker activity, settings UI, and drawer entry",
+  "summary": "Register two non-exported mod activities, expose a shell-first crash-contained Activity plus extension-derived management, live checked-polling Current status with fetch/verify/index phases, total and newly added records, DB generation/index state and inline-render diagnostics, exactly two atomic passive-delay controls with manual inline work explicitly unpaced, truthful foreground ten-minute visible-only coverage, report outbox review, canonical post-link disclosure, the persisted Also block this profile default, private SOCKS5 navigation, and one native bottom-of-drawer settings row for each exact resolution without an external entry point.",
+  "stage": "hook",
+  "dependsOn": ["040-main-activity-hooks"],
+  "resolution": {
+    "required": true,
+    "binding": "exact-apk-sha256",
+    "sourceSha256Pointer": "/source/sha256",
+    "requiredSections": ["source", "uiComponents", "drawerSettings", "proofs", "rewriteSets", "release"],
+    "rewriteSets": ["settings-manifest-rewrites.json", "drawer-settings-rewrites.json"]
+  },
+  "risk": ["user-interface", "settings-storage", "packaging"],
+  "ownership": {
+    "classPrefixes": [
+      "Lcom/threadsmod/CloneBlockerActivity",
+      "Lcom/threadsmod/CloneBlockerSettingsActivity",
+      "Lcom/threadsmod/CloneBlockerUi"
+    ],
+    "classDescriptors": [
+      "Lcom/threadsmod/CloneBlockerActivity;",
+      "Lcom/threadsmod/CloneBlockerSettingsActivity;",
+      "Lcom/threadsmod/CloneBlockerUi;",
+      "Lthreadsmod/drawer/DrawerSettingsClick;",
+      "Lthreadsmod/drawer/DrawerSettingsItem;",
+      "Lthreadsmod/drawer/DrawerSettingsRowAdapter;"
+    ],
+    "rewriteRuleIds": [
+      "register-clone-blocker-activities",
+      "drawer-settings-button-hook",
+      "drawer-settings-button-hook-v1",
+      "drawer-settings-button-hook-v2"
+    ],
+    "manifestComponents": [
+      "com.threadsmod.CloneBlockerActivity",
+      "com.threadsmod.CloneBlockerSettingsActivity"
+    ],
+    "hostHooks": ["one resolved keyed lazy item immediately before the bottom spacer in each exact-resolution left-drawer layout"],
+    "preferenceKeys": [
+      "ui_also_block_profile"
+    ],
+    "databaseSchemas": []
+  },
+  "inputs": [
+    {
+      "id": "decoded-source-apk",
+      "kind": "decoded-apk",
+      "path": ".",
+      "required": true
+    },
+    {
+      "id": "activity-ui-java",
+      "kind": "asset-file",
+      "path": "assets/autoblock/java/com/threadsmod/CloneBlockerActivity.java",
+      "required": true
+    },
+    {
+      "id": "settings-ui-java",
+      "kind": "asset-file",
+      "path": "assets/autoblock/java/com/threadsmod/CloneBlockerSettingsActivity.java",
+      "required": true
+    },
+    {
+      "id": "shared-ui-java",
+      "kind": "asset-file",
+      "path": "assets/autoblock/java/com/threadsmod/CloneBlockerUi.java",
+      "required": true
+    },
+    {
+      "id": "settings-manifest-rewrites",
+      "kind": "resolution-rewrite-set",
+      "pathFromResolution": "settings-manifest-rewrites.json",
+      "required": true
+    },
+    {
+      "id": "drawer-settings-smali-templates",
+      "kind": "asset-tree",
+      "pathFromResolution": "/drawerSettings/templateRoot",
+      "required": true
+    },
+    {
+      "id": "drawer-settings-rewrites",
+      "kind": "resolution-rewrite-set",
+      "pathFromResolution": "drawer-settings-rewrites.json",
+      "required": true
+    },
+    {
+      "id": "resolved-ui-components",
+      "kind": "resolution-section",
+      "pointer": "/uiComponents",
+      "required": true
+    },
+    {
+      "id": "resolved-drawer-settings",
+      "kind": "resolution-section",
+      "pointer": "/drawerSettings",
+      "required": true
+    }
+  ],
+  "operations": [
+    {
+      "id": "compile-private-activity-ui-to-smali",
+      "type": "java-to-smali",
+      "sources": [
+        "assets/autoblock/java/com/threadsmod/CloneBlockerActivity.java",
+        "assets/autoblock/java/com/threadsmod/CloneBlockerSettingsActivity.java",
+        "assets/autoblock/java/com/threadsmod/CloneBlockerUi.java"
+      ],
+      "target": "decoded-apk:primary-dex",
+      "idempotency": "class-set-and-content-hash"
+    },
+    {
+      "id": "register-mod-activities",
+      "type": "exact-anchor-rewrite-set",
+      "source": "resolution:settings-manifest-rewrites.json",
+      "target": "decoded-apk",
+      "expectedCount": "per-rule",
+      "idempotency": "before-xor-after"
+    },
+    {
+      "id": "render-drawer-settings-control",
+      "type": "render-smali-templates",
+      "source": "resolution:/drawerSettings/templateRoot",
+      "target": "decoded-apk:primary-dex",
+      "destination": "smali/threadsmod/drawer",
+      "templateNames": [
+        "DrawerSettingsClick.smali.tmpl",
+        "DrawerSettingsItem.smali.tmpl",
+        "DrawerSettingsRowAdapter.smali.tmpl"
+      ],
+      "bindingsPointer": "/drawerSettings/symbols",
+      "idempotency": "rendered-content-hash",
+      "verifyNoPlaceholders": true
+    },
+    {
+      "id": "apply-drawer-settings-hook",
+      "type": "exact-anchor-rewrite-set",
+      "source": "resolution:drawer-settings-rewrites.json",
+      "target": "decoded-apk",
+      "expectedCount": "per-rule",
+      "idempotency": "before-xor-after"
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "resolution-sha-matches-input",
+      "check": "source-apk-sha256-equals-resolution",
+      "pointer": "/source/sha256",
+      "severity": "error"
+    },
+    {
+      "id": "drawer-settings-symbol-proofs-match",
+      "check": "resolution-proofs-match-decoded-apk",
+      "pointer": "/proofs",
+      "severity": "error"
+    },
+    {
+      "id": "ui-classes-compiled-once",
+      "check": "owned-class-descriptors-present-once",
+      "severity": "error"
+    },
+    {
+      "id": "manifest-anchor-has-one-valid-state",
+      "check": "rewrite-before-xor-after-at-expected-count",
+      "expectedCount": "per-rule",
+      "severity": "error"
+    }
+  ],
+  "postconditions": [
+    {
+      "id": "mod-activities-registered-once",
+      "check": "resolution-injected-activities-present-once",
+      "pointer": "/uiComponents",
+      "severity": "error"
+    },
+    {
+      "id": "mod-activities-private",
+      "check": "injected-activities-non-exported-without-intent-filters",
+      "pointer": "/uiComponents",
+      "severity": "error"
+    },
+    {
+      "id": "drawer-settings-row-present-once-per-layout",
+      "check": "each-resolution-owned-drawer-layout-has-exactly-one-native-row-and-click-route-immediately-before-its-bottom-spacer",
+      "pointer": "/drawerSettings",
+      "severity": "error"
+    },
+    {
+      "id": "combined-action-preference-persisted",
+      "check": "also-block-profile-default-is-checked-and-every-modal-or-settings-change-is-synchronously-committed-for-restart-persistence-with-no-one-click-bypass",
+      "severity": "error"
+    },
+    {
+      "id": "ui-state-bounded-and-viewer-scoped",
+      "check": "mod-state-store-bounds-and-viewer-keys-present",
+      "severity": "error"
+    },
+    {
+      "id": "settings-limit-controls-exact",
+      "check": "settings-has-only-passive-minimum-and-maximum-whole-second-fields-mapped-to-one-atomic-validated-two-key-snapshot-with-two-to-sixty-and-three-to-sixty-ranges-manual-inline-unpaced-disclosure-retired-cap-control-absence-and-failed-persistence-truthfully-pausing-only-passive-work",
+      "severity": "error"
+    },
+    {
+      "id": "report-outbox-review-private",
+      "check": "activity-exposes-viewer-scoped-report-status-retry-and-explicit-delete-only-and-settings-discloses-that-newly-queued-reports-send-the-canonical-post-permalink-as-target-url-and-sole-evidence-entry",
+      "severity": "error"
+    },
+    {
+      "id": "restored-activity-viewer-fails-closed",
+      "check": "activity-and-settings-require-current-process-live-session-viewer-before-report-scope-read-retry-or-delete",
+      "severity": "error"
+    },
+    {
+      "id": "activity-ui-construction-safe",
+      "check": "visible-shell-attached-before-state-read-stat-card-layout-owned-by-non-null-parent-add-view-and-signed-dex-rejects-null-layout-call",
+      "severity": "error"
+    },
+    {
+      "id": "passive-status-is-truthful",
+      "check": "activity-and-settings-current-status-render-live-fetch-verify-index-complete-or-retained-failure-total-records-exact-new-records-or-unavailable-database-generation-index-state-and-bounded-inline-hook-diagnostics-with-checked-one-second-poll-enqueue-and-pause-destroy-removal-while-foreground-ten-minute-post-reply-visible-only-coverage-does-not-claim-background-or-profile-header-observation",
+      "severity": "error"
+    },
+    {
+      "id": "settings-proxy-navigation-private",
+      "check": "shell-first-main-settings-renders-one-compact-configure-proxy-card-that-launches-only-the-non-exported-proxy-settings-activity-on-explicit-tap",
+      "severity": "error"
+    }
+  ],
+  "releaseGates": [
+    "mod-activity-contract",
+    "mod-activity-static-construction-contract",
+    "drawer-settings-resolution-proofs",
+    "drawer-settings-hooks-exact-count",
+    "drawer-settings-click-route",
+    "ui-class-descriptors",
+    "settings-combined-action-preference",
+    "settings-limit-contract",
+    "viewer-scope-memory-contract",
+    "report-outbox-review-contract",
+    "passive-activity-status-contract",
+    "settings-proxy-navigation-contract",
+    "smali-assembly"
+  ],
+  "ai": {
+    "allowed": true,
+    "taskTemplate": "../../ai/tasks/RESOLVE-DRAWER-SETTINGS.md",
+    "output": "proposal-json-only",
+    "mayEditProductionTree": false,
+    "mayRelaxChecks": false
+  }
+}

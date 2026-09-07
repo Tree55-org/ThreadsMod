@@ -1,0 +1,364 @@
+.class public final Lthreadsmod/autoblock/ThreadsBlockBridge;
+.super Ljava/lang/Object;
+.source "ThreadsBlockBridge.smali"
+
+
+# direct methods
+.method private constructor <init>()V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+.method public static passivePreflight(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String;
+    .locals 2
+
+    :try_preflight_session_start
+    check-cast p0, Lcom/instagram/common/session/UserSession;
+    :try_preflight_session_end
+    .catch Ljava/lang/Throwable; {:try_preflight_session_start .. :try_preflight_session_end} :catch_preflight_session
+
+    :try_preflight_cache_lookup_start
+    invoke-static {p0, p1}, LX/023;->A0f(Lcom/instagram/common/session/UserSession;Ljava/lang/String;)LX/2fp;
+
+    move-result-object v0
+    :try_preflight_cache_lookup_end
+    .catch Ljava/lang/Throwable; {:try_preflight_cache_lookup_start .. :try_preflight_cache_lookup_end} :catch_preflight_cache_lookup
+
+    if-nez v0, :preflight_model_ready
+
+    :try_preflight_cache_factory_start
+    invoke-static {p0}, LX/2gx;->A00(Lcom/instagram/common/session/UserSession;)LX/2gy;
+
+    move-result-object v0
+    :try_preflight_cache_factory_end
+    .catch Ljava/lang/Throwable; {:try_preflight_cache_factory_start .. :try_preflight_cache_factory_end} :catch_preflight_cache_factory
+
+    const/4 v1, 0x0
+
+    :try_preflight_cache_placeholder_start
+    invoke-virtual {v0, v1, p1}, LX/2gy;->A02(LX/2fh;Ljava/lang/String;)LX/2fp;
+
+    move-result-object v0
+    :try_preflight_cache_placeholder_end
+    .catch Ljava/lang/Throwable; {:try_preflight_cache_placeholder_start .. :try_preflight_cache_placeholder_end} :catch_preflight_cache_placeholder
+
+    if-nez v0, :preflight_model_ready
+
+    const-string v0, "placeholder_model_invalid"
+
+    return-object v0
+
+    :preflight_model_ready
+    :try_preflight_prepare_start
+    invoke-static {v0, p1}, Lthreadsmod/autoblock/ThreadsBlockBridge;->prepareModel(LX/2fp;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+    :try_preflight_prepare_end
+    .catch Ljava/lang/Throwable; {:try_preflight_prepare_start .. :try_preflight_prepare_end} :catch_preflight_prepare
+
+    return-object v0
+
+    :catch_preflight_session
+    move-exception v0
+
+    const-string v0, "session_model_exception"
+
+    return-object v0
+
+    :catch_preflight_cache_lookup
+    move-exception v0
+
+    const-string v0, "cache_lookup_exception"
+
+    return-object v0
+
+    :catch_preflight_cache_factory
+    move-exception v0
+
+    const-string v0, "cache_factory_exception"
+
+    return-object v0
+
+    :catch_preflight_cache_placeholder
+    move-exception v0
+
+    const-string v0, "cache_placeholder_exception"
+
+    return-object v0
+
+    :catch_preflight_prepare
+    move-exception v0
+
+    const-string v0, "bridge_dispatch_exception"
+
+    return-object v0
+.end method
+
+.method public static block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V
+    .locals 2
+
+    :try_session_start
+    check-cast p1, Lcom/instagram/common/session/UserSession;
+    :try_session_end
+    .catch Ljava/lang/Throwable; {:try_session_start .. :try_session_end} :catch_session
+
+    :try_cache_lookup_start
+    invoke-static {p1, p2}, LX/023;->A0f(Lcom/instagram/common/session/UserSession;Ljava/lang/String;)LX/2fp;
+
+    move-result-object v0
+    :try_cache_lookup_end
+    .catch Ljava/lang/Throwable; {:try_cache_lookup_start .. :try_cache_lookup_end} :catch_cache_lookup
+
+    if-nez v0, :model_ready
+
+    :try_cache_factory_start
+    invoke-static {p1}, LX/2gx;->A00(Lcom/instagram/common/session/UserSession;)LX/2gy;
+
+    move-result-object v0
+    :try_cache_factory_end
+    .catch Ljava/lang/Throwable; {:try_cache_factory_start .. :try_cache_factory_end} :catch_cache_factory
+
+    const/4 v1, 0x0
+
+    :try_cache_placeholder_start
+    invoke-virtual {v0, v1, p2}, LX/2gy;->A02(LX/2fh;Ljava/lang/String;)LX/2fp;
+
+    move-result-object v0
+    :try_cache_placeholder_end
+    .catch Ljava/lang/Throwable; {:try_cache_placeholder_start .. :try_cache_placeholder_end} :catch_cache_placeholder
+
+    if-nez v0, :model_ready
+
+    const-string v1, "placeholder_model_invalid"
+
+    invoke-static {p3, p2, v1}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->failure(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;Ljava/lang/String;)V
+
+    return-void
+
+    :model_ready
+    invoke-static {p0, p1, v0, p2, p3}, Lthreadsmod/autoblock/ThreadsBlockBridge;->blockModel(Landroid/app/Activity;Lcom/instagram/common/session/UserSession;LX/2fp;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V
+
+    return-void
+
+    :catch_session
+    move-exception v0
+
+    const-string v1, "session_model_exception"
+
+    invoke-static {p3, p2, v1}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->failure(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;Ljava/lang/String;)V
+
+    return-void
+
+    :catch_cache_lookup
+    move-exception v0
+
+    const-string v1, "cache_lookup_exception"
+
+    invoke-static {p3, p2, v1}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->failure(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;Ljava/lang/String;)V
+
+    return-void
+
+    :catch_cache_factory
+    move-exception v0
+
+    const-string v1, "cache_factory_exception"
+
+    invoke-static {p3, p2, v1}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->failure(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;Ljava/lang/String;)V
+
+    return-void
+
+    :catch_cache_placeholder
+    move-exception v0
+
+    const-string v1, "cache_placeholder_exception"
+
+    invoke-static {p3, p2, v1}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->failure(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;Ljava/lang/String;)V
+
+    return-void
+
+.end method
+
+.method public static blockResolved(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V
+    .locals 2
+
+    if-nez p2, :resolved_present
+
+    invoke-static {p0, p1, p3, p4}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V
+
+    return-void
+
+    :resolved_present
+    :try_resolved_session_start
+    check-cast p1, Lcom/instagram/common/session/UserSession;
+    :try_resolved_session_end
+    .catch Ljava/lang/Throwable; {:try_resolved_session_start .. :try_resolved_session_end} :catch_resolved_session
+
+    :try_resolved_model_start
+    check-cast p2, LX/2fp;
+    :try_resolved_model_end
+    .catch Ljava/lang/Throwable; {:try_resolved_model_start .. :try_resolved_model_end} :catch_resolved_model
+
+    invoke-static {p0, p1, p2, p3, p4}, Lthreadsmod/autoblock/ThreadsBlockBridge;->blockModel(Landroid/app/Activity;Lcom/instagram/common/session/UserSession;LX/2fp;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V
+
+    return-void
+
+    :catch_resolved_session
+    move-exception v0
+
+    const-string v1, "session_model_exception"
+
+    invoke-static {p4, p3, v1}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->failure(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;Ljava/lang/String;)V
+
+    return-void
+
+    :catch_resolved_model
+    move-exception v0
+
+    const-string v1, "resolved_model_invalid"
+
+    invoke-static {p4, p3, v1}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->failure(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;Ljava/lang/String;)V
+
+    return-void
+.end method
+
+.method private static prepareModel(LX/2fp;Ljava/lang/String;)Ljava/lang/String;
+    .locals 2
+
+    :try_model_id_start
+    invoke-virtual {p0}, LX/2fp;->getId()Ljava/lang/String;
+
+    move-result-object v0
+    :try_model_id_end
+    .catch Ljava/lang/Throwable; {:try_model_id_start .. :try_model_id_end} :catch_model_id
+
+    if-eqz v0, :model_id_mismatch
+
+    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-eqz v1, :model_id_mismatch
+
+    :try_already_blocked_start
+    invoke-static {p0}, LX/2gb;->A0M(LX/2fp;)Z
+
+    move-result v0
+    :try_already_blocked_end
+    .catch Ljava/lang/Throwable; {:try_already_blocked_start .. :try_already_blocked_end} :catch_already_blocked
+
+    if-eqz v0, :model_ready
+
+    const-string v0, "already_blocked_success"
+
+    return-object v0
+
+    :model_ready
+    const/4 v0, 0x0
+
+    return-object v0
+
+    :model_id_mismatch
+    const-string v0, "model_id_mismatch"
+
+    return-object v0
+
+    :catch_model_id
+    move-exception v0
+
+    const-string v0, "model_id_exception"
+
+    return-object v0
+
+    :catch_already_blocked
+    move-exception v0
+
+    const-string v0, "already_blocked_exception"
+
+    return-object v0
+.end method
+
+.method public static blockModel(Landroid/app/Activity;Lcom/instagram/common/session/UserSession;LX/2fp;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V
+    .locals 12
+
+    :try_dispatch_start
+    invoke-static {p2, p3}, Lthreadsmod/autoblock/ThreadsBlockBridge;->prepareModel(LX/2fp;Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+    :try_dispatch_end
+    .catch Ljava/lang/Throwable; {:try_dispatch_start .. :try_dispatch_end} :catch_dispatch
+
+    if-eqz v0, :submit_mutation
+
+    const-string v1, "already_blocked_success"
+
+    invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-eqz v1, :prepared_failure
+
+    move-object/from16 v2, p4
+
+    invoke-static {v2, p3}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->success(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;)V
+
+    return-void
+
+    :prepared_failure
+    move-object/from16 v2, p4
+
+    invoke-static {v2, p3, v0}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->failure(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;Ljava/lang/String;)V
+
+    return-void
+
+    :submit_mutation
+    move-object/from16 v0, p4
+
+    new-instance v3, Lthreadsmod/autoblock/MutationCallback;
+
+    invoke-direct {v3, v0, p3}, Lthreadsmod/autoblock/MutationCallback;-><init>(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;)V
+
+    move-object v0, p0
+    move-object v1, p1
+    move-object v2, p2
+
+    const/4 v4, 0x0
+    const-string v5, "ig_text_feed_profile"
+    const-string v6, "ig_text_feed_profile"
+    const/4 v7, 0x0
+    const/4 v8, 0x0
+    const/4 v9, 0x0
+    const/4 v10, 0x0
+    const/4 v11, 0x0
+
+    :try_mutation_start
+    invoke-static/range {v0 .. v11}, LX/DNo;->A00(Landroid/content/Context;Lcom/instagram/common/session/UserSession;LX/2fp;LX/Mwt;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V
+    :try_mutation_end
+    .catch Ljava/lang/Throwable; {:try_mutation_start .. :try_mutation_end} :catch_mutation
+
+    return-void
+
+    :catch_dispatch
+    move-exception v0
+
+    move-object/from16 v2, p4
+
+    const-string v1, "bridge_dispatch_exception"
+
+    invoke-static {v2, p3, v1}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->failure(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;Ljava/lang/String;)V
+
+    return-void
+
+    :catch_mutation
+    move-exception v0
+
+    move-object/from16 v2, p4
+
+    const-string v1, "mutation_exception"
+
+    invoke-static {v2, p3, v1}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->failure(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;Ljava/lang/String;)V
+
+    return-void
+.end method

@@ -1,0 +1,267 @@
+{
+  "$schema": "../../schemas/patchlet.schema.json",
+  "schemaVersion": 1,
+  "id": "080-socks5-proxy",
+  "revision": 3,
+  "title": "App-scoped fail-closed SOCKS5 transport",
+  "summary": "Add a default-disabled private proxy Settings page and Android-consented app-scoped VpnService that captures clone traffic through one reproducibly built, SHA-pinned arm64 tun2socks library, supports bounded numeric IPv4/IPv6/CIDR direct exclusions, encrypts optional SOCKS5 credentials, fails closed after Android establishes VPN authority, distinctly reports a newly active guard, retained guard, retained prior forwarding routes, or no TUN, and refreshes visible runtime status while Settings remains resumed.",
+  "stage": "hook",
+  "dependsOn": ["050-mod-settings-ui"],
+  "resolution": {
+    "required": true,
+    "binding": "exact-apk-sha256",
+    "sourceSha256Pointer": "/source/sha256",
+    "requiredSections": [
+      "source",
+      "target",
+      "proxy",
+      "proofs",
+      "assets",
+      "rewriteSets",
+      "release"
+    ],
+    "rewriteSets": ["proxy-manifest-rewrites.json"]
+  },
+  "risk": [
+    "network-routing",
+    "credential-storage",
+    "native-code",
+    "vpn-service",
+    "lifecycle-hook",
+    "user-interface",
+    "settings-storage",
+    "packaging"
+  ],
+  "ownership": {
+    "classPrefixes": [
+      "Lcom/threadsmod/ProxySettingsActivity",
+      "Lthreadsmod/proxy/"
+    ],
+    "classDescriptors": [
+      "Lcom/threadsmod/ProxySettingsActivity;",
+      "Lthreadsmod/proxy/ProxyBootstrap;",
+      "Lthreadsmod/proxy/ProxyBypassPolicy;",
+      "Lthreadsmod/proxy/ProxyConfig;",
+      "Lthreadsmod/proxy/ProxyConfigStore;",
+      "Lthreadsmod/proxy/ProxyController;",
+      "Lthreadsmod/proxy/ProxyRoutePlanner;",
+      "Lthreadsmod/proxy/Socks5VpnService;"
+    ],
+    "rewriteRuleIds": [
+      "register-socks5-special-use-permission",
+      "register-socks5-proxy-components",
+      "bootstrap-socks5-proxy"
+    ],
+    "manifestComponents": [
+      "com.threadsmod.ProxySettingsActivity",
+      "threadsmod.proxy.Socks5VpnService"
+    ],
+    "hostHooks": [
+      "BarcelonaAppShell.attachBaseContext post-super proxy bootstrap",
+      "keystore-alias:threadsmod_proxy_config_aes_v1",
+      "lib/arm64-v8a/libhev-socks5-tunnel.so",
+      "assets/threadsmod/licenses/hev-socks5-tunnel-and-lwip.txt"
+    ],
+    "preferenceKeys": [
+      "threadsmod_proxy_schema_version",
+      "threadsmod_proxy_generation",
+      "threadsmod_proxy_enabled",
+      "threadsmod_proxy_host",
+      "threadsmod_proxy_port",
+      "threadsmod_proxy_auth_enabled",
+      "threadsmod_proxy_credentials_ciphertext",
+      "threadsmod_proxy_credentials_iv",
+      "threadsmod_proxy_bypass_rules_v1",
+      "threadsmod_proxy_fail_closed"
+    ],
+    "databaseSchemas": []
+  },
+  "inputs": [
+    {
+      "id": "decoded-source-apk",
+      "kind": "decoded-apk",
+      "path": ".",
+      "required": true
+    },
+    {
+      "id": "proxy-java",
+      "kind": "asset-tree",
+      "path": "assets/autoblock/java/threadsmod/proxy",
+      "sha256FromResolution": "/assets/proxyJavaTreeSha256",
+      "required": true
+    },
+    {
+      "id": "proxy-settings-activity-java",
+      "kind": "asset-file",
+      "path": "assets/autoblock/java/com/threadsmod/ProxySettingsActivity.java",
+      "required": true
+    },
+    {
+      "id": "proxy-rewrite-set",
+      "kind": "resolution-rewrite-set",
+      "pathFromResolution": "proxy-manifest-rewrites.json",
+      "required": true
+    },
+    {
+      "id": "resolved-proxy-contract",
+      "kind": "resolution-section",
+      "pointer": "/proxy",
+      "required": true
+    },
+    {
+      "id": "socks5-native-assets",
+      "kind": "asset-tree",
+      "path": "assets/socks5-proxy/native",
+      "sha256FromResolution": "/assets/socks5NativeAssetTreeSha256",
+      "required": true
+    },
+    {
+      "id": "socks5-native-library",
+      "kind": "asset-file",
+      "path": "assets/socks5-proxy/native/arm64-v8a/libhev-socks5-tunnel.so",
+      "sha256FromResolution": "/proxy/nativeLibrary/sha256",
+      "required": true
+    },
+    {
+      "id": "socks5-native-license-notice",
+      "kind": "asset-file",
+      "path": "assets/socks5-proxy/native/NOTICE.hev-socks5-tunnel-and-lwip.txt",
+      "sha256FromResolution": "/proxy/licenseAsset/sha256",
+      "required": true
+    },
+    {
+      "id": "socks5-native-build-tool",
+      "kind": "asset-file",
+      "path": "tools/Build-Socks5Native.ps1",
+      "sha256FromResolution": "/assets/socks5NativeBuildToolSha256",
+      "required": true
+    }
+  ],
+  "operations": [
+    {
+      "id": "compile-socks5-proxy-to-smali",
+      "type": "java-to-smali",
+      "sources": [
+        "assets/autoblock/java/com/threadsmod/ProxySettingsActivity.java",
+        "assets/autoblock/java/threadsmod/proxy/ProxyBootstrap.java",
+        "assets/autoblock/java/threadsmod/proxy/ProxyBypassPolicy.java",
+        "assets/autoblock/java/threadsmod/proxy/ProxyConfig.java",
+        "assets/autoblock/java/threadsmod/proxy/ProxyConfigStore.java",
+        "assets/autoblock/java/threadsmod/proxy/ProxyController.java",
+        "assets/autoblock/java/threadsmod/proxy/ProxyRoutePlanner.java",
+        "assets/autoblock/java/threadsmod/proxy/Socks5VpnService.java"
+      ],
+      "target": "decoded-apk:primary-dex",
+      "idempotency": "class-set-and-content-hash"
+    },
+    {
+      "id": "apply-socks5-proxy-manifest-and-bootstrap",
+      "type": "exact-anchor-rewrite-set",
+      "source": "resolution:proxy-manifest-rewrites.json",
+      "target": "decoded-apk",
+      "expectedCount": "per-rule",
+      "idempotency": "before-xor-after"
+    },
+    {
+      "id": "install-socks5-native-library",
+      "type": "copy-native-library",
+      "source": "resolution:/proxy/nativeLibrary/assetPath",
+      "target": "decoded-apk:lib/arm64-v8a",
+      "destination": "resolution:/proxy/nativeLibrary/decodedPath",
+      "idempotency": "file-content-hash"
+    },
+    {
+      "id": "install-socks5-license-notice",
+      "type": "copy-license-asset",
+      "source": "resolution:/proxy/licenseAsset/assetPath",
+      "target": "decoded-apk:assets/threadsmod/licenses",
+      "destination": "resolution:/proxy/licenseAsset/decodedPath",
+      "idempotency": "file-content-hash"
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "resolution-sha-matches-input",
+      "check": "source-apk-sha256-equals-resolution",
+      "pointer": "/source/sha256",
+      "severity": "error"
+    },
+    {
+      "id": "proxy-bootstrap-proof-matches",
+      "check": "resolution-proofs-match-decoded-apk",
+      "pointer": "/proxy/bootstrapHook",
+      "severity": "error"
+    },
+    {
+      "id": "proxy-rewrite-has-one-valid-state",
+      "check": "rewrite-before-xor-after-at-expected-count",
+      "expectedCount": "per-rule",
+      "severity": "error"
+    },
+    {
+      "id": "native-library-hash-matches",
+      "check": "asset-sha256-equals-resolution",
+      "pointer": "/proxy/nativeLibrary/sha256",
+      "severity": "error"
+    }
+  ],
+  "postconditions": [
+    {
+      "id": "proxy-components-private",
+      "check": "proxy-settings-is-non-exported-without-intent-filter-and-vpn-service-is-non-exported-bind-vpn-protected",
+      "pointer": "/proxy",
+      "severity": "error"
+    },
+    {
+      "id": "proxy-bootstrap-exact",
+      "check": "one-resolution-owned-bootstrap-call-occurs-immediately-after-application-super-attach",
+      "pointer": "/proxy/bootstrapHook",
+      "severity": "error"
+    },
+    {
+      "id": "proxy-state-fails-closed",
+      "check": "default-disabled-consent-owned-atomic-encrypted-config-post-consent-errors-retain-blackhole-and-new-guard-retained-guard-retained-forwarding-or-no-tun-state-is-distinct-and-settings-status-refresh-is-lifecycle-bounded-and-fail-visible",
+      "severity": "error"
+    },
+    {
+      "id": "proxy-bypass-exact-and-bounded",
+      "check": "only-canonical-numeric-ip-or-cidr-rules-at-most-64-and-4096-utf16-with-route-equivalent-api-paths",
+      "severity": "error"
+    },
+    {
+      "id": "proxy-native-pinned",
+      "check": "sole-added-library-matches-hash-aarch64-jni-owner-and-minimum-16k-load-alignment-while-all-source-libraries-are-preserved",
+      "pointer": "/proxy/nativeLibrary",
+      "severity": "error"
+    },
+    {
+      "id": "proxy-license-notice-pinned",
+      "check": "sole-added-license-asset-matches-the-resolution-hash-and-contains-reviewed-hev-mit-and-lwip-sics-bsd-notices",
+      "pointer": "/proxy/licenseAsset",
+      "severity": "error"
+    },
+    {
+      "id": "proxy-runtime-boundary-truthful",
+      "check": "static-same-uid-coverage-does-not-claim-isolated-uid-gms-oem-or-device-packet-capture-proof",
+      "severity": "error"
+    }
+  ],
+  "releaseGates": [
+    "socks5-config-contract",
+    "socks5-vpn-manifest-contract",
+    "socks5-bootstrap-contract",
+    "socks5-route-contract",
+    "socks5-credential-contract",
+    "socks5-native-contract",
+    "socks5-license-contract",
+    "socks5-static-dex-contract",
+    "proxy-settings-activity-contract"
+  ],
+  "ai": {
+    "allowed": true,
+    "taskTemplate": "../../ai/tasks/RESOLVE-SOCKS5-PROXY.md",
+    "output": "proposal-json-only",
+    "mayEditProductionTree": false,
+    "mayRelaxChecks": false
+  }
+}

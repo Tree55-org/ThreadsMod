@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://threadsmod.local/schemas/catalog.schema.json",
+  "title": "Threads Mod patchlet catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "catalogId",
+    "title",
+    "description",
+    "defaultSeries",
+    "policies",
+    "patchlets",
+    "series"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "minLength": 1 },
+    "schemaVersion": { "const": 1 },
+    "catalogId": { "$ref": "#/$defs/id" },
+    "title": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "defaultSeries": { "$ref": "#/$defs/id" },
+    "policies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resolutionBinding",
+        "unknownResolution",
+        "applicationOrder",
+        "idempotency",
+        "aiBoundary",
+        "releaseFailure",
+        "signedReview"
+      ],
+      "properties": {
+        "resolutionBinding": { "const": "exact-split-set-then-derived-apk-sha256" },
+        "unknownResolution": { "const": "fail-with-drift-report" },
+        "applicationOrder": { "const": "series-order" },
+        "idempotency": { "const": "required" },
+        "aiBoundary": { "const": "proposal-and-evidence-only" },
+        "releaseFailure": { "const": "do-not-produce-installable-artifact" },
+        "signedReview": { "const": "non-publishing-exact-signed-evidence-only" }
+      }
+    },
+    "patchlets": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "path"],
+        "properties": {
+          "id": { "$ref": "#/$defs/id" },
+          "path": {
+            "type": "string",
+            "pattern": "^features/[^/]+/patchlet\\.json$"
+          }
+        }
+      }
+    },
+    "series": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "patchlets"],
+        "properties": {
+          "id": { "$ref": "#/$defs/id" },
+          "title": { "type": "string", "minLength": 1 },
+          "patchlets": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "$ref": "#/$defs/id" }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    }
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "roles": [
+    "user-cache-factory-owner",
+    "user-cache-get-or-put-owner",
+    "model-id-accessor-owner",
+    "mutation-callback-interface-owner",
+    "block-mutation-route-owner"
+  ],
+  "candidates": [
+    {
+      "id": "candidate-cache-factory-2gx-a00",
+      "role": "user-cache-factory-owner",
+      "descriptor": "LX/2gx;->A00(Lcom/instagram/common/session/UserSession;)LX/2gy;",
+      "path": "smali/X/2gx.smali",
+      "evidenceIds": ["evidence-cache-factory-signature", "evidence-null-seed-user-id-callsite"]
+    },
+    {
+      "id": "candidate-cache-get-or-put-2gy-a02",
+      "role": "user-cache-get-or-put-owner",
+      "descriptor": "LX/2gy;->A02(LX/2fh;Ljava/lang/String;)LX/2fp;",
+      "path": "smali/X/2gy.smali",
+      "evidenceIds": ["evidence-cache-get-or-put-signature", "evidence-null-seed-user-id-callsite"]
+    },
+    {
+      "id": "candidate-model-id-2fp-getid",
+      "role": "model-id-accessor-owner",
+      "descriptor": "LX/2fp;->getId()Ljava/lang/String;",
+      "path": "smali/X/2fp.smali",
+      "evidenceIds": ["evidence-model-id-signature"]
+    },
+    {
+      "id": "candidate-callback-interface-mwt",
+      "role": "mutation-callback-interface-owner",
+      "descriptor": "LX/Mwt;",
+      "path": "smali_classes7/X/Mwt.smali",
+      "evidenceIds": ["evidence-callback-interface", "evidence-pre-start-guard"]
+    },
+    {
+      "id": "candidate-block-dno-a00",
+      "role": "block-mutation-route-owner",
+      "descriptor": "LX/DNo;->A00(Landroid/content/Context;Lcom/instagram/common/session/UserSession;LX/2fp;LX/Mwt;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+      "path": "smali_classes7/X/DNo.smali",
+      "evidenceIds": ["evidence-block-route", "evidence-block-signature", "evidence-pre-start-guard"]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence-cache-factory-signature",
+      "kind": "method-signature",
+      "path": "smali/X/2gx.smali",
+      "value": ".method public static final A00(Lcom/instagram/common/session/UserSession;)LX/2gy;"
+    },
+    {
+      "id": "evidence-cache-get-or-put-signature",
+      "kind": "method-signature",
+      "path": "smali/X/2gy.smali",
+      "value": ".method public final A02(LX/2fh;Ljava/lang/String;)LX/2fp;"
+    },
+    {
+      "id": "evidence-null-seed-user-id-callsite",
+      "kind": "caller-flow",
+      "path": "smali_classes4/X/3Oy.1.smali",
+      "value": "invoke-virtual {v1, v2, v0}, LX/2gy;->A02(LX/2fh;Ljava/lang/String;)LX/2fp;"
+    },
+    {
+      "id": "evidence-model-id-signature",
+      "kind": "method-signature",
+      "path": "smali/X/2fp.smali",
+      "value": ".method public final getId()Ljava/lang/String;"
+    },
+    {
+      "id": "evidence-callback-interface",
+      "kind": "callback-interface",
+      "path": "smali_classes7/X/Mwt.smali",
+      "value": ".method public abstract onSuccess()V"
+    },
+    {
+      "id": "evidence-block-route",
+      "kind": "route-literal",
+      "path": "smali_classes7/X/DNo.smali",
+      "value": "friendships/block/%s/"
+    },
+    {
+      "id": "evidence-block-signature",
+      "kind": "method-signature",
+      "path": "smali_classes7/X/DNo.smali",
+      "value": ".method public static A00(Landroid/content/Context;Lcom/instagram/common/session/UserSession;LX/2fp;LX/Mwt;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V"
+    },
+    {
+      "id": "evidence-pre-start-guard",
+      "kind": "callback-flow",
+      "path": "smali_classes7/X/DNo.smali",
+      "value": "Invalid user type -> return-void; accepted path -> LX/Mwt;->DFF()V"
+    }
+  ]
+}

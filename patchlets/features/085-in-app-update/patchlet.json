@@ -1,0 +1,141 @@
+{
+  "$schema": "../../schemas/patchlet.schema.json",
+  "schemaVersion": 1,
+  "id": "085-in-app-update",
+  "revision": 2,
+  "title": "Signed in-app update prompt and installer handoff",
+  "summary": "Compile the stable foreground updater, verify strict signed update policy from all three ISP-resilient metadata mirrors, persist monotonic revision policy, present optional or minimum-build-required dialogs, download only explicit GitHub/AWS artifacts through a cookie-isolated client, verify size, SHA-256, package, newer target version and signer, and hand the internal-cache FileProvider URI to Android's consented installer.",
+  "stage": "hook",
+  "dependsOn": [
+    "010-clone-identity",
+    "020-autoblock-runtime",
+    "040-main-activity-hooks",
+    "080-socks5-proxy"
+  ],
+  "resolution": {
+    "required": true,
+    "binding": "exact-apk-sha256",
+    "sourceSha256Pointer": "/source/sha256",
+    "requiredSections": ["source", "target", "update", "assets", "release"],
+    "rewriteSets": ["update-manifest-rewrites.json"]
+  },
+  "risk": ["network-read", "user-interface", "settings-storage", "packaging", "signing"],
+  "ownership": {
+    "classPrefixes": ["Lthreadsmod/update/"],
+    "classDescriptors": [
+      "Lthreadsmod/update/UpdateController;",
+      "Lthreadsmod/update/UpdateEndpoints;",
+      "Lthreadsmod/update/UpdateJson;",
+      "Lthreadsmod/update/UpdateManifest;",
+      "Lthreadsmod/update/UpdateSignature;",
+      "Lthreadsmod/update/UpdateStore;"
+    ],
+    "rewriteRuleIds": [
+      "register-update-install-permission",
+      "set-clone-update-version"
+    ],
+    "manifestComponents": [],
+    "hostHooks": [
+      "stable ModBootstrap foreground update arbitration with an empty no-update continuation"
+    ],
+    "preferenceKeys": [
+      "update_verified_envelope",
+      "update_revision",
+      "update_mod_build",
+      "update_check_not_before",
+      "update_dismissed_revision"
+    ],
+    "databaseSchemas": []
+  },
+  "inputs": [
+    {
+      "id": "update-java",
+      "kind": "asset-tree",
+      "path": "assets/autoblock/java/threadsmod/update",
+      "sha256FromResolution": "/assets/updateJavaTreeSha256",
+      "required": true
+    },
+    {
+      "id": "update-rewrites",
+      "kind": "resolution-rewrite-set",
+      "pathFromResolution": "update-manifest-rewrites.json",
+      "required": true
+    },
+    {
+      "id": "resolved-update-contract",
+      "kind": "resolution-section",
+      "pointer": "/update",
+      "required": true
+    }
+  ],
+  "operations": [
+    {
+      "id": "compile-update-runtime-to-smali",
+      "type": "java-to-smali",
+      "sources": ["assets/autoblock/java/threadsmod/update"],
+      "target": "decoded-apk:primary-dex",
+      "idempotency": "class-set-and-content-hash"
+    },
+    {
+      "id": "apply-update-manifest-and-version",
+      "type": "exact-anchor-rewrite-set",
+      "source": "resolution:update-manifest-rewrites.json",
+      "target": "decoded-apk",
+      "expectedCount": "per-rule",
+      "idempotency": "before-xor-after"
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "resolution-sha-matches-input",
+      "check": "source-apk-sha256-equals-resolution",
+      "pointer": "/source/sha256",
+      "severity": "error"
+    },
+    {
+      "id": "update-rewrites-have-one-state",
+      "check": "rewrite-before-xor-after-at-expected-count",
+      "expectedCount": "per-rule",
+      "severity": "error"
+    }
+  ],
+  "postconditions": [
+    {
+      "id": "signed-update-policy-compiled",
+      "check": "strict-exact-payload-ed25519-canonical-scalar-three-mirror-highest-revision-equivocation-and-anti-rollback-contract",
+      "severity": "error"
+    },
+    {
+      "id": "update-dialog-policy-compiled",
+      "check": "optional-update-later-exact-revision-and-required-minimum-build-noncancelable-dialog-with-empty-continuation-arbitration",
+      "severity": "error"
+    },
+    {
+      "id": "verified-installer-handoff-compiled",
+      "check": "explicit-tap-cookie-isolated-bounded-download-size-hash-package-newer-version-single-signer-fileprovider-and-android-consent-contract",
+      "severity": "error"
+    },
+    {
+      "id": "update-permission-and-version-applied",
+      "check": "request-install-packages-exactly-once-and-clone-target-version-is-resolution-bound",
+      "severity": "error"
+    }
+  ],
+  "releaseGates": [
+    "update-host-fixtures",
+    "update-endpoint-policy",
+    "update-manifest-contract",
+    "update-dialog-contract",
+    "update-installer-contract",
+    "update-signed-dex-contract",
+    "update-manifest-rewrite-contract",
+    "dex-method-budget"
+  ],
+  "ai": {
+    "allowed": true,
+    "taskTemplate": "../../ai/tasks/RESOLVE-IN-APP-UPDATE.md",
+    "output": "proposal-json-only",
+    "mayEditProductionTree": false,
+    "mayRelaxChecks": false
+  }
+}

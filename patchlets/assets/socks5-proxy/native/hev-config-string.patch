@@ -1,0 +1,75 @@
+diff --git a/src/hev-jni.c b/src/hev-jni.c
+index 6639837..e3ef338 100644
+--- a/src/hev-jni.c
++++ b/src/hev-jni.c
+@@ -39,7 +39,8 @@ typedef struct _ThreadData ThreadData;
+ 
+ struct _ThreadData
+ {
+-    char *path;
++    unsigned char *config;
++    unsigned int config_len;
+     int fd;
+ };
+ 
+@@ -51,7 +52,7 @@ static pthread_mutex_t mutex;
+ static pthread_key_t current_jni_env;
+ 
+ static jboolean native_start_service (JNIEnv *env, jobject thiz,
+-                                      jstring conig_path, jint fd);
++                                      jstring config_text, jint fd);
+ static jboolean native_stop_service (JNIEnv *env, jobject thiz);
+ static jboolean native_is_running (JNIEnv *env, jobject thiz);
+ static jlongArray native_get_stats (JNIEnv *env, jobject thiz);
+@@ -102,18 +103,19 @@ thread_handler (void *data)
+ {
+     ThreadData *tdata = data;
+ 
+-    hev_socks5_tunnel_main (tdata->path, tdata->fd);
++    hev_socks5_tunnel_main_from_str (tdata->config, tdata->config_len,
++                                     tdata->fd);
+ 
+     atomic_store_explicit (&is_running, 0, memory_order_release);
+ 
+-    free (tdata->path);
++    free (tdata->config);
+     free (tdata);
+ 
+     return NULL;
+ }
+ 
+ static jboolean
+-native_start_service (JNIEnv *env, jobject thiz, jstring config_path, jint fd)
++native_start_service (JNIEnv *env, jobject thiz, jstring config_text, jint fd)
+ {
+     const jbyte *bytes;
+     ThreadData *tdata;
+@@ -135,14 +137,15 @@ native_start_service (JNIEnv *env, jobject thiz, jstring config_path, jint fd)
+         goto exit;
+     tdata->fd = fd;
+ 
+-    bytes = (const jbyte *)(*env)->GetStringUTFChars (env, config_path, NULL);
++    bytes = (const jbyte *)(*env)->GetStringUTFChars (env, config_text, NULL);
+     if (!bytes) {
+         free (tdata);
+         goto exit;
+     }
+-    tdata->path = strdup ((const char *)bytes);
+-    (*env)->ReleaseStringUTFChars (env, config_path, (const char *)bytes);
+-    if (!tdata->path) {
++    tdata->config_len = strlen ((const char *)bytes);
++    tdata->config = (unsigned char *)strdup ((const char *)bytes);
++    (*env)->ReleaseStringUTFChars (env, config_text, (const char *)bytes);
++    if (!tdata->config) {
+         free (tdata);
+         goto exit;
+     }
+@@ -151,7 +154,7 @@ native_start_service (JNIEnv *env, jobject thiz, jstring config_path, jint fd)
+     res = pthread_create (&work_thread, NULL, thread_handler, tdata);
+     if (res != 0) {
+         atomic_store_explicit (&is_running, 0, memory_order_release);
+-        free (tdata->path);
++        free (tdata->config);
+         free (tdata);
+         goto exit;
+     }

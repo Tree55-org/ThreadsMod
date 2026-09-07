@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "expectedFixtureCount": 13,
+  "fixtures": [
+    {
+      "id": "missing-bootstrap",
+      "relativePath": "com/instagram/barcelona/app/BarcelonaAppShell.smali",
+      "expectedCode": "bootstrap_global_call_count",
+      "replacements": [
+        {
+          "before": "    invoke-static {v1}, Lthreadsmod/proxy/ProxyBootstrap;->install(Landroid/content/Context;)V",
+          "after": "    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "duplicate-bootstrap",
+      "relativePath": "com/instagram/barcelona/app/BarcelonaAppShell.smali",
+      "expectedCode": "bootstrap_global_call_count",
+      "replacements": [
+        {
+          "before": "    # ALT_ENTRY_MARKER",
+          "after": "    invoke-static {v1}, Lthreadsmod/proxy/ProxyBootstrap;->install(Landroid/content/Context;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "wrong-caller",
+      "relativePath": "com/instagram/barcelona/app/BarcelonaAppShell.smali",
+      "expectedCode": "bootstrap_owner_call_count",
+      "replacements": [
+        {
+          "before": "    invoke-static {v1}, Lthreadsmod/proxy/ProxyBootstrap;->install(Landroid/content/Context;)V",
+          "after": "    nop",
+          "expectedCount": 1
+        },
+        {
+          "relativePath": "fixture/Other.smali",
+          "before": "    # OTHER_CALL_MARKER",
+          "after": "    invoke-static {p0}, Lthreadsmod/proxy/ProxyBootstrap;->install(Landroid/content/Context;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "wrong-order",
+      "relativePath": "com/instagram/barcelona/app/BarcelonaAppShell.smali",
+      "expectedCode": "super_entry_position",
+      "replacements": [
+        {
+          "before": "    invoke-super {v0, v1}, Landroid/content/ContextWrapper;->attachBaseContext(Landroid/content/Context;)V\n\n    # TRY_START_MARKER\n    :bootstrap_entry\n    invoke-static {v1}, Lthreadsmod/proxy/ProxyBootstrap;->install(Landroid/content/Context;)V",
+          "after": "    invoke-static {v1}, Lthreadsmod/proxy/ProxyBootstrap;->install(Landroid/content/Context;)V\n\n    # TRY_START_MARKER\n    :bootstrap_entry\n    invoke-super {v0, v1}, Landroid/content/ContextWrapper;->attachBaseContext(Landroid/content/Context;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "nonadjacent-bootstrap",
+      "relativePath": "com/instagram/barcelona/app/BarcelonaAppShell.smali",
+      "expectedCode": "bootstrap_not_adjacent",
+      "replacements": [
+        {
+          "before": "    invoke-super {v0, v1}, Landroid/content/ContextWrapper;->attachBaseContext(Landroid/content/Context;)V",
+          "after": "    invoke-super {v0, v1}, Landroid/content/ContextWrapper;->attachBaseContext(Landroid/content/Context;)V\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "wrong-context-register",
+      "relativePath": "com/instagram/barcelona/app/BarcelonaAppShell.smali",
+      "expectedCode": "bootstrap_register_flow",
+      "replacements": [
+        {
+          "before": "    invoke-static {v1}, Lthreadsmod/proxy/ProxyBootstrap;->install(Landroid/content/Context;)V",
+          "after": "    invoke-static {v0}, Lthreadsmod/proxy/ProxyBootstrap;->install(Landroid/content/Context;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "wrong-super-register",
+      "relativePath": "com/instagram/barcelona/app/BarcelonaAppShell.smali",
+      "expectedCode": "super_register_flow",
+      "replacements": [
+        {
+          "before": "    invoke-super {v0, v1}, Landroid/content/ContextWrapper;->attachBaseContext(Landroid/content/Context;)V",
+          "after": "    invoke-super {v3, v1}, Landroid/content/ContextWrapper;->attachBaseContext(Landroid/content/Context;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "alternate-bootstrap-entry",
+      "relativePath": "com/instagram/barcelona/app/BarcelonaAppShell.smali",
+      "expectedCode": "bootstrap_alternate_entry",
+      "replacements": [
+        {
+          "before": "    # ALT_ENTRY_MARKER",
+          "after": "    goto :bootstrap_entry",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "bootstrap-try-coverage",
+      "relativePath": "com/instagram/barcelona/app/BarcelonaAppShell.smali",
+      "expectedCode": "bootstrap_try_coverage",
+      "replacements": [
+        {
+          "before": "    # TRY_START_MARKER",
+          "after": "    :try_start_0",
+          "expectedCount": 1
+        },
+        {
+          "before": "    # TRY_END_MARKER",
+          "after": "    :try_end_0\n    .catchall {:try_start_0 .. :try_end_0} :try_handler_0",
+          "expectedCount": 1
+        },
+        {
+          "before": "    # HANDLER_MARKER",
+          "after": "    :try_handler_0\n    move-exception v3\n\n    return-void",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "original-anchor-drift",
+      "relativePath": "com/instagram/barcelona/app/BarcelonaAppShell.smali",
+      "expectedCode": "original_anchor_not_adjacent",
+      "replacements": [
+        {
+          "before": "    sget-object v1, LX/0143;->A06:LX/0143;",
+          "after": "    sget-object v1, LX/0143;->A05:LX/0143;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "fallback-key-reference",
+      "relativePath": "com/instagram/barcelona/app/BarcelonaAppShell.smali",
+      "expectedCode": "bootstrap_fallback_reference",
+      "replacements": [
+        {
+          "before": "    # FALLBACK_MARKER",
+          "after": "    const-string v3, \"socksProxyPort\"",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "fallback-api-reference",
+      "relativePath": "com/instagram/barcelona/app/BarcelonaAppShell.smali",
+      "expectedCode": "bootstrap_fallback_reference",
+      "replacements": [
+        {
+          "before": "    # FALLBACK_MARKER",
+          "after": "    const-string v3, \"proxy.fixture\"\n\n    invoke-static {v3, v3}, Ljava/lang/System;->setProperty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;\n\n    move-result-object v3",
+          "expectedCount": 1
+        }
+      ]
+    }
+  ]
+}

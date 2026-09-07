@@ -1,0 +1,82 @@
+{
+  "$schema": "schemas/catalog.schema.json",
+  "schemaVersion": 1,
+  "catalogId": "threadsmod-cloneblocker",
+  "title": "Threads Mod deterministic split-source, descriptor-bound Smali proof, passive-blocking, signed-update and signed-review patchlet catalog",
+  "description": "Replays the reviewed clone identity, allowlisted GitHub raw/jsDelivr/AWS signed block-list mirrors with freshest-verified selection, strict whole-payload verification, atomic SQLite v2 ID and username indexes with exact total/new-record metadata and fail-closed v1 migration, ten-minute foreground refresh guards, tri-state indexed visible-row passive admission, one immutable target per scheduler owner with manual-first drains, callback-free exact-SHA already-blocked preflight, repeated authority checks before durable running state, passive attempt-plus-delay reservation, no configurable admission caps, manual inline attempts unpaced, checked scheduler wakes, backoff/watchdog/completion quarantine, and bounded identifier-free diagnostics. It also owns shell-first private Activity and Settings pages with live fetch/index/button status, the native left-drawer entry, one post-Share Block control that does not wait on viewer initialization, one compact Block and report modal, code-first canonical Threads post URLs with strict permalink fallback and a bounded no-text excerpt, AWS-only durable report delivery, app-scoped SOCKS5 VPN transport, and Ed25519-signed in-app updates. The exact-primary-DEX Activity probe parses bounded DTD-free UI XML, requires viewport-intersecting nonzero node bounds, distinguishes exact fixed labels from one contiguous ordered multiline sequence of five nonempty dynamic status values, and executes one positive plus nine bypass-negative matcher fixtures. Release gates remain exact-source-SHA-bound, idempotent, primary-DEX-budgeted, archive/alignment/signature checked, and raw signed-DEX reviewed.",
+  "defaultSeries": "cloneblocker",
+  "policies": {
+    "resolutionBinding": "exact-split-set-then-derived-apk-sha256",
+    "unknownResolution": "fail-with-drift-report",
+    "applicationOrder": "series-order",
+    "idempotency": "required",
+    "aiBoundary": "proposal-and-evidence-only",
+    "releaseFailure": "do-not-produce-installable-artifact",
+    "signedReview": "non-publishing-exact-signed-evidence-only"
+  },
+  "patchlets": [
+    {
+      "id": "005-split-source-universalization",
+      "path": "features/005-split-source-universalization/patchlet.json"
+    },
+    {
+      "id": "010-clone-identity",
+      "path": "features/010-clone-identity/patchlet.json"
+    },
+    {
+      "id": "020-autoblock-runtime",
+      "path": "features/020-autoblock-runtime/patchlet.json"
+    },
+    {
+      "id": "030-native-block-bridge",
+      "path": "features/030-native-block-bridge/patchlet.json"
+    },
+    {
+      "id": "040-main-activity-hooks",
+      "path": "features/040-main-activity-hooks/patchlet.json"
+    },
+    {
+      "id": "050-mod-settings-ui",
+      "path": "features/050-mod-settings-ui/patchlet.json"
+    },
+    {
+      "id": "070-consented-reporting",
+      "path": "features/070-consented-reporting/patchlet.json"
+    },
+    {
+      "id": "060-inline-block-controls",
+      "path": "features/060-inline-block-controls/patchlet.json"
+    },
+    {
+      "id": "080-socks5-proxy",
+      "path": "features/080-socks5-proxy/patchlet.json"
+    },
+    {
+      "id": "085-in-app-update",
+      "path": "features/085-in-app-update/patchlet.json"
+    },
+    {
+      "id": "090-release-gates",
+      "path": "features/090-release-gates/patchlet.json"
+    }
+  ],
+  "series": [
+    {
+      "id": "cloneblocker",
+      "title": "Separate-ID Clone Blocker APK",
+      "patchlets": [
+        "005-split-source-universalization",
+        "010-clone-identity",
+        "020-autoblock-runtime",
+        "030-native-block-bridge",
+        "040-main-activity-hooks",
+        "050-mod-settings-ui",
+        "070-consented-reporting",
+        "060-inline-block-controls",
+        "080-socks5-proxy",
+        "085-in-app-update",
+        "090-release-gates"
+      ]
+    }
+  ]
+}

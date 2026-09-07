@@ -1,0 +1,3427 @@
+{
+  "schemaVersion": 1,
+  "expectedFixtureCount": 279,
+  "fixtures": [
+    {
+      "id": "wrong-raw-block-call",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "block_call_raw_signature",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1, v3, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "after": "    invoke-static {v0, v1, v3, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/Object;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "caller-substitution",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "bridge_call_unreviewed_caller",
+      "replacements": [
+        {
+          "before": ".class public final Lfixture/AutomaticCaller;",
+          "after": ".class public final Lfixture/SubstituteCaller;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "authorized-caller-duplicate-call",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_call_provenance",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1, v3, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "after": "    invoke-static {v0, v1, v3, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V\n\n    invoke-static {v0, v1, v3, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "authorized-caller-extra-dispatch",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "dispatcher_entry_unreviewed_caller",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1, v3, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "after": "    invoke-static {v0, v1, v3, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V\n\n    invoke-static {p0, v3}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->success(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "authorized-caller-direct-delivery-run",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "delivery_run_direct_call",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1, v3, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "after": "    invoke-static {v0, v1, v3, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V\n\n    invoke-virtual {v0}, Lthreadsmod/autoblock/BridgeCallbackDispatcher$Delivery;->run()V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-caller-catch-state-work",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_try_shape",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1, v3, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "after": "    invoke-static {}, Lfixture/SchedulerState;->mark()V\n\n    invoke-static {v0, v1, v3, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-caller-catch-state-work",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_try_shape",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1, v3, v2, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->blockResolved(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "after": "    invoke-static {}, Lfixture/SchedulerState;->mark()V\n\n    invoke-static {v0, v1, v3, v2, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->blockResolved(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-callback-immediate-repost",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_started_unreviewed_field",
+      "replacements": [
+        {
+          "before": "    invoke-static {v1, v2, v3}, Lthreadsmod/autoblock/AutoBlockSync;->setStatus(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V\n\n    :done",
+          "after": "    invoke-static {v1, v2, v3}, Lthreadsmod/autoblock/AutoBlockSync;->setStatus(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V\n\n    sget-object v1, Lfixture/CallbackRelay;->HANDLER:Landroid/os/Handler;\n\n    sget-object v2, Lfixture/CallbackRelay;->RUNNABLE:Ljava/lang/Runnable;\n\n    invoke-virtual {v1, v2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z\n\n    :done",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-callback-immediate-repost",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_unreviewed_field",
+      "replacements": [
+        {
+          "before": "    invoke-static/range {v0 .. v6}, Lthreadsmod/autoblock/AutoBlockSync;->access$releaseSchedulerAndContinue(JLandroid/app/Activity;Ljava/lang/String;JZ)V\n\n    goto :done",
+          "after": "    invoke-static/range {v0 .. v6}, Lthreadsmod/autoblock/AutoBlockSync;->access$releaseSchedulerAndContinue(JLandroid/app/Activity;Ljava/lang/String;JZ)V\n\n    sget-object v6, Lfixture/CallbackRelay;->HANDLER:Landroid/os/Handler;\n\n    sget-object v7, Lfixture/CallbackRelay;->RUNNABLE:Ljava/lang/Runnable;\n\n    invoke-virtual {v6, v7}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z\n\n    goto :done",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-handoff-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_bridge_target_selected_route_handoff_count",
+      "replacements": [
+        {
+        "before": "    iget-wide v0, p0, Lfixture/AutomaticCaller;->schedulerToken:J\n\n    invoke-static {v0, v1, v7}, Lthreadsmod/autoblock/AutoBlockSync;->markSchedulerMutationInFlight(JZ)Z\n\n    move-result v0",
+        "after": "    const/4 v0, 0x1\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-handoff-wrong-literal",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_handoff_arguments",
+      "replacements": [
+        {
+        "before": "    invoke-static {v0, v1, v7}, Lthreadsmod/autoblock/AutoBlockSync;->markSchedulerMutationInFlight(JZ)Z",
+        "after": "    invoke-static {v0, v1, v8}, Lthreadsmod/autoblock/AutoBlockSync;->markSchedulerMutationInFlight(JZ)Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-handoff-false-enters-try",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_handoff_branch",
+      "replacements": [
+        {
+          "before": "    if-nez v0, :try_bridge_start",
+          "after": "    if-eqz v0, :try_bridge_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-handoff-false-flow-bypass",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_bridge_target_passive_admission_lock_handoff_guard_branch",
+      "replacements": [
+        {
+          "before": "    if-nez v0, :try_bridge_start\n\n    iput-boolean v8, p0, Lfixture/AutomaticCaller;->waiting:Z",
+          "after": "    if-nez v0, :try_bridge_start\n\n    goto :try_bridge_start\n\n    iput-boolean v8, p0, Lfixture/AutomaticCaller;->waiting:Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-handoff-token-clobber",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_handoff_token",
+      "replacements": [
+        {
+        "before": "    iget-wide v0, p0, Lfixture/AutomaticCaller;->schedulerToken:J\n\n    invoke-static {v0, v1, v7}, Lthreadsmod/autoblock/AutoBlockSync;->markSchedulerMutationInFlight(JZ)Z",
+        "after": "    iget-wide v0, p0, Lfixture/AutomaticCaller;->schedulerToken:J\n\n    const-wide/16 v0, 0x0\n\n    invoke-static {v0, v1, v7}, Lthreadsmod/autoblock/AutoBlockSync;->markSchedulerMutationInFlight(JZ)Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-caller-try-alternate-entry",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_bridge_target_selected_route_success_handoff_postdominance",
+      "replacements": [
+        {
+        "before": "    invoke-static {v0, v1, v4}, Lthreadsmod/autoblock/AutoBlockSync;->setStatus(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V\n\n    iget-wide v0",
+        "after": "    invoke-static {v0, v1, v4}, Lthreadsmod/autoblock/AutoBlockSync;->setStatus(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V\n\n    if-eqz v3, :try_bridge_start\n\n    iget-wide v0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-caller-switch",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "value_flow_control_flow_unsupported",
+      "replacements": [
+        {
+        "before": "    :pre_pace_accepted\n    iget-object v0, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;",
+        "after": "    :pre_pace_accepted\n    packed-switch v0, :bridge_switch_data\n\n    iget-object v0, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;",
+          "expectedCount": 1
+        },
+        {
+          "before": "    :catch_passive_admission\n    move-exception v0\n\n    monitor-exit v9\n\n    throw v0\n\n    :selection_review_failure",
+          "after": "    :catch_passive_admission\n    move-exception v0\n\n    monitor-exit v9\n\n    throw v0\n\n    :bridge_switch_data\n    .packed-switch 0x0\n        :pre_pace_accepted\n    .end packed-switch\n\n    :selection_review_failure",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-caller-typed-handler",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_handler_type",
+      "replacements": [
+        {
+          "before": "    .catchall {:try_bridge_start .. :try_bridge_end} :catch_bridge",
+          "after": "    .catch Ljava/lang/Throwable; {:try_bridge_start .. :try_bridge_end} :catch_bridge",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-caller-wrong-handler-literal",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_handler_literal",
+      "replacements": [
+        {
+          "before": "    const-string v0, \"bridge_exception\"",
+          "after": "    const-string v0, \"lookup_failure\"",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-caller-wrong-handler-route",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_handler_route",
+      "replacements": [
+        {
+          "before": "    invoke-direct {p0, v3, v0}, Lfixture/AutomaticCaller;->handleFailure(Ljava/lang/String;Ljava/lang/String;)V",
+          "after": "    invoke-virtual {p0, v3, v0}, Lfixture/AutomaticCaller;->onBridgeFailure(Ljava/lang/String;Ljava/lang/String;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-caller-shared-handler",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_handler_shared_exception_handler",
+      "replacements": [
+        {
+          "before": "    monitor-enter v9\n\n    :try_passive_admission_start",
+          "after": "    :try_shared_start\n    monitor-enter v9\n    :try_shared_end\n    .catchall {:try_shared_start .. :try_shared_end} :catch_bridge\n\n    :try_passive_admission_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-caller-try-cast",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_try_shape",
+      "replacements": [
+        {
+          "before": "    iget-object v1, p0, Lfixture/AutomaticCaller;->userSession:Ljava/lang/Object;",
+          "after": "    iget-object v1, p0, Lfixture/AutomaticCaller;->userSession:Ljava/lang/Object;\n\n    check-cast v1, Ljava/lang/Object;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-caller-try-allocation",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_try_shape",
+      "replacements": [
+        {
+          "before": "    iget-object v0, p0, Lfixture/ManualCaller;->resolvedAuthorModel:Ljava/lang/Object;\n\n    if-nez v0, :resolved",
+          "after": "    iget-object v0, p0, Lfixture/ManualCaller;->resolvedAuthorModel:Ljava/lang/Object;\n\n    new-instance v4, Ljava/lang/Object;\n\n    if-nez v0, :resolved",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-caller-try-field-write",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_try_shape",
+      "replacements": [
+        {
+          "before": "    iget-object v1, p0, Lfixture/AutomaticCaller;->userSession:Ljava/lang/Object;\n\n    invoke-static",
+          "after": "    iget-object v1, p0, Lfixture/AutomaticCaller;->userSession:Ljava/lang/Object;\n\n    iput-object v1, p0, Lfixture/AutomaticCaller;->userSession:Ljava/lang/Object;\n\n    invoke-static",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-success-noop-early-return",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_current_entry",
+      "replacements": [
+        {
+          "before": ".method public onBridgeSuccess(Ljava/lang/String;)V\n    .locals 7\n\n    invoke-direct",
+          "after": ".method public onBridgeSuccess(Ljava/lang/String;)V\n    .locals 7\n\n    return-void\n\n    invoke-direct",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-success-noop-early-return",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_current_entry",
+      "replacements": [
+        {
+          "before": ".method public onBridgeSuccess(Ljava/lang/String;)V\n    .locals 9\n\n    invoke-direct",
+          "after": ".method public onBridgeSuccess(Ljava/lang/String;)V\n    .locals 9\n\n    return-void\n\n    invoke-direct",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-started-early-return",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_started_latch",
+      "replacements": [
+        {
+          "before": "    :current\n\n    const/4 v0, 0x1\n\n    iput-boolean v0, p0, Lfixture/AutomaticCaller;->started:Z",
+          "after": "    :current\n\n    return-void\n\n    const/4 v0, 0x1\n\n    iput-boolean v0, p0, Lfixture/AutomaticCaller;->started:Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-started-early-return",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_started_latch",
+      "replacements": [
+        {
+          "before": "    :fresh_start\n\n    const/4 v0, 0x1",
+          "after": "    :fresh_start\n\n    return-void\n\n    const/4 v0, 0x1",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-failure-noop",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_failure_shape",
+      "replacements": [
+        {
+          "before": ".method public onBridgeFailure(Ljava/lang/String;Ljava/lang/String;)V\n    .locals 0\n\n    invoke-direct",
+          "after": ".method public onBridgeFailure(Ljava/lang/String;Ljava/lang/String;)V\n    .locals 0\n\n    return-void\n\n    invoke-direct",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-failure-wrong-route",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_failure_route",
+      "replacements": [
+        {
+          "before": "    invoke-direct {p0, p2}, Lfixture/ManualCaller;->fail(Ljava/lang/String;)V",
+          "after": "    invoke-direct {p0}, Lfixture/ManualCaller;->handleCompletionPersistenceAfterSuccess()V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-save-catch-removed",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_completion_save_exception_flow_try_count",
+      "replacements": [
+        {
+          "before": "    .catchall {:try_completion_save_start .. :try_completion_save_end} :catch_completion_save",
+          "after": "    # completion-save catch removed",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-save-catch-removed",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_completion_save_exception_flow_try_count",
+      "replacements": [
+        {
+          "before": "    .catchall {:try_completion_save_start .. :try_completion_save_end} :catch_completion_save",
+          "after": "    # completion-save catch removed",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-quarantine-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_completion_quarantine",
+      "replacements": [
+        {
+          "before": "    if-nez v0, :completion_saved\n\n    invoke-direct {p0, p1}, Lfixture/AutomaticCaller;->handleCompletionPersistence(Ljava/lang/String;)V",
+          "after": "    if-nez v0, :completion_saved\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-quarantine-missing",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_completion_quarantine",
+      "replacements": [
+        {
+          "before": "    invoke-direct {p0}, Lfixture/ManualCaller;->handleCompletionPersistenceAfterSuccess()V",
+          "after": "    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-record-catch-removed",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_record_exception_join_try_count",
+      "replacements": [
+        {
+          "before": "    .catchall {:try_success_record_start .. :try_success_record_end} :catch_success_record",
+          "after": "    # history catch removed",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-main-handler-swap",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_unreviewed_field",
+      "replacements": [
+        {
+          "before": "    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$main()Landroid/os/Handler;\n\n    move-result-object v5",
+          "after": "    sget-object v5, Lfixture/CallbackRelay;->HANDLER:Landroid/os/Handler;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-delay-zero-clobber",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_pacing_delay_register_mutated",
+      "replacements": [
+        {
+          "before": "    move-result-wide v3\n\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$main()Landroid/os/Handler;",
+          "after": "    move-result-wide v3\n\n    const-wide/16 v3, 0x0\n\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$main()Landroid/os/Handler;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-delay-wide-arithmetic-clobber",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_pacing_delay_register_mutated",
+      "replacements": [
+        {
+          "before": "    move-result-wide v3\n\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$main()Landroid/os/Handler;",
+          "after": "    move-result-wide v3\n\n    add-long/2addr v3, v3\n\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$main()Landroid/os/Handler;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-runnable-register-clobber",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_pacing_runnable_provenance",
+      "replacements": [
+        {
+          "before": "    invoke-direct {v6, p0}, Lfixture/AutomaticCaller$NextRunnable;-><init>(Lfixture/AutomaticCaller;)V\n\n    invoke-virtual",
+          "after": "    invoke-direct {v6, p0}, Lfixture/AutomaticCaller$NextRunnable;-><init>(Lfixture/AutomaticCaller;)V\n\n    const/4 v6, 0x0\n\n    invoke-virtual",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-runnable-wrong-effect",
+      "relativePath": "fixture/AutomaticCaller$NextRunnable.smali",
+      "expectedCode": "automatic_caller_callback_success_pacing_runnable_next",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0}, Lfixture/AutomaticCaller;->access$next(Lfixture/AutomaticCaller;)V",
+          "after": "    invoke-static {v0}, Lfixture/OtherAutomaticAction;->run(Lfixture/AutomaticCaller;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-runnable-multiple-effects",
+      "relativePath": "fixture/AutomaticCaller$NextRunnable.smali",
+      "expectedCode": "automatic_caller_callback_success_pacing_runnable_run_shape",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0}, Lfixture/AutomaticCaller;->access$next(Lfixture/AutomaticCaller;)V",
+          "after": "    invoke-static {v0}, Lfixture/AutomaticCaller;->access$next(Lfixture/AutomaticCaller;)V\n\n    invoke-static {v0}, Lfixture/AutomaticCaller;->access$next(Lfixture/AutomaticCaller;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-ownership-token-clobber",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_ownership_release_token",
+      "replacements": [
+        {
+          "before": "    iget-wide v3, p0, Lfixture/AutomaticCaller;->schedulerToken:J\n\n    const/4 v5, 0x0",
+          "after": "    iget-wide v3, p0, Lfixture/AutomaticCaller;->schedulerToken:J\n\n    const-wide/16 v3, 0x0\n\n    const/4 v5, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-terminal-latch-new-array-clobber",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_unreviewed_implicit_throw",
+      "replacements": [
+        {
+          "before": ".method public onBridgeSuccess(Ljava/lang/String;)V\n    .locals 9\n\n    invoke-direct {p0, p1}, Lfixture/ManualCaller;->isCurrent(Ljava/lang/String;)Z\n\n    move-result v0\n\n    if-eqz v0, :done\n\n    iget-object v0, p0, Lfixture/ManualCaller;->finished:Ljava/util/concurrent/atomic/AtomicBoolean;\n\n    const/4 v1, 0x0\n\n    const/4 v2, 0x1\n\n    invoke-virtual {v0, v1, v2}",
+          "after": ".method public onBridgeSuccess(Ljava/lang/String;)V\n    .locals 9\n\n    invoke-direct {p0, p1}, Lfixture/ManualCaller;->isCurrent(Ljava/lang/String;)Z\n\n    move-result v0\n\n    if-eqz v0, :done\n\n    iget-object v0, p0, Lfixture/ManualCaller;->finished:Ljava/util/concurrent/atomic/AtomicBoolean;\n\n    const/4 v1, 0x0\n\n    new-array v0, v1, [I\n\n    const/4 v2, 0x1\n\n    invoke-virtual {v0, v1, v2}",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-dispatch-finally-removed",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_try_count",
+      "replacements": [
+        {
+          "before": "    .catchall {:try_dispatch_start .. :try_dispatch_end} :catch_dispatch",
+          "after": "    # dispatch finally removed",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-finally-release-token-clobber",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_scheduler_release_token",
+      "replacements": [
+        {
+          "before": "    iget-wide v0, p0, Lfixture/ManualCaller;->schedulerToken:J\n\n    iget-object v2, p0, Lfixture/ManualCaller;->activity:Landroid/app/Activity;\n\n    iget-object v3, p0, Lfixture/ManualCaller;->viewer:Ljava/lang/String;\n\n    const/4 v6, 0x1\n\n    invoke-static/range {v0 .. v6}",
+          "after": "    iget-wide v0, p0, Lfixture/ManualCaller;->schedulerToken:J\n\n    const-wide/16 v0, 0x0\n\n    iget-object v2, p0, Lfixture/ManualCaller;->activity:Landroid/app/Activity;\n\n    iget-object v3, p0, Lfixture/ManualCaller;->viewer:Ljava/lang/String;\n\n    const/4 v6, 0x1\n\n    invoke-static/range {v0 .. v6}",
+          "expectedCount": 2
+        }
+      ]
+    },
+    {
+      "id": "automatic-presave-conditional-return",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_completion_save_postdominance",
+      "replacements": [
+        {
+          "before": "    :current\n\n    const/4 v6, 0x0\n\n    :try_completion_save_start",
+          "after": "    :current\n\n    const/4 v5, 0x0\n\n    if-eqz v5, :continue_to_save\n\n    return-void\n\n    :continue_to_save\n    const/4 v6, 0x0\n\n    :try_completion_save_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-presave-conditional-return",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_completion_save_postdominance",
+      "replacements": [
+        {
+          "before": "    :terminal_latched\n\n    const/4 v7, 0x0\n\n    :try_completion_save_start",
+          "after": "    :terminal_latched\n\n    const/4 v6, 0x0\n\n    if-eqz v6, :continue_to_save\n\n    return-void\n\n    :continue_to_save\n    const/4 v7, 0x0\n\n    :try_completion_save_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-reviewed-terminal-loop",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_reviewed_terminals_normal_route_postdominance",
+      "replacements": [
+        {
+          "before": "    :success_status_done\n    :try_reviewed_terminal_start",
+          "after": "    :success_status_done\n    const/4 v1, 0x0\n\n    :terminal_loop\n    if-eqz v1, :terminal_loop\n\n    :try_reviewed_terminal_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-reviewed-terminal-explicit-throw",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_reviewed_terminals_normal_route_postdominance",
+      "replacements": [
+        {
+          "before": "    :success_status_done\n    :try_reviewed_terminal_start",
+          "after": "    :success_status_done\n    const/4 v1, 0x0\n\n    if-eqz v1, :continue_to_reviewed_terminal\n\n    new-instance v1, Ljava/lang/RuntimeException;\n\n    throw v1\n\n    :continue_to_reviewed_terminal\n    :try_reviewed_terminal_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-reviewed-terminal-unreachable-finish",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_reviewed_terminals_finish_receiver_register_mutated",
+      "replacements": [
+        {
+          "before": "    :try_reviewed_terminal_start\n    const/4 v0, 0x0",
+          "after": "    :try_reviewed_terminal_start\n    goto :choose_pace_or_foreground\n\n    const/4 v0, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-dispatch-normal-release-bypass",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_success_dispatch_finally_normal_release_dominance",
+      "replacements": [
+        {
+          "before": "    .catchall {:try_dispatch_start .. :try_dispatch_end} :catch_dispatch\n\n    :try_normal_pace_start",
+          "after": "    .catchall {:try_dispatch_start .. :try_dispatch_end} :catch_dispatch\n\n    const/4 v6, 0x0\n\n    if-eqz v6, :continue_normal_release\n\n    return-void\n\n    :continue_normal_release\n    :try_normal_pace_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-started-try-metadata",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_started_try_count",
+      "replacements": [
+        {
+          "before": ".method public onBridgeStarted(Ljava/lang/String;)V\n    .locals 4\n\n    invoke-direct {p0, p1}, Lfixture/AutomaticCaller;->isCurrent(Ljava/lang/String;)Z\n\n    move-result v0",
+          "after": ".method public onBridgeStarted(Ljava/lang/String;)V\n    .locals 4\n\n    :try_metadata_start\n    invoke-direct {p0, p1}, Lfixture/AutomaticCaller;->isCurrent(Ljava/lang/String;)Z\n\n    move-result v0\n    :try_metadata_end\n    .catchall {:try_metadata_start .. :try_metadata_end} :done",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-started-try-metadata",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_started_try_count",
+      "replacements": [
+        {
+          "before": ".method public onBridgeStarted(Ljava/lang/String;)V\n    .locals 5\n\n    invoke-direct {p0, p1}, Lfixture/ManualCaller;->isCurrent(Ljava/lang/String;)Z\n\n    move-result v0",
+          "after": ".method public onBridgeStarted(Ljava/lang/String;)V\n    .locals 5\n\n    :try_metadata_start\n    invoke-direct {p0, p1}, Lfixture/ManualCaller;->isCurrent(Ljava/lang/String;)Z\n\n    move-result v0\n    :try_metadata_end\n    .catchall {:try_metadata_start .. :try_metadata_end} :done",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-failure-try-metadata",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_failure_try_count",
+      "replacements": [
+        {
+          "before": "    invoke-direct {p0, p1, p2}, Lfixture/AutomaticCaller;->handleFailure(Ljava/lang/String;Ljava/lang/String;)V\n\n    return-void",
+          "after": "    :try_metadata_start\n    invoke-direct {p0, p1, p2}, Lfixture/AutomaticCaller;->handleFailure(Ljava/lang/String;Ljava/lang/String;)V\n    :try_metadata_end\n    .catchall {:try_metadata_start .. :try_metadata_end} :metadata_return\n\n    :metadata_return\n    return-void",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-failure-try-metadata",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_failure_try_count",
+      "replacements": [
+        {
+          "before": ".method public onBridgeFailure(Ljava/lang/String;Ljava/lang/String;)V\n    .locals 1\n\n    iget-object v0, p0, Lfixture/ManualCaller;->targetId:Ljava/lang/String;\n\n    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z",
+          "after": ".method public onBridgeFailure(Ljava/lang/String;Ljava/lang/String;)V\n    .locals 1\n\n    :try_metadata_start\n    iget-object v0, p0, Lfixture/ManualCaller;->targetId:Ljava/lang/String;\n\n    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z\n    :try_metadata_end\n    .catchall {:try_metadata_start .. :try_metadata_end} :done",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-started-noop-early-return",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_started_latch",
+      "replacements": [
+        {
+          "before": ".method public onBridgeStarted(Ljava/lang/String;)V\n    .locals 4\n\n    invoke-direct",
+          "after": ".method public onBridgeStarted(Ljava/lang/String;)V\n    .locals 4\n\n    return-void\n\n    invoke-direct",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-started-noop-early-return",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_started_latch",
+      "replacements": [
+        {
+          "before": ".method public onBridgeStarted(Ljava/lang/String;)V\n    .locals 5\n\n    invoke-direct",
+          "after": ".method public onBridgeStarted(Ljava/lang/String;)V\n    .locals 5\n\n    return-void\n\n    invoke-direct",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-bridge-noop-early-return",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_identity",
+      "replacements": [
+        {
+          "before": ".method public begin()V\n    .locals 10\n\n    iget-object v2, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;",
+          "after": ".method public begin()V\n    .locals 10\n\n    return-void\n\n    iget-object v2, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-bridge-noop-early-return",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_block_callback_identity",
+      "replacements": [
+        {
+          "before": "    :manual_main_thread\n    invoke-direct {p0}, Lfixture/ManualCaller;->isCurrentForeground()Z",
+          "after": "    :manual_main_thread\n    return-void\n\n    invoke-direct {p0}, Lfixture/ManualCaller;->isCurrentForeground()Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-presave-catch-return",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_completion_save_exception_postdominance",
+      "replacements": [
+        {
+          "before": "    :current\n\n    const/4 v6, 0x0\n\n    :try_completion_save_start",
+          "after": "    :current\n\n    :try_presave_metadata_start\n    const/4 v6, 0x0\n    :try_presave_metadata_end\n    .catchall {:try_presave_metadata_start .. :try_presave_metadata_end} :catch_presave_metadata\n\n    goto :continue_to_completion_save\n\n    :catch_presave_metadata\n    move-exception v5\n\n    return-void\n\n    :continue_to_completion_save\n    :try_completion_save_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-presave-catch-return",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_completion_save_exception_postdominance",
+      "replacements": [
+        {
+          "before": "    :terminal_latched\n\n    const/4 v7, 0x0\n\n    :try_completion_save_start",
+          "after": "    :terminal_latched\n\n    :try_presave_metadata_start\n    const/4 v7, 0x0\n    :try_presave_metadata_end\n    .catchall {:try_presave_metadata_start .. :try_presave_metadata_end} :catch_presave_metadata\n\n    goto :continue_to_completion_save\n\n    :catch_presave_metadata\n    move-exception v6\n\n    return-void\n\n    :continue_to_completion_save\n    :try_completion_save_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-postwait-catch-return",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_try_count",
+      "replacements": [
+        {
+          "before": "    :success_status_done\n    :try_reviewed_terminal_start",
+          "after": "    :success_status_done\n    :try_postwait_metadata_start\n    const/4 v1, 0x0\n    :try_postwait_metadata_end\n    .catchall {:try_postwait_metadata_start .. :try_postwait_metadata_end} :catch_postwait_metadata\n\n    goto :continue_to_reviewed_terminal\n\n    :catch_postwait_metadata\n    move-exception v1\n\n    return-void\n\n    :continue_to_reviewed_terminal\n    :try_reviewed_terminal_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-terminal-handler-normal-entry",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_pacing_delay_entry_dominance",
+      "replacements": [
+        {
+          "before": "    :success_status_done\n    :try_reviewed_terminal_start",
+          "after": "    :success_status_done\n    goto :catch_reviewed_terminal\n\n    :try_reviewed_terminal_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-runnable-constructor-try-metadata",
+      "relativePath": "fixture/AutomaticCaller$NextRunnable.smali",
+      "expectedCode": "automatic_caller_callback_success_pacing_runnable_constructor_try_count",
+      "replacements": [
+        {
+          "before": "    iput-object p1, p0, Lfixture/AutomaticCaller$NextRunnable;->this$0:Lfixture/AutomaticCaller;\n\n    invoke-direct {p0}, Ljava/lang/Object;-><init>()V\n\n    return-void",
+          "after": "    :try_metadata_start\n    iput-object p1, p0, Lfixture/AutomaticCaller$NextRunnable;->this$0:Lfixture/AutomaticCaller;\n\n    invoke-direct {p0}, Ljava/lang/Object;-><init>()V\n    :try_metadata_end\n    .catchall {:try_metadata_start .. :try_metadata_end} :metadata_return\n\n    :metadata_return\n    return-void",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-runnable-run-try-metadata",
+      "relativePath": "fixture/AutomaticCaller$NextRunnable.smali",
+      "expectedCode": "automatic_caller_callback_success_pacing_runnable_run_try_count",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0}, Lfixture/AutomaticCaller;->access$next(Lfixture/AutomaticCaller;)V\n\n    return-void",
+          "after": "    :try_metadata_start\n    invoke-static {v0}, Lfixture/AutomaticCaller;->access$next(Lfixture/AutomaticCaller;)V\n    :try_metadata_end\n    .catchall {:try_metadata_start .. :try_metadata_end} :metadata_return\n\n    :metadata_return\n    return-void",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "wrong-raw-block-model-call",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_model_call_raw_signature",
+      "replacements": [
+        {
+          "before": "    invoke-static {p0, p1, v0, p2, p3}, Lthreadsmod/autoblock/ThreadsBlockBridge;->blockModel(Landroid/app/Activity;Lfixture/Session;Lfixture/Model;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "after": "    invoke-static {p0, p1, v0, p2, p3}, Lthreadsmod/autoblock/ThreadsBlockBridge;->blockModel(Landroid/app/Activity;Lfixture/Session;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-resolved-broad-try",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_resolved_dispatch_inside_try",
+      "replacements": [
+        {
+          "before": "    :try_resolved_model_end\n    .catch Ljava/lang/Throwable; {:try_resolved_model_start .. :try_resolved_model_end} :catch_resolved_model\n\n    invoke-static {p0, p1, p2, p3, p4}, Lthreadsmod/autoblock/ThreadsBlockBridge;->blockModel(Landroid/app/Activity;Lfixture/Session;Lfixture/Model;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "after": "    invoke-static {p0, p1, p2, p3, p4}, Lthreadsmod/autoblock/ThreadsBlockBridge;->blockModel(Landroid/app/Activity;Lfixture/Session;Lfixture/Model;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V\n    :try_resolved_model_end\n    .catch Ljava/lang/Throwable; {:try_resolved_model_start .. :try_resolved_model_end} :catch_resolved_model",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-model-callback-in-try",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_model_success_callback_inside_try",
+      "replacements": [
+        {
+          "before": "    :try_dispatch_end",
+          "after": "    # try end moved to include a mod callback",
+          "expectedCount": 1
+        },
+        {
+          "before": "    invoke-static {v2, v3}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->success(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;)V",
+          "after": "    invoke-static {v2, v3}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->success(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;)V\n    :try_dispatch_end",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "direct-bridge-result-delivery",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "bridge_callback_outside_delivery",
+      "replacements": [
+        {
+          "before": "    const-string v1, \"placeholder_model_invalid\"\n\n    invoke-static {p3, p2, v1}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->failure(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;Ljava/lang/String;)V",
+          "after": "    const-string v1, \"placeholder_model_invalid\"\n\n    invoke-interface {p3, p2, v1}, Lthreadsmod/autoblock/BridgeCallback;->onBridgeFailure(Ljava/lang/String;Ljava/lang/String;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "wrong-cache-handler-literal",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_lookup_handler_stage",
+      "replacements": [
+        {
+          "before": "    const-string v1, \"cache_lookup_exception\"",
+          "after": "    const-string v1, \"cache_factory_exception\"",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "shared-handler-stage-register",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_lookup_handler_literal",
+      "replacements": [
+        {
+          "before": "    :try_cache_lookup_start",
+          "after": "    const-string v1, \"cache_lookup_exception\"\n\n    :try_cache_lookup_start",
+          "expectedCount": 1
+        },
+        {
+          "before": "    :catch_cache_lookup\n    move-exception v0\n\n    const-string v1, \"cache_lookup_exception\"",
+          "after": "    :catch_cache_lookup\n    move-exception v0\n\n    # shared mutable stage register defined before the seam",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "model-id-guard-bypass",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "prepare_model_mismatch_target_merge",
+      "replacements": [
+        {
+          "before": "    if-eqz v1, :model_id_mismatch",
+          "after": "    if-eqz v1, :model_ready",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "mutation-definition-branch-bypass",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_model_branch_count",
+      "replacements": [
+        {
+          "before": "    :submit_mutation\n    move-object/from16 v0, p4",
+          "after": "    :submit_mutation\n    if-eqz v0, :try_mutation_start\n\n    move-object/from16 v0, p4",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "wrong-mutation-model",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_model_mutation_identity_registers",
+      "replacements": [
+        {
+          "before": "    move-object v1, p2",
+          "after": "    move-object v1, p1",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "nonzero-mutation-operation",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_model_mutation_zero_tail",
+      "replacements": [
+        {
+          "before": "    const/4 v12, 0x0",
+          "after": "    const/4 v12, 0x1",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "widened-mutation-try",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_model_mutation_try_extent",
+      "replacements": [
+        {
+          "before": "    :try_mutation_end\n    .catch Ljava/lang/Throwable; {:try_mutation_start .. :try_mutation_end} :catch_mutation\n\n    return-void",
+          "after": "    return-void\n    :try_mutation_end\n    .catch Ljava/lang/Throwable; {:try_mutation_start .. :try_mutation_end} :catch_mutation",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "wrong-mutation-surface",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_model_mutation_surface",
+      "replacements": [
+        {
+          "before": "    const-string v5, \"fixture_surface\"",
+          "after": "    const-string v5, \"wrong_surface\"",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "profile-lookup-prerequisite",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_model_unreviewed_invoke",
+      "replacements": [
+        {
+          "before": "    :try_dispatch_start",
+          "after": "    invoke-static {v0}, Lfixture/ProfileLookup;->load(Ljava/lang/String;)V\n\n    :try_dispatch_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "mod-namespace-native-mutation-bypass",
+      "relativePath": "com/threadsmod/autoblock/FixtureModNamespace.smali",
+      "expectedCode": "private_mutation_unreviewed_caller",
+      "replacements": [
+        {
+          "before": "    return-void\n.end method",
+          "after": "    return-void\n.end method\n\n.method public static bypass(Landroid/content/Context;Lfixture/ModelInterface;Lfixture/Session;Lfixture/MutationEvents;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V\n    .locals 0\n\n    invoke-static/range {p0 .. p12}, Lfixture/MutationApi;->block(Landroid/content/Context;Lfixture/ModelInterface;Lfixture/Session;Lfixture/MutationEvents;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V\n\n    return-void\n.end method",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "mutable-target-before-mutation",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_model_target_register_mutated",
+      "replacements": [
+        {
+          "before": "    :submit_mutation\n    move-object/from16 v0, p4",
+          "after": "    :submit_mutation\n    const-string p3, \"changed_target\"\n\n    move-object/from16 v0, p4",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "direct-mutation-callback-delivery",
+      "relativePath": "threadsmod/autoblock/MutationCallback.smali",
+      "expectedCode": "bridge_callback_outside_delivery",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->started(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;)V",
+          "after": "    invoke-interface {v0, v1}, Lthreadsmod/autoblock/BridgeCallback;->onBridgeStarted(Ljava/lang/String;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "swapped-terminal-literal",
+      "relativePath": "threadsmod/autoblock/MutationCallback.smali",
+      "expectedCode": "mutation_callback_ended_terminal_literal",
+      "replacements": [
+        {
+          "before": "    const-string v0, \"mutation_ended\"",
+          "after": "    const-string v0, \"mutation_failure\"",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "wrong-mutation-callback-interface",
+      "relativePath": "threadsmod/autoblock/MutationCallback.smali",
+      "expectedCode": "mutation_callback_interface",
+      "replacements": [
+        {
+          "before": ".implements Lfixture/MutationEvents;",
+          "after": ".implements Lfixture/WrongMutationEvents;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "mutation-constructor-provenance",
+      "relativePath": "threadsmod/autoblock/MutationCallback.smali",
+      "expectedCode": "mutation_callback_constructor_field_flow",
+      "replacements": [
+        {
+          "before": "    iput-object p2, p0, Lthreadsmod/autoblock/MutationCallback;->A02:Ljava/lang/String;",
+          "after": "    iput-object p2, p0, Lthreadsmod/autoblock/MutationCallback;->A03:Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "dispatcher-missing-post",
+      "relativePath": "threadsmod/autoblock/BridgeCallbackDispatcher.smali",
+      "expectedCode": "dispatcher_handler_post_count",
+      "replacements": [
+        {
+          "before": "    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z",
+          "after": "    invoke-virtual {v0, v1}, Landroid/os/Handler;->sendMessage(Ljava/lang/Runnable;)Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "dispatcher-unchecked-post-result",
+      "relativePath": "threadsmod/autoblock/BridgeCallbackDispatcher.smali",
+      "expectedCode": "dispatcher_enqueue_unreviewed_opcode",
+      "replacements": [
+        {
+          "before": "    if-eqz p0, :cond_1",
+          "after": "    if-nez p0, :cond_1",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "dispatcher-main-initializer",
+      "relativePath": "threadsmod/autoblock/BridgeCallbackDispatcher.smali",
+      "expectedCode": "dispatcher_initializer_unreviewed_invoke",
+      "replacements": [
+        {
+          "before": "    invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;",
+          "after": "    invoke-static {}, Landroid/os/Looper;->myLooper()Landroid/os/Looper;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "dispatcher-synchronous-side-call",
+      "relativePath": "threadsmod/autoblock/BridgeCallbackDispatcher.smali",
+      "expectedCode": "dispatcher_started_unreviewed_invoke",
+      "replacements": [
+        {
+          "before": "    const/4 v1, 0x1\n\n    invoke-static {p0, p1, v0, v1}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->enqueue(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;Ljava/lang/String;I)V",
+          "after": "    const/4 v1, 0x1\n\n    invoke-static {}, Lfixture/SynchronousCallbackHelper;->run()V\n\n    invoke-static {p0, p1, v0, v1}, Lthreadsmod/autoblock/BridgeCallbackDispatcher;->enqueue(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;Ljava/lang/String;I)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "callback-outside-delivery-run",
+      "relativePath": "threadsmod/autoblock/BridgeCallbackDispatcher$Delivery.smali",
+      "expectedCode": "bridge_callback_outside_delivery",
+      "replacements": [
+        {
+          "before": "    iput p4, p0, Lthreadsmod/autoblock/BridgeCallbackDispatcher$Delivery;->kind:I",
+          "after": "    iput p4, p0, Lthreadsmod/autoblock/BridgeCallbackDispatcher$Delivery;->kind:I\n\n    invoke-interface {p1, p2}, Lthreadsmod/autoblock/BridgeCallback;->onBridgeStarted(Ljava/lang/String;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "delivery-constructor-provenance",
+      "relativePath": "threadsmod/autoblock/BridgeCallbackDispatcher$Delivery.smali",
+      "expectedCode": "delivery_constructor_field_flow",
+      "replacements": [
+        {
+          "before": "    iput-object p2, p0, Lthreadsmod/autoblock/BridgeCallbackDispatcher$Delivery;->targetId:Ljava/lang/String;",
+          "after": "    iput-object p3, p0, Lthreadsmod/autoblock/BridgeCallbackDispatcher$Delivery;->targetId:Ljava/lang/String;",
+          "expectedCount": 1
+        },
+        {
+          "before": "    iput-object p3, p0, Lthreadsmod/autoblock/BridgeCallbackDispatcher$Delivery;->stage:Ljava/lang/String;",
+          "after": "    iput-object p2, p0, Lthreadsmod/autoblock/BridgeCallbackDispatcher$Delivery;->stage:Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-entry-early-return",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_session_cast_entry",
+      "replacements": [
+        {
+          "before": ".method public static block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V\n    .locals 2\n\n    :try_session_start",
+          "after": ".method public static block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V\n    .locals 2\n\n    return-void\n\n    :try_session_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-resolved-entry-early-return",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_resolved_presence_entry",
+      "replacements": [
+        {
+          "before": ".method public static blockResolved(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V\n    .locals 2\n\n    if-nez p2, :resolved_present",
+          "after": ".method public static blockResolved(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V\n    .locals 2\n\n    return-void\n\n    if-nez p2, :resolved_present",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "prepare-model-entry-early-return",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "prepare_model_author_id_entry",
+      "replacements": [
+        {
+          "before": ".method private static prepareModel(Lfixture/Model;Ljava/lang/String;)Ljava/lang/String;\n    .locals 2\n\n    :try_model_id_start",
+          "after": ".method private static prepareModel(Lfixture/Model;Ljava/lang/String;)Ljava/lang/String;\n    .locals 2\n\n    const/4 v0, 0x0\n\n    return-object v0\n\n    :try_model_id_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-model-entry-early-return",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_model_prepare_entry",
+      "replacements": [
+        {
+          "before": ".method public static blockModel(Landroid/app/Activity;Lfixture/Session;Lfixture/Model;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V\n    .locals 13\n\n    move-object/from16 v0, p3\n\n    :try_dispatch_start",
+          "after": ".method public static blockModel(Landroid/app/Activity;Lfixture/Session;Lfixture/Model;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V\n    .locals 13\n\n    return-void\n\n    move-object/from16 v0, p3\n\n    :try_dispatch_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-lookup-dead-entry",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_lookup_entry_reachability",
+      "replacements": [
+        {
+          "before": "    .catch Ljava/lang/Throwable; {:try_session_start .. :try_session_end} :catch_session\n\n    :try_cache_lookup_start",
+          "after": "    .catch Ljava/lang/Throwable; {:try_session_start .. :try_session_end} :catch_session\n\n    return-void\n\n    :try_cache_lookup_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-factory-dead-entry",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_factory_entry_reachability",
+      "replacements": [
+        {
+          "before": "    :try_cache_lookup_end\n    .catch Ljava/lang/Throwable; {:try_cache_lookup_start .. :try_cache_lookup_end} :catch_cache_lookup\n\n    if-nez v0, :model_ready\n\n    :try_cache_factory_start",
+          "after": "    :try_cache_lookup_end\n    .catch Ljava/lang/Throwable; {:try_cache_lookup_start .. :try_cache_lookup_end} :catch_cache_lookup\n\n    if-nez v0, :model_ready\n\n    return-void\n\n    :try_cache_factory_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-placeholder-dead-entry",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_placeholder_entry_reachability",
+      "replacements": [
+        {
+          "before": "    :try_cache_factory_end\n    .catch Ljava/lang/Throwable; {:try_cache_factory_start .. :try_cache_factory_end} :catch_cache_factory\n\n    const/4 v1, 0x0",
+          "after": "    :try_cache_factory_end\n    .catch Ljava/lang/Throwable; {:try_cache_factory_start .. :try_cache_factory_end} :catch_cache_factory\n\n    return-void\n\n    const/4 v1, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-dispatch-dead-entry",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_dispatch_entry_reachability",
+      "replacements": [
+        {
+          "before": "    :model_ready\n    invoke-static {p0, p1, v0, p2, p3}, Lthreadsmod/autoblock/ThreadsBlockBridge;->blockModel(Landroid/app/Activity;Lfixture/Session;Lfixture/Model;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "after": "    :model_ready\n    return-void\n\n    invoke-static {p0, p1, v0, p2, p3}, Lthreadsmod/autoblock/ThreadsBlockBridge;->blockModel(Landroid/app/Activity;Lfixture/Session;Lfixture/Model;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-model-mutation-dead-entry",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_model_callback_ctor_registers",
+      "replacements": [
+        {
+          "before": "    :submit_mutation\n    move-object/from16 v0, p4",
+          "after": "    :submit_mutation\n    return-void\n\n    move-object/from16 v0, p4",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "delivery-started-dead-callback",
+      "relativePath": "threadsmod/autoblock/BridgeCallbackDispatcher$Delivery.smali",
+      "expectedCode": "delivery_run_branch_count",
+      "replacements": [
+        {
+          "before": "    if-ne v0, v1, :cond_0\n\n    .line 63\n    iget-object v0, p0, Lthreadsmod/autoblock/BridgeCallbackDispatcher$Delivery;->callback:Lthreadsmod/autoblock/BridgeCallback;",
+          "after": "    if-ne v0, v1, :cond_0\n\n    return-void\n\n    .line 63\n    iget-object v0, p0, Lthreadsmod/autoblock/BridgeCallbackDispatcher$Delivery;->callback:Lthreadsmod/autoblock/BridgeCallback;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-main-handler-dead-canonical",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_unreviewed_field",
+      "replacements": [
+        {
+          "before": "    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$main()Landroid/os/Handler;\n\n    move-result-object v5\n\n    new-instance v6, Lfixture/AutomaticCaller$NextRunnable;",
+          "after": "    sget-object v5, Lfixture/WrongHandler;->MAIN:Landroid/os/Handler;\n\n    goto :pacing_handler_ready\n\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$main()Landroid/os/Handler;\n\n    move-result-object v5\n\n    :pacing_handler_ready\n    new-instance v6, Lfixture/AutomaticCaller$NextRunnable;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-handoff-token-dead-canonical",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_handoff_token",
+      "replacements": [
+        {
+        "before": "    iget-wide v0, p0, Lfixture/AutomaticCaller;->schedulerToken:J\n\n    invoke-static {v0, v1, v7}, Lthreadsmod/autoblock/AutoBlockSync;->markSchedulerMutationInFlight(JZ)Z",
+        "after": "    const-wide/16 v0, 0x2\n\n    goto :handoff_token_ready\n\n    iget-wide v0, p0, Lfixture/AutomaticCaller;->schedulerToken:J\n\n    :handoff_token_ready\n    invoke-static {v0, v1, v7}, Lthreadsmod/autoblock/AutoBlockSync;->markSchedulerMutationInFlight(JZ)Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-release-token-dead-canonical",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_ownership_release_token",
+      "replacements": [
+        {
+          "before": "    :completion_saved\n    iget-wide v3, p0, Lfixture/AutomaticCaller;->schedulerToken:J\n\n    const/4 v5, 0x0",
+          "after": "    :completion_saved\n    const-wide/16 v3, 0x2\n\n    goto :release_token_ready\n\n    iget-wide v3, p0, Lfixture/AutomaticCaller;->schedulerToken:J\n\n    :release_token_ready\n    const/4 v5, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-model-native-model-dead-canonical",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_model_unreviewed_opcode",
+      "replacements": [
+        {
+          "before": "    move-object v0, p0\n    move-object v1, p2\n    move-object v2, p1\n\n    const/4 v4, 0x0",
+          "after": "    move-object v0, p0\n    move-object v1, p1\n    move-object v2, p1\n\n    goto :mutation_model_ready\n\n    move-object v1, p2\n\n    :mutation_model_ready\n    const/4 v4, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-model-mutation-callback-clobber",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_model_mutation_callback_register_mutated",
+      "replacements": [
+        {
+          "before": "    invoke-direct {v3, v0, v1}, Lthreadsmod/autoblock/MutationCallback;-><init>(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;)V\n\n    move-object v0, p0",
+          "after": "    invoke-direct {v3, v0, v1}, Lthreadsmod/autoblock/MutationCallback;-><init>(Lthreadsmod/autoblock/BridgeCallback;Ljava/lang/String;)V\n\n    const/4 v3, 0x0\n\n    move-object v0, p0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-completion-default-dead-zero",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_completion_save_exception_flow_handler_default_false",
+      "replacements": [
+        {
+          "before": "    :current\n\n    const/4 v6, 0x0\n\n    :try_completion_save_start",
+          "after": "    :current\n\n    const/4 v6, 0x1\n\n    goto :automatic_completion_default_ready\n\n    const/4 v6, 0x0\n\n    :automatic_completion_default_ready\n    :try_completion_save_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-completion-default-dead-zero",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_completion_save_exception_flow_handler_default_false",
+      "replacements": [
+        {
+          "before": "    :terminal_latched\n\n    const/4 v7, 0x0\n\n    :try_completion_save_start",
+          "after": "    :terminal_latched\n\n    const/4 v7, 0x1\n\n    goto :manual_completion_default_ready\n\n    const/4 v7, 0x0\n\n    :manual_completion_default_ready\n    :try_completion_save_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-runtime-state-string-suffix-collision",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_started_runtime_state_arguments",
+      "replacements": [
+        {
+          "before": "    const-string v2, \"manual_in_flight\"",
+          "after": "    const-string v2, \"manual_in_flight#suffix\"",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-caller-handler-tail-normal-entry",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_bridge_target_passive_admission_lock_success_exit_count",
+      "replacements": [
+        {
+          "before": "    :watchdog_accepted\n    return-void\n\n    :catch_bridge",
+          "after": "    :watchdog_accepted\n    goto :catch_bridge_tail\n\n    return-void\n\n    :catch_bridge",
+          "expectedCount": 1
+        },
+        {
+          "before": "    :catch_bridge\n    move-exception v0\n\n    :try_bridge_handler_start\n    const-string v0, \"bridge_exception\"",
+          "after": "    :catch_bridge\n    move-exception v0\n\n    :try_bridge_handler_start\n    :catch_bridge_tail\n    const-string v0, \"bridge_exception\"",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-finally-handler-tail-normal-entry",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_success_dispatch_finally_handler_normal_entry",
+      "replacements": [
+        {
+          "before": "    invoke-static/range {v0 .. v6}, Lthreadsmod/autoblock/AutoBlockSync;->access$releaseSchedulerAndContinue(JLandroid/app/Activity;Ljava/lang/String;JZ)V\n\n    goto :done\n\n    :catch_dispatch\n    move-exception v7\n\n    move-object v8, v7",
+          "after": "    invoke-static/range {v0 .. v6}, Lthreadsmod/autoblock/AutoBlockSync;->access$releaseSchedulerAndContinue(JLandroid/app/Activity;Ljava/lang/String;JZ)V\n\n    const/4 v7, 0x0\n\n    if-nez v7, :catch_dispatch_tail\n\n    goto :done\n\n    :catch_dispatch\n    move-exception v7\n\n    :catch_dispatch_tail\n    move-object v8, v7",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-finally-shared-handler",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_try_count",
+      "replacements": [
+        {
+          "before": "    .catchall {:try_normal_pace_start .. :try_normal_pace_end} :catch_normal_pace",
+          "after": "    .catchall {:try_normal_pace_start .. :try_normal_pace_end} :catch_dispatch",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-finally-normal-release-loop-bypass",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_success_dispatch_finally_normal_release_dominance",
+      "replacements": [
+        {
+          "before": "    .catchall {:try_dispatch_start .. :try_dispatch_end} :catch_dispatch\n\n    :try_normal_pace_start",
+          "after": "    .catchall {:try_dispatch_start .. :try_dispatch_end} :catch_dispatch\n\n    const/4 v6, 0x0\n\n    if-eqz v6, :continue_normal_release\n\n    :normal_release_loop\n    goto :normal_release_loop\n\n    :continue_normal_release\n    :try_normal_pace_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-finally-exceptional-release-loop-bypass",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_success_dispatch_finally_exceptional_release_dominance",
+      "replacements": [
+        {
+          "before": "    :catch_dispatch\n    move-exception v7\n\n    move-object v8, v7\n\n    :try_exceptional_pace_start",
+          "after": "    :catch_dispatch\n    move-exception v7\n\n    move-object v8, v7\n\n    const/4 v6, 0x0\n\n    if-eqz v6, :continue_exceptional_release\n\n    :exceptional_release_loop\n    goto :exceptional_release_loop\n\n    :continue_exceptional_release\n    :try_exceptional_pace_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-handoff-boolean-dead-canonical",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_handoff_arguments",
+      "replacements": [
+        {
+        "before": "    invoke-static {v0, v1, v7}, Lthreadsmod/autoblock/AutoBlockSync;->markSchedulerMutationInFlight(JZ)Z",
+        "after": "    move v7, v8\n\n    goto :handoff_boolean_ready\n\n    const/4 v7, 0x1\n\n    :handoff_boolean_ready\n    invoke-static {v0, v1, v7}, Lthreadsmod/autoblock/AutoBlockSync;->markSchedulerMutationInFlight(JZ)Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-pacing-fields-dead-canonical",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_unreviewed_field",
+      "replacements": [
+        {
+          "before": "    iget-object v1, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lfixture/AutomaticCaller;->viewer:Ljava/lang/String;\n\n    invoke-static {v1, v2}, Lthreadsmod/autoblock/AutoBlockSync;->millisUntilPaceAllowed(Landroid/content/Context;Ljava/lang/String;)J",
+          "after": "    iget-object v1, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lfixture/AutomaticCaller;->targetId:Ljava/lang/String;\n\n    goto :pacing_arguments_ready\n\n    iget-object v1, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lfixture/AutomaticCaller;->viewer:Ljava/lang/String;\n\n    :pacing_arguments_ready\n    invoke-static {v1, v2}, Lthreadsmod/autoblock/AutoBlockSync;->millisUntilPaceAllowed(Landroid/content/Context;Ljava/lang/String;)J",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-runnable-dead-canonical",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_unreviewed_field",
+      "replacements": [
+        {
+          "before": "    new-instance v6, Lfixture/AutomaticCaller$NextRunnable;\n\n    invoke-direct {v6, p0}, Lfixture/AutomaticCaller$NextRunnable;-><init>(Lfixture/AutomaticCaller;)V",
+          "after": "    sget-object v6, Lfixture/WrongRunnable;->INSTANCE:Ljava/lang/Runnable;\n\n    goto :pacing_runnable_ready\n\n    new-instance v6, Lfixture/AutomaticCaller$NextRunnable;\n\n    invoke-direct {v6, p0}, Lfixture/AutomaticCaller$NextRunnable;-><init>(Lfixture/AutomaticCaller;)V\n\n    :pacing_runnable_ready",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-model-callback-parameter-clobber",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_model_callback_register_mutated",
+      "replacements": [
+        {
+          "before": "    :try_dispatch_end\n    .catch Ljava/lang/Throwable; {:try_dispatch_start .. :try_dispatch_end} :catch_dispatch\n\n    if-eqz v0, :submit_mutation",
+        "after": "    :try_dispatch_end\n    .catch Ljava/lang/Throwable; {:try_dispatch_start .. :try_dispatch_end} :catch_dispatch\n\n    move-object/16 p4, v0\n\n    if-eqz v0, :submit_mutation",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-model-session-parameter-clobber",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_model_session_register_mutated",
+      "replacements": [
+        {
+          "before": "    :submit_mutation\n    move-object/from16 v0, p4",
+          "after": "    :submit_mutation\n    const/4 p1, 0x0\n\n    move-object/from16 v0, p4",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-success-pacing-enqueue-result-ignored",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_pacing_enqueue_result",
+      "replacements": [
+        {
+          "before": "    invoke-virtual {v5, v6, v3, v4}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z\n\n    move-result v5\n\n    if-nez v5, :terminal_return",
+          "after": "    invoke-virtual {v5, v6, v3, v4}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z\n\n    if-nez v5, :terminal_return",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-success-pacing-enqueue-refusal-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_pacing_enqueue_refusal_finish_count",
+      "replacements": [
+        {
+          "before": "    const-string v0, \"Scheduler wake was rejected; reopen Threads to resume safely.\"\n\n    invoke-direct {p0, v0}, Lfixture/AutomaticCaller;->finish(Ljava/lang/String;)V\n\n    goto :terminal_return",
+          "after": "    const-string v0, \"Scheduler wake was rejected; reopen Threads to resume safely.\"\n\n    nop\n\n    goto :terminal_return",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-success-pacing-enqueue-refusal-wrong-literal",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_pacing_enqueue_refusal_arguments",
+      "replacements": [
+        {
+          "before": "    const-string v0, \"Scheduler wake was rejected; reopen Threads to resume safely.\"\n\n    invoke-direct {p0, v0}, Lfixture/AutomaticCaller;->finish(Ljava/lang/String;)V\n\n    goto :terminal_return",
+          "after": "    const-string v0, \"Wrong scheduler refusal.\"\n\n    invoke-direct {p0, v0}, Lfixture/AutomaticCaller;->finish(Ljava/lang/String;)V\n\n    goto :terminal_return",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-passive-preflight-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_call_provenance",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v3}, Lthreadsmod/autoblock/ThreadsBlockBridge;->passivePreflight(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String;\n\n    move-result-object v0",
+          "after": "    const/4 v0, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-passive-preflight-after-admission",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_bridge_target_passive_admission_lock_effect_order",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v3}, Lthreadsmod/autoblock/ThreadsBlockBridge;->passivePreflight(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String;\n\n    move-result-object v0",
+          "after": "    const/4 v0, 0x0",
+          "expectedCount": 1
+        },
+        {
+          "before": "    :passive_match_admitted\n    iget-object v0, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;",
+          "after": "    :passive_match_admitted\n    iget-object v0, p0, Lfixture/AutomaticCaller;->userSession:Ljava/lang/Object;\n\n    invoke-static {v0, v3}, Lthreadsmod/autoblock/ThreadsBlockBridge;->passivePreflight(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String;\n\n    move-result-object v0\n\n    iget-object v0, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-passive-preflight-after-running",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_bridge_target_passive_admission_lock_effect_order",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v3}, Lthreadsmod/autoblock/ThreadsBlockBridge;->passivePreflight(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String;\n\n    move-result-object v0",
+          "after": "    const/4 v0, 0x0",
+          "expectedCount": 1
+        },
+        {
+          "before": "    :passive_running_persisted\n    iput-object v3, p0, Lfixture/AutomaticCaller;->currentId:Ljava/lang/String;",
+          "after": "    :passive_running_persisted\n    iget-object v0, p0, Lfixture/AutomaticCaller;->userSession:Ljava/lang/Object;\n\n    invoke-static {v0, v3}, Lthreadsmod/autoblock/ThreadsBlockBridge;->passivePreflight(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String;\n\n    move-result-object v0\n\n    iput-object v3, p0, Lfixture/AutomaticCaller;->currentId:Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-passive-preflight-after-reservation",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_bridge_target_passive_admission_lock_effect_order",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v3}, Lthreadsmod/autoblock/ThreadsBlockBridge;->passivePreflight(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String;\n\n    move-result-object v0",
+          "after": "    const/4 v0, 0x0",
+          "expectedCount": 1
+        },
+        {
+          "before": "    const-string v4, \"Blocking selected target.\"\n\n    invoke-static {v0, v1, v4}, Lthreadsmod/autoblock/AutoBlockSync;->setStatus(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V\n\n    iget-wide v0, p0, Lfixture/AutomaticCaller;->schedulerToken:J",
+          "after": "    const-string v4, \"Blocking selected target.\"\n\n    invoke-static {v0, v1, v4}, Lthreadsmod/autoblock/AutoBlockSync;->setStatus(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V\n\n    iget-object v0, p0, Lfixture/AutomaticCaller;->userSession:Ljava/lang/Object;\n\n    invoke-static {v0, v3}, Lthreadsmod/autoblock/ThreadsBlockBridge;->passivePreflight(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String;\n\n    move-result-object v0\n\n    iget-wide v0, p0, Lfixture/AutomaticCaller;->schedulerToken:J",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-pre-pace-delay-guard-bypass",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_enqueue_pre_pace_delay_guard_shape",
+      "replacements": [
+        {
+          "before": "    if-lez v6, :pre_pace_accepted",
+          "after": "    if-gez v6, :pre_pace_accepted",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-pre-pace-runnable-guard-bypass",
+      "relativePath": "fixture/AutomaticCaller$PrePaceRunnable.smali",
+      "expectedCode": "automatic_caller_enqueue_pre_pace_runnable_finished_getter_receiver",
+      "replacements": [
+        {
+          "before": ".method public run()V\n    .locals 2\n\n    iget-object v0, p0, Lfixture/AutomaticCaller$PrePaceRunnable;->this$0:Lfixture/AutomaticCaller;",
+          "after": ".method public run()V\n    .locals 2\n\n    goto :pre_pace_route_bypass\n\n    iget-object v0, p0, Lfixture/AutomaticCaller$PrePaceRunnable;->this$0:Lfixture/AutomaticCaller;",
+          "expectedCount": 1
+        },
+        {
+          "before": "    iget-object v0, p0, Lfixture/AutomaticCaller$PrePaceRunnable;->this$0:Lfixture/AutomaticCaller;\n\n    invoke-static {v0}, Lfixture/AutomaticCaller;->access$next(Lfixture/AutomaticCaller;)V",
+          "after": "    :pre_pace_route_bypass\n    iget-object v0, p0, Lfixture/AutomaticCaller$PrePaceRunnable;->this$0:Lfixture/AutomaticCaller;\n\n    invoke-static {v0}, Lfixture/AutomaticCaller;->access$next(Lfixture/AutomaticCaller;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-watchdog-enqueue-result-ignored",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_enqueue_watchdog_result",
+      "replacements": [
+        {
+          "before": "    const-wide/32 v2, 0xafc8\n\n    invoke-virtual {v0, v1, v2, v3}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z\n\n    move-result v0\n\n    if-nez v0, :watchdog_accepted",
+          "after": "    const-wide/32 v2, 0xafc8\n\n    invoke-virtual {v0, v1, v2, v3}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z\n\n    if-nez v0, :watchdog_accepted",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-watchdog-enqueue-refusal-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_enqueue_watchdog_refusal_uncertain_route_count",
+      "replacements": [
+        {
+          "before": "    if-nez v0, :watchdog_accepted\n\n    invoke-direct {p0, v5}, Lfixture/AutomaticCaller;->handleUncertainMutation(Ljava/lang/String;)V",
+          "after": "    if-nez v0, :watchdog_accepted\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-watchdog-wrong-target",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_enqueue_watchdog_refusal_arguments",
+      "replacements": [
+        {
+          "before": "    move-object v5, v3\n\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$main()Landroid/os/Handler;\n\n    move-result-object v0",
+          "after": "    iget-object v5, p0, Lfixture/AutomaticCaller;->viewer:Ljava/lang/String;\n\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$main()Landroid/os/Handler;\n\n    move-result-object v0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-watchdog-runnable-guard-bypass",
+      "relativePath": "fixture/AutomaticCaller$WatchdogRunnable.smali",
+      "expectedCode": "automatic_caller_enqueue_watchdog_elapsed_finished_getter_receiver",
+      "replacements": [
+        {
+          "before": ".method public final run()V\n    .locals 2\n\n    iget-object v0, p0, Lfixture/AutomaticCaller$WatchdogRunnable;->this$0:Lfixture/AutomaticCaller;",
+          "after": ".method public final run()V\n    .locals 2\n\n    goto :watchdog_route_bypass\n\n    iget-object v0, p0, Lfixture/AutomaticCaller$WatchdogRunnable;->this$0:Lfixture/AutomaticCaller;",
+          "expectedCount": 1
+        },
+        {
+          "before": "    iget-object v0, p0, Lfixture/AutomaticCaller$WatchdogRunnable;->this$0:Lfixture/AutomaticCaller;\n\n    invoke-static {v0}, Lfixture/AutomaticCaller;->access$currentId(Lfixture/AutomaticCaller;)Ljava/lang/String;",
+          "after": "    :watchdog_route_bypass\n    iget-object v0, p0, Lfixture/AutomaticCaller$WatchdogRunnable;->this$0:Lfixture/AutomaticCaller;\n\n    invoke-static {v0}, Lfixture/AutomaticCaller;->access$currentId(Lfixture/AutomaticCaller;)Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-watchdog-route-early-return",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_enqueue_watchdog_post_route_postdominance",
+      "replacements": [
+        {
+          "before": "    move-object v5, v3\n\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$main()Landroid/os/Handler;\n\n    move-result-object v0",
+          "after": "    move-object v5, v3\n\n    const/4 v0, 0x0\n\n    if-nez v0, :watchdog_route_live\n\n    return-void\n\n    :watchdog_route_live\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$main()Landroid/os/Handler;\n\n    move-result-object v0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-watchdog-enqueue-result-ignored",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_enqueue_watchdog_result",
+      "replacements": [
+        {
+          "before": "    const-wide/32 v2, 0xafc8\n\n    invoke-virtual {v0, v1, v2, v3}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z\n\n    move-result v0\n\n    if-nez v0, :watchdog_accepted",
+          "after": "    const-wide/32 v2, 0xafc8\n\n    invoke-virtual {v0, v1, v2, v3}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z\n\n    if-nez v0, :watchdog_accepted",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-watchdog-enqueue-refusal-missing",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_enqueue_watchdog_refusal_abandon_route_count",
+      "replacements": [
+        {
+          "before": "    if-nez v0, :watchdog_accepted\n\n    invoke-direct {p0}, Lfixture/ManualCaller;->abandonUncertainMutation()V",
+          "after": "    if-nez v0, :watchdog_accepted\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-watchdog-runnable-noop",
+      "relativePath": "fixture/ManualCaller$WatchdogRunnable.smali",
+      "expectedCode": "manual_caller_enqueue_watchdog_elapsed_abandon_route_count",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0}, Lfixture/ManualCaller;->access$abandon(Lfixture/ManualCaller;)V",
+          "after": "    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-watchdog-route-early-return",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_enqueue_watchdog_post_route_postdominance",
+      "replacements": [
+        {
+          "before": "    :bridge_done\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$main()Landroid/os/Handler;\n\n    move-result-object v0",
+          "after": "    :bridge_done\n    const/4 v0, 0x0\n\n    if-nez v0, :manual_watchdog_route_live\n\n    return-void\n\n    :manual_watchdog_route_live\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$main()Landroid/os/Handler;\n\n    move-result-object v0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "fetch-worker-enqueue-result-ignored",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker.smali",
+      "expectedCode": "fetch_worker_enqueue_post_result",
+      "replacements": [
+        {
+          "before": "    invoke-virtual {v1, v2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z\n\n    move-result v0\n\n    if-nez v0, :accepted",
+          "after": "    invoke-virtual {v1, v2}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z\n\n    if-nez v0, :accepted",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "fetch-worker-refusal-release-missing",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker.smali",
+      "expectedCode": "fetch_worker_enqueue_unreviewed_invoke",
+      "replacements": [
+        {
+          "before": "    const/4 v7, 0x1\n\n    invoke-static/range {v1 .. v7}, Lthreadsmod/autoblock/AutoBlockSync;->access$releaseSchedulerAndContinue(JLandroid/app/Activity;Ljava/lang/String;JZ)V\n    :try_outer_end",
+          "after": "    const/4 v7, 0x1\n\n    nop\n    :try_outer_end",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "fetch-worker-refusal-status-wrong-literal",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker.smali",
+      "expectedCode": "fetch_worker_enqueue_refusal_status_arguments",
+      "replacements": [
+        {
+          "before": "    const-string v0, \"Sync could not return to the Threads screen; reopen Threads to resume safely.\"",
+          "after": "    const-string v0, \"Wrong fetch refusal.\"",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "fetch-worker-route-leading-return",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker.smali",
+      "expectedCode": "fetch_worker_enqueue_post_handler",
+      "replacements": [
+        {
+          "before": ".method public run()V\n    .locals 9\n\n    :try_outer_start\n    iget-object v0, p0, Lthreadsmod/autoblock/AutoBlockSync$FetchWorker;->activityRef:Ljava/lang/ref/WeakReference;",
+          "after": ".method public run()V\n    .locals 9\n\n    :try_outer_start\n    return-void\n\n    iget-object v0, p0, Lthreadsmod/autoblock/AutoBlockSync$FetchWorker;->activityRef:Ljava/lang/ref/WeakReference;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "fetch-delivery-owner-guard-leading-return",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker$DeliveryRunnable.smali",
+      "expectedCode": "fetch_worker_enqueue_runnable_owner_guard_token",
+      "replacements": [
+        {
+          "before": ".method public run()V\n    .locals 8\n\n    iget-object v0, p0, Lthreadsmod/autoblock/AutoBlockSync$FetchWorker$DeliveryRunnable;->this$0:Lthreadsmod/autoblock/AutoBlockSync$FetchWorker;",
+          "after": ".method public run()V\n    .locals 8\n\n    return-void\n\n    iget-object v0, p0, Lthreadsmod/autoblock/AutoBlockSync$FetchWorker$DeliveryRunnable;->this$0:Lthreadsmod/autoblock/AutoBlockSync$FetchWorker;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "fetch-delivery-owner-token-clobber",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker$DeliveryRunnable.smali",
+      "expectedCode": "fetch_worker_enqueue_runnable_owner_guard_token",
+      "replacements": [
+        {
+          "before": "    move-result-wide v0\n\n    invoke-static {v0, v1}, Lthreadsmod/autoblock/AutoBlockSync;->isSchedulerOwner(J)Z",
+          "after": "    move-result-wide v0\n\n    const-wide/16 v0, 0x0\n\n    invoke-static {v0, v1}, Lthreadsmod/autoblock/AutoBlockSync;->isSchedulerOwner(J)Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "fetch-delivery-owner-true-empty-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker$DeliveryRunnable.smali",
+      "expectedCode": "fetch_worker_enqueue_runnable_empty_guard_postdominance",
+      "replacements": [
+        {
+          "before": "    :owner_current\n    iget-object v0, p0, Lthreadsmod/autoblock/AutoBlockSync$FetchWorker$DeliveryRunnable;->val$targets:Ljava/util/List;",
+          "after": "    :owner_current\n    return-void\n\n    iget-object v0, p0, Lthreadsmod/autoblock/AutoBlockSync$FetchWorker$DeliveryRunnable;->val$targets:Ljava/util/List;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "fetch-delivery-empty-release-viewer-clobber",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker$DeliveryRunnable.smali",
+      "expectedCode": "fetch_worker_enqueue_runnable_empty_release_viewer",
+      "replacements": [
+        {
+          "before": "    move-result-object v3\n\n    const-wide/16 v4, 0x0",
+          "after": "    move-result-object v3\n\n    const/4 v3, 0x0\n\n    const-wide/16 v4, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "fetch-delivery-automatic-session-clobber",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker$DeliveryRunnable.smali",
+      "expectedCode": "fetch_worker_enqueue_runnable_automatic_session",
+      "replacements": [
+        {
+          "before": "    move-result-object v2\n\n    iget-object v3, p0, Lthreadsmod/autoblock/AutoBlockSync$FetchWorker$DeliveryRunnable;->this$0:Lthreadsmod/autoblock/AutoBlockSync$FetchWorker;",
+          "after": "    move-result-object v2\n\n    const/4 v2, 0x0\n\n    iget-object v3, p0, Lthreadsmod/autoblock/AutoBlockSync$FetchWorker$DeliveryRunnable;->this$0:Lthreadsmod/autoblock/AutoBlockSync$FetchWorker;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "schedule-manual-drain-enqueue-result-ignored",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "schedule_manual_drain_enqueue_post_result",
+      "replacements": [
+        {
+          "before": "    invoke-virtual {v0, v1, p0, p1}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z\n\n    move-result v0\n\n    if-nez v0, :accepted",
+          "after": "    invoke-virtual {v0, v1, p0, p1}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z\n\n    if-nez v0, :accepted",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "schedule-manual-drain-refusal-runtime-missing",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "schedule_manual_drain_enqueue_refusal_runtime_state_count",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1, v2, v3, v4}, Lthreadsmod/autoblock/ModStateStore;->recordRuntimeState(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)V",
+          "after": "    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "schedule-manual-drain-runnable-noop",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$ManualDrainRunnable.smali",
+      "expectedCode": "schedule_manual_drain_enqueue_runnable_drain",
+      "replacements": [
+        {
+          "before": "    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->drainManualQueue()V",
+          "after": "    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "schedule-manual-drain-delay-result-clobber",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "schedule_manual_drain_enqueue_delay_provenance",
+      "replacements": [
+        {
+          "before": "    move-result-wide p0\n\n    invoke-virtual {v0, v1, p0, p1}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z",
+          "after": "    move-result-wide p0\n\n    const-wide/16 p0, 0x1\n\n    invoke-virtual {v0, v1, p0, p1}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "schedule-manual-drain-route-leading-return",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "schedule_manual_drain_enqueue_post_handler",
+      "replacements": [
+        {
+          "before": ".method private static scheduleManualDrain(J)V\n    .locals 5\n\n    sget-object v0, Lthreadsmod/autoblock/AutoBlockSync;->MAIN:Landroid/os/Handler;",
+          "after": ".method private static scheduleManualDrain(J)V\n    .locals 5\n\n    return-void\n\n    sget-object v0, Lthreadsmod/autoblock/AutoBlockSync;->MAIN:Landroid/os/Handler;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "auto-block-main-null-initializer",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "auto_block_main_initializer_allocation",
+      "replacements": [
+        {
+          "before": "    new-instance v0, Landroid/os/Handler;\n\n    invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;\n\n    move-result-object v1\n\n    invoke-direct {v0, v1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V",
+          "after": "    const/4 v0, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "auto-block-main-second-write",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "auto_block_main_write_count",
+      "replacements": [
+        {
+          "before": "    sput-object v0, Lthreadsmod/autoblock/AutoBlockSync;->MAIN:Landroid/os/Handler;\n\n    new-instance v0, Ljava/lang/Object;",
+          "after": "    sput-object v0, Lthreadsmod/autoblock/AutoBlockSync;->MAIN:Landroid/os/Handler;\n\n    sput-object v0, Lthreadsmod/autoblock/AutoBlockSync;->MAIN:Landroid/os/Handler;\n\n    new-instance v0, Ljava/lang/Object;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "auto-block-main-store-bypass",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "auto_block_main_initializer_store_postdominance",
+      "replacements": [
+        {
+          "before": "    invoke-direct {v0, v1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V\n\n    sput-object v0, Lthreadsmod/autoblock/AutoBlockSync;->MAIN:Landroid/os/Handler;",
+          "after": "    invoke-direct {v0, v1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V\n\n    const/4 v1, 0x0\n\n    if-nez v1, :main_store_live\n\n    return-void\n\n    :main_store_live\n    sput-object v0, Lthreadsmod/autoblock/AutoBlockSync;->MAIN:Landroid/os/Handler;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-success-target-parameter-clobber",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_target_register_mutated",
+      "replacements": [
+        {
+          "before": "    :current\n\n    const/4 v6, 0x0\n\n    :try_completion_save_start",
+          "after": "    :current\n\n    const/4 p1, 0x0\n\n    const/4 v6, 0x0\n\n    :try_completion_save_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-success-receiver-parameter-clobber",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_unreviewed_implicit_throw",
+      "replacements": [
+        {
+          "before": "    :current\n\n    const/4 v6, 0x0\n\n    :try_completion_save_start",
+          "after": "    :current\n\n    const/4 p0, 0x0\n\n    const/4 v6, 0x0\n\n    :try_completion_save_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-placeholder-factory-result-clobber",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_placeholder_seed_position",
+      "replacements": [
+        {
+          "before": "    :try_cache_factory_end\n    .catch Ljava/lang/Throwable; {:try_cache_factory_start .. :try_cache_factory_end} :catch_cache_factory\n\n    const/4 v1, 0x0",
+          "after": "    :try_cache_factory_end\n    .catch Ljava/lang/Throwable; {:try_cache_factory_start .. :try_cache_factory_end} :catch_cache_factory\n\n    const/4 v0, 0x0\n\n    const/4 v1, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "delivery-run-leading-return",
+      "relativePath": "threadsmod/autoblock/BridgeCallbackDispatcher$Delivery.smali",
+      "expectedCode": "delivery_run_branch_count",
+      "replacements": [
+        {
+          "before": ".method public run()V\n    .locals 3\n\n    .line 62\n    iget v0, p0, Lthreadsmod/autoblock/BridgeCallbackDispatcher$Delivery;->kind:I",
+          "after": ".method public run()V\n    .locals 3\n\n    return-void\n\n    .line 62\n    iget v0, p0, Lthreadsmod/autoblock/BridgeCallbackDispatcher$Delivery;->kind:I",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-model-activity-parameter-clobber",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_model_activity_register_mutated",
+      "replacements": [
+        {
+          "before": "    :submit_mutation\n    move-object/from16 v0, p4",
+          "after": "    :submit_mutation\n    const/4 p0, 0x0\n\n    move-object/from16 v0, p4",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-uncertain-release-bypasses-quarantine",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_uncertain_mutation_quarantine_arguments",
+      "replacements": [
+        {
+        "before": "    :current\n    const/4 v0, 0x0\n\n    iput-boolean v0, p0, Lfixture/AutomaticCaller;->waiting:Z\n\n    iget-wide v1, p0, Lfixture/AutomaticCaller;->schedulerToken:J\n\n    invoke-static {v1, v2, v0}, Lthreadsmod/autoblock/AutoBlockSync;->markSchedulerMutationInFlight(JZ)Z\n\n    iget-object v1, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;",
+        "after": "    :current\n    const/4 v0, 0x0\n\n    iput-boolean v0, p0, Lfixture/AutomaticCaller;->waiting:Z\n\n    iget-wide v1, p0, Lfixture/AutomaticCaller;->schedulerToken:J\n\n    invoke-static {v1, v2, v0}, Lthreadsmod/autoblock/AutoBlockSync;->markSchedulerMutationInFlight(JZ)Z\n\n    return-void\n\n    iget-object v1, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-uncertain-hidden-retry-schedule",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_uncertain_mutation_unreviewed_invoke",
+      "replacements": [
+        {
+          "before": "    :current\n    const/4 v0, 0x0\n\n    iput-boolean v0, p0, Lfixture/AutomaticCaller;->waiting:Z",
+          "after": "    :current\n    const-wide/16 v1, 0x0\n\n    invoke-static {v1, v2}, Lthreadsmod/autoblock/AutoBlockSync;->scheduleManualDrain(J)V\n\n    const/4 v0, 0x0\n\n    iput-boolean v0, p0, Lfixture/AutomaticCaller;->waiting:Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-uncertain-history-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_uncertain_mutation_automatic_history_count",
+      "replacements": [
+        {
+        "before": "    :try_automatic_history_start\n    iget-object v1, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lfixture/AutomaticCaller;->viewer:Ljava/lang/String;\n\n    invoke-static {v1, v2, p1, v0}, Lthreadsmod/autoblock/ModStateStore;->recordAutomaticFailure(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Lthreadsmod/autoblock/BlockDiagnostic;)V",
+          "after": "    :try_automatic_history_start\n    iget-object v1, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lfixture/AutomaticCaller;->viewer:Ljava/lang/String;\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-uncertain-entry-return-before-latch",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_uncertain_mutation_terminal_latch_entry_postdominance",
+      "replacements": [
+        {
+          "before": ".method private abandonUncertainMutation()V\n    .locals 10\n\n    iget-object v0, p0, Lfixture/ManualCaller;->finished:Ljava/util/concurrent/atomic/AtomicBoolean;",
+          "after": ".method private abandonUncertainMutation()V\n    .locals 10\n\n    const/4 v9, 0x0\n\n    if-nez v9, :manual_uncertain_entry_live\n\n    return-void\n\n    :manual_uncertain_entry_live\n    iget-object v0, p0, Lfixture/ManualCaller;->finished:Ljava/util/concurrent/atomic/AtomicBoolean;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-uncertain-normal-dispatch-missing",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_uncertain_mutation_dispatch_count",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v2, v1}, Lthreadsmod/autoblock/AutoBlockSync;->dispatchManualFailure(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V\n\n    return-void",
+          "after": "    nop\n\n    return-void",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-uncertain-diagnostic-history-missing",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_uncertain_mutation_diagnostic_history_count",
+      "replacements": [
+        {
+        "before": "    :try_manual_diagnostic_status_start\n\n    iget-object v0, p0, Lfixture/ManualCaller;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lfixture/ManualCaller;->viewer:Ljava/lang/String;\n\n    invoke-static {v0, v2, v1}, Lthreadsmod/autoblock/ModStateStore;->recordFailureDiagnostic(Landroid/content/Context;Ljava/lang/String;Lthreadsmod/autoblock/BlockDiagnostic;)V",
+          "after": "    :try_manual_diagnostic_status_start\n\n    iget-object v0, p0, Lfixture/ManualCaller;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lfixture/ManualCaller;->viewer:Ljava/lang/String;\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-pre-pace-token-constant-generation",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_enqueue_pre_pace_runnable_captured_token_increment_read",
+      "replacements": [
+        {
+          "before": "    iget v4, p0, Lfixture/AutomaticCaller;->token:I\n\n    add-int/lit8 v4, v4, 0x1\n\n    iput v4, p0, Lfixture/AutomaticCaller;->token:I",
+          "after": "    const/4 v4, 0x1\n\n    iput v4, p0, Lfixture/AutomaticCaller;->token:I",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-watchdog-token-constant-generation",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_enqueue_watchdog_elapsed_captured_token_increment_read",
+      "replacements": [
+        {
+          "before": "    iget v2, p0, Lfixture/AutomaticCaller;->token:I\n\n    add-int/lit8 v2, v2, 0x1\n\n    iput v2, p0, Lfixture/AutomaticCaller;->token:I",
+          "after": "    const/4 v2, 0x2\n\n    iput v2, p0, Lfixture/AutomaticCaller;->token:I",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-passive-preflight-extra-caller",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_call_provenance",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1, v2, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "after": "    invoke-static {v1, v2}, Lthreadsmod/autoblock/ThreadsBlockBridge;->passivePreflight(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String;\n\n    move-result-object v0\n\n    invoke-static {v0, v1, v2, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "passive-preflight-callback-route",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "bridge_callback_outside_delivery",
+      "replacements": [
+        {
+          "before": "    return-object v0\n\n    :catch_preflight_session",
+          "after": "    invoke-interface {p0, p1}, Lthreadsmod/autoblock/BridgeCallback;->onBridgeSuccess(Ljava/lang/String;)V\n\n    return-object v0\n\n    :catch_preflight_session",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-handoff-false-naked-return",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_handoff_false_shape",
+      "replacements": [
+        {
+          "before": "    if-nez v0, :try_bridge_start\n\n    iput-boolean v8, p0, Lfixture/AutomaticCaller;->waiting:Z\n\n    const-string v0, \"Blocking moved to the current Threads screen.\"\n\n    iget-boolean v1, p0, Lfixture/AutomaticCaller;->forceRefresh:Z\n\n    invoke-direct {p0, v0, v1}, Lfixture/AutomaticCaller;->finishForForegroundChange(Ljava/lang/String;Z)V\n\n    monitor-exit v9\n\n    return-void",
+          "after": "    if-nez v0, :try_bridge_start\n\n    monitor-exit v9\n\n    return-void",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-current-id-write-before-handoff-return",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_identity",
+      "replacements": [
+        {
+        "before": "    iput-object v3, p0, Lfixture/AutomaticCaller;->currentId:Ljava/lang/String;\n\n    iput-boolean v7, p0, Lfixture/AutomaticCaller;->waiting:Z",
+        "after": "    iput-object v3, p0, Lfixture/AutomaticCaller;->currentId:Ljava/lang/String;\n\n    return-void\n\n    iput-boolean v7, p0, Lfixture/AutomaticCaller;->waiting:Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-caller-handler-stage-aliases-target",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_handler_stage_register_alias",
+      "replacements": [
+        {
+          "before": "    :catch_bridge\n    move-exception v0\n\n    :try_bridge_handler_start\n    const-string v0, \"bridge_exception\"\n\n    invoke-direct {p0, v3, v0}, Lfixture/AutomaticCaller;->handleFailure(Ljava/lang/String;Ljava/lang/String;)V",
+          "after": "    :catch_bridge\n    move-exception v3\n\n    :try_bridge_handler_start\n    const-string v3, \"bridge_exception\"\n\n    invoke-direct {p0, v3, v3}, Lfixture/AutomaticCaller;->handleFailure(Ljava/lang/String;Ljava/lang/String;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-extra-check-cast-outside-seam",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_activity_register_mutated",
+      "replacements": [
+        {
+          "before": ".method public static block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V\n    .locals 2\n\n    :try_session_start",
+          "after": ".method public static block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V\n    .locals 2\n\n    check-cast p0, Ljava/lang/String;\n\n    :try_session_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "block-resolved-extra-check-cast-outside-seam",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "block_resolved_activity_register_mutated",
+      "replacements": [
+        {
+          "before": ".method public static blockResolved(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V\n    .locals 2\n\n    if-nez p2, :resolved_present",
+          "after": ".method public static blockResolved(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V\n    .locals 2\n\n    check-cast p0, Ljava/lang/String;\n\n    if-nez p2, :resolved_present",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "passive-preflight-widened-lookup-try",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "passive_preflight_lookup_try_extent",
+      "replacements": [
+        {
+          "before": "    move-result-object v0\n    :try_preflight_cache_lookup_end\n    .catch Ljava/lang/Throwable; {:try_preflight_cache_lookup_start .. :try_preflight_cache_lookup_end} :catch_preflight_cache_lookup\n\n    if-nez v0, :preflight_model_ready",
+          "after": "    move-result-object v0\n\n    if-nez v0, :preflight_model_ready\n    :try_preflight_cache_lookup_end\n    .catch Ljava/lang/Throwable; {:try_preflight_cache_lookup_start .. :try_preflight_cache_lookup_end} :catch_preflight_cache_lookup",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "fetch-worker-null-activity-wrong-guard-register",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker.smali",
+      "expectedCode": "fetch_worker_enqueue_outer_control_flow_activity_guard_branch",
+      "replacements": [
+        {
+          "before": "    if-nez v3, :activity_present",
+          "after": "    if-nez v0, :activity_present",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "fetch-worker-catch-status-raw-exception",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker.smali",
+      "expectedCode": "fetch_worker_enqueue_outer_control_flow_catch_status_message",
+      "replacements": [
+        {
+          "before": "    const-string v6, \"Passive matching stopped at a bounded local failure; retry is paused.\"\n\n    invoke-static {v4, v5, v6}, Lthreadsmod/autoblock/AutoBlockSync;->setStatus(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V",
+          "after": "    move-object v6, v0\n\n    invoke-static {v4, v5, v6}, Lthreadsmod/autoblock/AutoBlockSync;->setStatus(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "passive-preflight-shared-handler",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "passive_preflight_lookup_shared_exception_handler",
+      "replacements": [
+        {
+          "before": ".catch Ljava/lang/Throwable; {:try_preflight_cache_factory_start .. :try_preflight_cache_factory_end} :catch_preflight_cache_factory",
+          "after": ".catch Ljava/lang/Throwable; {:try_preflight_cache_factory_start .. :try_preflight_cache_factory_end} :catch_preflight_cache_lookup",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "passive-preflight-fixed-handler-drift",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "passive_preflight_lookup_handler_literal",
+      "replacements": [
+        {
+          "before": "    :catch_preflight_cache_lookup\n    move-exception v0\n\n    const-string v0, \"cache_lookup_exception\"",
+          "after": "    :catch_preflight_cache_lookup\n    move-exception v0\n\n    const-string v0, \"wrong_lookup_stage\"",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-same-owner-second-target-mutation",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_call_provenance",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1, v3, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "after": "    invoke-static {v0, v1, v3, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V\n\n    const-string v3, \"9876\"\n\n    invoke-static {v0, v1, v3, p0}, Lthreadsmod/autoblock/ThreadsBlockBridge;->block(Landroid/app/Activity;Ljava/lang/Object;Ljava/lang/String;Lthreadsmod/autoblock/BridgeCallback;)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "passive-preflight-direct-mutation-route",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "expectedCode": "private_mutation_unreviewed_caller",
+      "replacements": [
+        {
+          "before": ".method public static passivePreflight(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String;\n    .locals 2",
+          "after": ".method public static passivePreflight(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String;\n    .locals 13",
+          "expectedCount": 1
+        },
+        {
+          "before": "    return-object v0\n\n    :catch_preflight_session",
+          "after": "    invoke-static/range {v0 .. v12}, Lfixture/MutationApi;->block(Landroid/content/Context;Lfixture/ModelInterface;Lfixture/Session;Lfixture/MutationEvents;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V\n\n    return-object v0\n\n    :catch_preflight_session",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-selected-route-return-before-waiting",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_identity",
+      "replacements": [
+        {
+          "before": "    iput-object v3, p0, Lfixture/AutomaticCaller;->currentId:Ljava/lang/String;\n\n    iput-boolean v7, p0, Lfixture/AutomaticCaller;->waiting:Z",
+          "after": "    iput-object v3, p0, Lfixture/AutomaticCaller;->currentId:Ljava/lang/String;\n\n    return-void\n\n    iput-boolean v7, p0, Lfixture/AutomaticCaller;->waiting:Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-selected-route-waiting-false",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_bridge_target_selected_route_waiting_true",
+      "replacements": [
+        {
+          "before": "    iput-object v3, p0, Lfixture/AutomaticCaller;->currentId:Ljava/lang/String;\n\n    iput-boolean v7, p0, Lfixture/AutomaticCaller;->waiting:Z",
+          "after": "    iput-object v3, p0, Lfixture/AutomaticCaller;->currentId:Ljava/lang/String;\n\n    iput-boolean v8, p0, Lfixture/AutomaticCaller;->waiting:Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-selected-route-started-true",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_bridge_target_selected_route_started_false",
+      "replacements": [
+        {
+          "before": "    iput-boolean v8, p0, Lfixture/AutomaticCaller;->started:Z\n\n    iget-object v0, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;",
+          "after": "    iput-boolean v7, p0, Lfixture/AutomaticCaller;->started:Z\n\n    iget-object v0, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-selected-route-reservation-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_bridge_target_selected_route_reservation_call",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1, v7}, Lthreadsmod/autoblock/AutoBlockSync;->reserveAttempt(Landroid/content/Context;Ljava/lang/String;Z)Z",
+          "after": "    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-selected-route-reservation-branch-bypass",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_bridge_target_selected_route_reservation_branch",
+      "replacements": [
+        {
+          "before": "    if-nez v0, :reservation_succeeded\n\n    iput-boolean v8, p0, Lfixture/AutomaticCaller;->waiting:Z",
+          "after": "    goto :reservation_succeeded\n\n    iput-boolean v8, p0, Lfixture/AutomaticCaller;->waiting:Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-selected-route-success-handoff-return",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_identity",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1, v4}, Lthreadsmod/autoblock/AutoBlockSync;->setStatus(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V\n\n    iget-wide v0, p0, Lfixture/AutomaticCaller;->schedulerToken:J",
+          "after": "    invoke-static {v0, v1, v4}, Lthreadsmod/autoblock/AutoBlockSync;->setStatus(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V\n\n    return-void\n\n    iget-wide v0, p0, Lfixture/AutomaticCaller;->schedulerToken:J",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-failure-owner-completion-route-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_failure_owner_completion_route_route",
+      "replacements": [
+        {
+          "before": "    invoke-direct {p0, p1}, Lfixture/AutomaticCaller;->handleCompletionPersistence(Ljava/lang/String;)V\n\n    return-void\n\n    :failure_not_completion",
+          "after": "    nop\n\n    return-void\n\n    :failure_not_completion",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-failure-owner-timeout-route-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_failure_owner_timeout_route_route",
+      "replacements": [
+        {
+          "before": "    invoke-direct {p0, p1}, Lfixture/AutomaticCaller;->handleUncertainMutation(Ljava/lang/String;)V\n\n    return-void\n\n    :failure_regular",
+          "after": "    nop\n\n    return-void\n\n    :failure_regular",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-failure-owner-diagnostic-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_failure_owner_diagnostic_count",
+      "replacements": [
+        {
+          "before": "    invoke-static {p2, v2, v0, v3, v1}, Lthreadsmod/autoblock/BlockDiagnostic;->forFailure(Ljava/lang/String;ZZZZ)Lthreadsmod/autoblock/BlockDiagnostic;\n\n    move-result-object p2",
+          "after": "    move-object p2, p1",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-failure-owner-diagnostic-history-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_failure_owner_diagnostic_history_count",
+      "replacements": [
+        {
+          "before": "    invoke-static {p1, v0, p2}, Lthreadsmod/autoblock/ModStateStore;->recordFailureDiagnostic(Landroid/content/Context;Ljava/lang/String;Lthreadsmod/autoblock/BlockDiagnostic;)V",
+          "after": "    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-failure-owner-wake-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_failure_owner_wake_count",
+      "replacements": [
+        {
+          "before": "    invoke-static {p1, p2}, Lthreadsmod/autoblock/AutoBlockSync;->scheduleManualDrain(J)V",
+          "after": "    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-failure-owner-unreviewed-invoke",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_failure_owner_unreviewed_invoke",
+      "replacements": [
+        {
+          "before": "    :failure_regular\n    const/4 v0, 0x0",
+          "after": "    :failure_regular\n    invoke-static {p1}, Lthreadsmod/autoblock/AutoBlockSync;->requestForceRefresh(Ljava/lang/String;)Z\n\n    const/4 v0, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-failure-owner-timeout-route-missing",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_failure_owner_timeout_route_count",
+      "replacements": [
+        {
+          "before": "    invoke-direct {p0}, Lfixture/ManualCaller;->abandonUncertainMutation()V\n\n    return-void\n\n    :manual_failure_regular",
+          "after": "    nop\n\n    return-void\n\n    :manual_failure_regular",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-failure-owner-diagnostic-missing",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_failure_owner_diagnostic_count",
+      "replacements": [
+        {
+          "before": "    invoke-static {p1, v1, v2, v3, v0}, Lthreadsmod/autoblock/BlockDiagnostic;->forFailure(Ljava/lang/String;ZZZZ)Lthreadsmod/autoblock/BlockDiagnostic;\n\n    move-result-object p1",
+          "after": "    move-object p1, v0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-failure-owner-diagnostic-history-missing",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_failure_owner_diagnostic_history_count",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1, p1}, Lthreadsmod/autoblock/ModStateStore;->recordFailureDiagnostic(Landroid/content/Context;Ljava/lang/String;Lthreadsmod/autoblock/BlockDiagnostic;)V",
+          "after": "    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-failure-owner-scheduler-release-missing",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_failure_owner_scheduler_release_count",
+      "replacements": [
+        {
+          "before": "    const-wide/32 v6, 0x1d8a8\n\n    const/4 v8, 0x1\n\n    invoke-static/range {v2 .. v8}, Lthreadsmod/autoblock/AutoBlockSync;->access$releaseSchedulerAndContinue(JLandroid/app/Activity;Ljava/lang/String;JZ)V",
+          "after": "    const-wide/32 v6, 0x1d8a8\n\n    const/4 v8, 0x1\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-failure-owner-dispatch-missing",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_failure_owner_dispatch_count",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1, p1}, Lthreadsmod/autoblock/AutoBlockSync;->dispatchManualFailure(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V\n\n    return-void",
+          "after": "    nop\n\n    return-void",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-failure-owner-unreviewed-invoke",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_failure_owner_unreviewed_invoke",
+      "replacements": [
+        {
+          "before": "    :manual_failure_regular\n    iget-object v0, p0, Lfixture/ManualCaller;->finished:Ljava/util/concurrent/atomic/AtomicBoolean;",
+          "after": "    :manual_failure_regular\n    const-wide/16 v3, 0x0\n\n    invoke-static {v3, v4}, Lthreadsmod/autoblock/AutoBlockSync;->scheduleManualDrain(J)V\n\n    iget-object v0, p0, Lfixture/ManualCaller;->finished:Ljava/util/concurrent/atomic/AtomicBoolean;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-caller-direct-failure-before-handoff",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_try_unreviewed_invoke",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1, v4}, Lthreadsmod/autoblock/AutoBlockSync;->setStatus(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V\n\n    iget-wide v0, p0, Lfixture/AutomaticCaller;->schedulerToken:J",
+          "after": "    invoke-static {v0, v1, v4}, Lthreadsmod/autoblock/AutoBlockSync;->setStatus(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V\n\n    const-string v4, \"direct_failure\"\n\n    invoke-direct {p0, v3, v4}, Lfixture/AutomaticCaller;->handleFailure(Ljava/lang/String;Ljava/lang/String;)V\n\n    iget-wide v0, p0, Lfixture/AutomaticCaller;->schedulerToken:J",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-caller-direct-failure-before-handoff",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_try_unreviewed_invoke",
+      "replacements": [
+        {
+          "before": "    :manual_foreground_current\n    iget-wide v0, p0, Lfixture/ManualCaller;->schedulerToken:J",
+          "after": "    :manual_foreground_current\n    const-string v4, \"direct_failure\"\n\n    invoke-direct {p0, v4}, Lfixture/ManualCaller;->fail(Ljava/lang/String;)V\n\n    iget-wide v0, p0, Lfixture/ManualCaller;->schedulerToken:J",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-success-pacing-runnable-direct-run",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_immediate_runnable_dispatch",
+      "replacements": [
+        {
+          "before": "    invoke-direct {v6, p0}, Lfixture/AutomaticCaller$NextRunnable;-><init>(Lfixture/AutomaticCaller;)V\n\n    invoke-virtual {v5, v6, v3, v4}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z",
+          "after": "    invoke-direct {v6, p0}, Lfixture/AutomaticCaller$NextRunnable;-><init>(Lfixture/AutomaticCaller;)V\n\n    invoke-interface {v6}, Ljava/lang/Runnable;->run()V\n\n    invoke-virtual {v5, v6, v3, v4}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-completion-owner-quarantine-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_completion_persistence_owner_quarantine_count",
+      "replacements": [
+        {
+          "before": "    invoke-static {v1, v2, p1}, Lthreadsmod/autoblock/AutoBlockSync;->quarantineCompletionReview(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z\n\n    move-result v1\n\n    const-string v2, \"completion_persistence\"",
+          "after": "    const/4 v1, 0x0\n\n    const-string v2, \"completion_persistence\"",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-completion-owner-release-return",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_completion_persistence_owner_quarantine_arguments",
+      "replacements": [
+        {
+          "before": "    :completion_persistence_current\n    const/4 v0, 0x0\n\n    iput-boolean v0, p0, Lfixture/AutomaticCaller;->waiting:Z\n\n    iget-wide v1, p0, Lfixture/AutomaticCaller;->schedulerToken:J\n\n    invoke-static {v1, v2, v0}, Lthreadsmod/autoblock/AutoBlockSync;->markSchedulerMutationInFlight(JZ)Z\n\n    iget-object v1, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;",
+          "after": "    :completion_persistence_current\n    const/4 v0, 0x0\n\n    iput-boolean v0, p0, Lfixture/AutomaticCaller;->waiting:Z\n\n    iget-wide v1, p0, Lfixture/AutomaticCaller;->schedulerToken:J\n\n    invoke-static {v1, v2, v0}, Lthreadsmod/autoblock/AutoBlockSync;->markSchedulerMutationInFlight(JZ)Z\n\n    return-void\n\n    iget-object v1, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-completion-owner-history-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_completion_persistence_owner_automatic_history_count",
+      "replacements": [
+        {
+          "before": "    :try_completion_history_start\n    iget-object v1, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lfixture/AutomaticCaller;->viewer:Ljava/lang/String;\n\n    invoke-static {v1, v2, p1, v0}, Lthreadsmod/autoblock/ModStateStore;->recordAutomaticFailure(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Lthreadsmod/autoblock/BlockDiagnostic;)V",
+          "after": "    :try_completion_history_start\n    iget-object v1, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lfixture/AutomaticCaller;->viewer:Ljava/lang/String;\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-completion-owner-diagnostic-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_completion_persistence_owner_unreviewed_implicit_throw",
+      "replacements": [
+        {
+          "before": "    const-string v2, \"completion_persistence\"\n\n    const/4 v3, 0x1\n\n    invoke-static {v2, v3, v0, v3, v1}, Lthreadsmod/autoblock/BlockDiagnostic;->forFailure(Ljava/lang/String;ZZZZ)Lthreadsmod/autoblock/BlockDiagnostic;\n\n    move-result-object v0",
+          "after": "    const-string v2, \"completion_persistence\"\n\n    const/4 v3, 0x1\n\n    const/4 v0, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-finish-owner-entry-return",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_finish_owner_terminal_latch_entry_postdominance",
+      "replacements": [
+        {
+          "before": ".method private finish(Ljava/lang/String;)V\n    .locals 17\n\n    move-object/from16 v1, p0",
+          "after": ".method private finish(Ljava/lang/String;)V\n    .locals 17\n\n    return-void\n\n    move-object/from16 v1, p0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-finish-owner-normal-release-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_finish_owner_scheduler_release_count",
+      "replacements": [
+        {
+          "before": "    const/4 v9, 0x0\n\n    invoke-static/range {v3 .. v9}, Lthreadsmod/autoblock/AutoBlockSync;->access$releaseSchedulerAndContinue(JLandroid/app/Activity;Ljava/lang/String;JZ)V\n\n    goto :finish_return",
+          "after": "    const/4 v9, 0x0\n\n    nop\n\n    goto :finish_return",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-finish-owner-exceptional-release-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_finish_owner_scheduler_release_count",
+      "replacements": [
+        {
+          "before": "    const/16 v16, 0x0\n\n    invoke-static/range {v10 .. v16}, Lthreadsmod/autoblock/AutoBlockSync;->access$releaseSchedulerAndContinue(JLandroid/app/Activity;Ljava/lang/String;JZ)V\n\n    :finish_return",
+          "after": "    const/16 v16, 0x0\n\n    nop\n\n    :finish_return",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-foreground-finish-owner-refresh-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_foreground_finish_owner_force_refresh_count",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0}, Lthreadsmod/autoblock/AutoBlockSync;->requestForceRefresh(Ljava/lang/String;)Z\n\n    :try_foreground_status_start",
+          "after": "    nop\n\n    :try_foreground_status_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "auto-block-main-background-looper",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "auto_block_main_initializer_order",
+      "replacements": [
+        {
+          "before": "    invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;",
+          "after": "    invoke-static {}, Landroid/os/Looper;->myLooper()Landroid/os/Looper;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-completion-owner-quarantine-missing",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_completion_persistence_owner_quarantine_count",
+      "replacements": [
+        {
+          "before": "    invoke-static {v0, v1, v3}, Lthreadsmod/autoblock/AutoBlockSync;->quarantineCompletionReview(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z\n\n    move-result v0\n\n    iget-object v1, p0, Lfixture/ManualCaller;->resolvedAuthorModel:Ljava/lang/Object;",
+          "after": "    const/4 v0, 0x0\n\n    iget-object v1, p0, Lfixture/ManualCaller;->resolvedAuthorModel:Ljava/lang/Object;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-completion-owner-queue-missing",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_completion_persistence_owner_queue_record_count",
+      "replacements": [
+        {
+          "before": "    :try_manual_completion_queue_start\n    iget-object v0, p0, Lfixture/ManualCaller;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lfixture/ManualCaller;->viewer:Ljava/lang/String;\n\n    iget-object v3, p0, Lfixture/ManualCaller;->targetId:Ljava/lang/String;\n\n    invoke-static {v0, v2, v3, v1}, Lthreadsmod/autoblock/ModStateStore;->markManualFailed(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Lthreadsmod/autoblock/BlockDiagnostic;)Z",
+          "after": "    :try_manual_completion_queue_start\n    iget-object v0, p0, Lfixture/ManualCaller;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lfixture/ManualCaller;->viewer:Ljava/lang/String;\n\n    iget-object v3, p0, Lfixture/ManualCaller;->targetId:Ljava/lang/String;\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-completion-owner-diagnostic-history-missing",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_completion_persistence_owner_diagnostic_history_count",
+      "replacements": [
+        {
+          "before": "    :try_manual_completion_diagnostic_start\n    iget-object v0, p0, Lfixture/ManualCaller;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lfixture/ManualCaller;->viewer:Ljava/lang/String;\n\n    invoke-static {v0, v2, v1}, Lthreadsmod/autoblock/ModStateStore;->recordFailureDiagnostic(Landroid/content/Context;Ljava/lang/String;Lthreadsmod/autoblock/BlockDiagnostic;)V",
+          "after": "    :try_manual_completion_diagnostic_start\n    iget-object v0, p0, Lfixture/ManualCaller;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lfixture/ManualCaller;->viewer:Ljava/lang/String;\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-completion-owner-exceptional-throw-bypass",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_completion_persistence_owner_release_handler_throw_identity",
+      "replacements": [
+        {
+          "before": "    invoke-static {v2, v3, v1}, Lthreadsmod/autoblock/AutoBlockSync;->dispatchManualFailure(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V\n\n    throw v0\n.end method\n\n.method private isCurrent",
+          "after": "    invoke-static {v2, v3, v1}, Lthreadsmod/autoblock/AutoBlockSync;->dispatchManualFailure(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V\n\n    const/4 v4, 0x0\n\n    if-nez v4, :manual_completion_throw\n\n    return-void\n\n    :manual_completion_throw\n    throw v0\n.end method\n\n.method private isCurrent",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-uncertain-exceptional-throw-bypass",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_uncertain_mutation_release_handler_throw_identity",
+      "replacements": [
+        {
+          "before": "    invoke-static {v2, v3, v1}, Lthreadsmod/autoblock/AutoBlockSync;->dispatchManualFailure(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V\n\n    throw v0\n.end method\n\n.method private constructor",
+          "after": "    invoke-static {v2, v3, v1}, Lthreadsmod/autoblock/AutoBlockSync;->dispatchManualFailure(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V\n\n    const/4 v4, 0x0\n\n    if-nez v4, :manual_uncertain_throw\n\n    return-void\n\n    :manual_uncertain_throw\n    throw v0\n.end method\n\n.method private constructor",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-uncertain-hidden-retry-schedule",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_uncertain_mutation_unreviewed_invoke",
+      "replacements": [
+        {
+          "before": "    :terminal_latched\n    iget-wide v3, p0, Lfixture/ManualCaller;->schedulerToken:J",
+          "after": "    :terminal_latched\n    const-wide/16 v3, 0x0\n\n    invoke-static {v3, v4}, Lthreadsmod/autoblock/AutoBlockSync;->scheduleManualDrain(J)V\n\n    iget-wide v3, p0, Lfixture/ManualCaller;->schedulerToken:J",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-uncertain-diagnostic-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_uncertain_mutation_unreviewed_implicit_throw",
+      "replacements": [
+        {
+          "before": "    const-string v4, \"callback_timeout\"\n\n    invoke-static {v4, v2, v0, v3, v1}, Lthreadsmod/autoblock/BlockDiagnostic;->forFailure(Ljava/lang/String;ZZZZ)Lthreadsmod/autoblock/BlockDiagnostic;\n\n    move-result-object v0",
+          "after": "    const-string v4, \"callback_timeout\"\n\n    const/4 v0, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-success-clear-retry-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_clear_retry_count",
+      "replacements": [
+        {
+          "before": "    :try_clear_retry_start\n    iget-object v1, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lfixture/AutomaticCaller;->viewer:Ljava/lang/String;\n\n    invoke-static {v1, v2}, Lthreadsmod/autoblock/AutoBlockSync;->clearRetryDeadline(Landroid/content/Context;Ljava/lang/String;)Z",
+          "after": "    :try_clear_retry_start\n    iget-object v1, p0, Lfixture/AutomaticCaller;->activity:Landroid/app/Activity;\n\n    iget-object v2, p0, Lfixture/AutomaticCaller;->viewer:Ljava/lang/String;\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-success-increment-corrupt",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_success_increment_shape",
+      "replacements": [
+        {
+          "before": "    iget v1, p0, Lfixture/AutomaticCaller;->successesThisRun:I\n\n    add-int/lit8 v1, v1, 0x1\n\n    iput v1, p0, Lfixture/AutomaticCaller;->successesThisRun:I",
+          "after": "    iget v1, p0, Lfixture/AutomaticCaller;->successesThisRun:I\n\n    add-int/lit8 v1, v1, 0x2\n\n    iput v1, p0, Lfixture/AutomaticCaller;->successesThisRun:I",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-success-status-missing",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_success_status_count",
+      "replacements": [
+        {
+          "before": "    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;\n\n    move-result-object v3\n\n    invoke-static {v1, v2, v3}, Lthreadsmod/autoblock/AutoBlockSync;->setStatus(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V",
+          "after": "    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;\n\n    move-result-object v3\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-success-five-try-drift",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_try_count",
+      "replacements": [
+        {
+          "before": "    .catchall {:try_clear_retry_start .. :try_clear_retry_end} :catch_clear_retry\n",
+          "after": "",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-success-clear-retry-missing",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_clear_retry_count",
+      "replacements": [
+        {
+          "before": "    :try_manual_success_clear_retry_start\n    iget-object v2, p0, Lfixture/ManualCaller;->activity:Landroid/app/Activity;\n\n    iget-object v3, p0, Lfixture/ManualCaller;->viewer:Ljava/lang/String;\n\n    invoke-static {v2, v3}, Lthreadsmod/autoblock/AutoBlockSync;->clearRetryDeadline(Landroid/content/Context;Ljava/lang/String;)Z",
+          "after": "    :try_manual_success_clear_retry_start\n    iget-object v2, p0, Lfixture/ManualCaller;->activity:Landroid/app/Activity;\n\n    iget-object v3, p0, Lfixture/ManualCaller;->viewer:Ljava/lang/String;\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-success-status-missing",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_success_status_count",
+      "replacements": [
+        {
+          "before": "    const-string v4, \"Inline Block completed after Threads confirmed success.\"\n\n    invoke-static {v2, v3, v4}, Lthreadsmod/autoblock/AutoBlockSync;->setStatus(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V",
+          "after": "    const-string v4, \"Inline Block completed after Threads confirmed success.\"\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-success-runtime-state-missing",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_success_runtime_count",
+      "replacements": [
+        {
+          "before": "    const-string v5, \"Threads confirmed the inline block.\"\n\n    invoke-static {v2, v3, v4, v5, v7}, Lthreadsmod/autoblock/ModStateStore;->recordRuntimeState(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)V",
+          "after": "    const-string v5, \"Threads confirmed the inline block.\"\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-success-six-try-drift",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_try_count",
+      "replacements": [
+        {
+          "before": "    .catchall {:try_manual_success_clear_retry_start .. :try_manual_success_clear_retry_end} :catch_manual_success_clear_retry\n",
+          "after": "",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-started-implicit-null-array",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_started_unreviewed_implicit_throw",
+      "replacements": [
+        {
+          "before": "    :current\n\n    const/4 v0, 0x1\n\n    iput-boolean v0, p0, Lfixture/AutomaticCaller;->started:Z",
+          "after": "    :current\n\n    const/4 v3, 0x0\n\n    array-length v3, v3\n\n    const/4 v0, 0x1\n\n    iput-boolean v0, p0, Lfixture/AutomaticCaller;->started:Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-success-pacing-runnable-direct-run-after-accept",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_immediate_runnable_dispatch",
+      "replacements": [
+        {
+          "before": "    if-nez v5, :terminal_return\n\n    const-string v0, \"Scheduler wake was rejected; reopen Threads to resume safely.\"\n\n    invoke-direct {p0, v0}, Lfixture/AutomaticCaller;->finish(Ljava/lang/String;)V\n\n    goto :terminal_return\n\n    :foreground_terminal",
+          "after": "    if-nez v5, :pacing_accepted_attack\n\n    const-string v0, \"Scheduler wake was rejected; reopen Threads to resume safely.\"\n\n    invoke-direct {p0, v0}, Lfixture/AutomaticCaller;->finish(Ljava/lang/String;)V\n\n    goto :terminal_return\n\n    :pacing_accepted_attack\n    invoke-interface {v6}, Ljava/lang/Runnable;->run()V\n\n    goto :terminal_return\n\n    :foreground_terminal",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-foreground-failure-route-missing",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_try_unreviewed_invoke",
+      "replacements": [
+        {
+          "before": "    const-string v0, \"foreground_changed\"\n\n    invoke-direct {p0, v0}, Lfixture/ManualCaller;->fail(Ljava/lang/String;)V\n\n    return-void",
+          "after": "    const-string v0, \"foreground_changed\"\n\n    nop\n\n    return-void",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-is-current-mutable-target-id",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_is_current_owner_target_field_immutable",
+      "replacements": [
+        {
+          "before": ".field private final targetId:Ljava/lang/String;",
+          "after": ".field private targetId:Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-is-current-nonconstructor-target-write",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_is_current_owner_target_field_nonconstructor_write",
+      "replacements": [
+        {
+          "before": ".method private isCurrent(Ljava/lang/String;)Z\n    .locals 2\n\n    iget-object v0, p0, Lfixture/AutomaticCaller;->finished:Ljava/util/concurrent/atomic/AtomicBoolean;",
+          "after": ".method private isCurrent(Ljava/lang/String;)Z\n    .locals 2\n\n    iput-object p1, p0, Lfixture/AutomaticCaller;->targetId:Ljava/lang/String;\n\n    iget-object v0, p0, Lfixture/AutomaticCaller;->finished:Ljava/util/concurrent/atomic/AtomicBoolean;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-is-current-wrong-constructor-source",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_is_current_owner_target_constructor_source",
+      "replacements": [
+        {
+          "before": "    iput-object p3, p0, Lfixture/AutomaticCaller;->targetId:Ljava/lang/String;",
+          "after": "    const-string v0, \"wrong-target\"\n\n    iput-object v0, p0, Lfixture/AutomaticCaller;->targetId:Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-is-current-legacy-current-id-shape",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_is_current_owner_shape",
+      "replacements": [
+        {
+          "before": "    iget-object v0, p0, Lfixture/AutomaticCaller;->targetId:Ljava/lang/String;\n\n    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z",
+          "after": "    iget-object v0, p0, Lfixture/AutomaticCaller;->currentId:Ljava/lang/String;\n\n    if-eqz v0, :not_current\n\n    iget-object v0, p0, Lfixture/AutomaticCaller;->currentId:Ljava/lang/String;\n\n    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-is-current-always-true-false-join",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_is_current_owner_return_shape",
+      "replacements": [
+        {
+          "before": "    :not_current\n    const/4 v0, 0x0\n\n    :current_join",
+          "after": "    :not_current\n    const/4 v0, 0x1\n\n    :current_join",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-is-current-always-true-false-join",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_is_current_owner_return_shape",
+      "replacements": [
+        {
+          "before": "    :not_current\n    const/4 v0, 0x0\n\n    :current_join",
+          "after": "    :not_current\n    const/4 v0, 0x1\n\n    :current_join",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-is-current-foreground-constant-true",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_is_current_foreground_owner_shape",
+      "replacements": [
+        {
+          "before": ".method private isCurrentForeground()Z\n    .locals 3\n\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$foreground()Z",
+          "after": ".method private isCurrentForeground()Z\n    .locals 3\n\n    const/4 v0, 0x1\n\n    return v0\n\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->access$foreground()Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-is-current-foreground-constant-true",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_is_current_foreground_owner_shape",
+      "replacements": [
+        {
+          "before": ".method private isCurrentForeground()Z\n    .locals 2\n\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->getForegroundActivity()Landroid/app/Activity;",
+          "after": ".method private isCurrentForeground()Z\n    .locals 2\n\n    const/4 v0, 0x1\n\n    return v0\n\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->getForegroundActivity()Landroid/app/Activity;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-ownership-is-owner-noop",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_ownership_core_is_owner_shape",
+      "replacements": [
+        {
+          "before": ".method public static isSchedulerOwner(J)Z\n    .locals 3\n\n    sget-object v0, Lthreadsmod/autoblock/AutoBlockSync;->SCHEDULER_LOCK:Ljava/lang/Object;",
+          "after": ".method public static isSchedulerOwner(J)Z\n    .locals 3\n\n    return p0\n\n    sget-object v0, Lthreadsmod/autoblock/AutoBlockSync;->SCHEDULER_LOCK:Ljava/lang/Object;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-ownership-is-owner-true-routes-false",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_ownership_core_is_owner_true_join",
+      "replacements": [
+        {
+          "before": "    const/4 p0, 0x1\n\n    goto :owner_join",
+          "after": "    const/4 p0, 0x1\n\n    goto :not_owner",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-ownership-mark-noop",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_ownership_core_mark_shape",
+      "replacements": [
+        {
+          "before": ".method public static markSchedulerMutationInFlight(JZ)Z\n    .locals 3\n\n    sget-object v0, Lthreadsmod/autoblock/AutoBlockSync;->SCHEDULER_LOCK:Ljava/lang/Object;",
+          "after": ".method public static markSchedulerMutationInFlight(JZ)Z\n    .locals 3\n\n    return p2\n\n    sget-object v0, Lthreadsmod/autoblock/AutoBlockSync;->SCHEDULER_LOCK:Ljava/lang/Object;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-ownership-mark-success-returns-false",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_ownership_core_mark_success_return_value",
+      "replacements": [
+        {
+          "before": "    :mark_matched\n    sput-boolean p2, Lthreadsmod/autoblock/AutoBlockSync;->schedulerMutationInFlight:Z\n\n    monitor-exit v0\n\n    const/4 p0, 0x1\n\n    return p0",
+          "after": "    :mark_matched\n    sput-boolean p2, Lthreadsmod/autoblock/AutoBlockSync;->schedulerMutationInFlight:Z\n\n    monitor-exit v0\n\n    const/4 p0, 0x0\n\n    return p0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "completion-quarantine-local-install-missing",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "completion_quarantine_core_local_install",
+      "replacements": [
+        {
+          "before": "    invoke-static {p1, p2}, Lthreadsmod/autoblock/AutoBlockSync;->installLocalCompletionReview(Ljava/lang/String;Ljava/lang/String;)V\n\n    nop",
+          "after": "    nop\n\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "completion-quarantine-durable-store-missing",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "completion_quarantine_core_durable_store",
+      "replacements": [
+        {
+          "before": "    :try_quarantine_start\n    invoke-static {p0, p1, p2}, Lthreadsmod/autoblock/ModStateStore;->quarantineCompletionReview(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z",
+          "after": "    :try_quarantine_start\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-release-core-dead-drains",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_release_core_drain_arguments",
+      "replacements": [
+        {
+          "before": "    :requested_drain\n    invoke-static {p4, p5}, Lthreadsmod/autoblock/AutoBlockSync;->scheduleManualDrain(J)V\n\n    return-void",
+          "after": "    :requested_drain\n    goto :requested_drain_return_attack\n\n    invoke-static {p4, p5}, Lthreadsmod/autoblock/AutoBlockSync;->scheduleManualDrain(J)V\n\n    :requested_drain_return_attack\n    return-void",
+          "expectedCount": 1
+        },
+        {
+          "before": "    :context_changed\n    invoke-static {v1, v2}, Lthreadsmod/autoblock/AutoBlockSync;->scheduleManualDrain(J)V\n\n    return-void",
+          "after": "    :context_changed\n    goto :context_changed_return_attack\n\n    invoke-static {v1, v2}, Lthreadsmod/autoblock/AutoBlockSync;->scheduleManualDrain(J)V\n\n    :context_changed_return_attack\n    return-void",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-started-div-lit8-zero",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_started_unreviewed_implicit_throw",
+      "replacements": [
+        {
+          "before": "    :current\n\n    const/4 v0, 0x1\n\n    iput-boolean v0, p0, Lfixture/AutomaticCaller;->started:Z",
+          "after": "    :current\n\n    div-int/lit8 v3, v3, 0x0\n\n    const/4 v0, 0x1\n\n    iput-boolean v0, p0, Lfixture/AutomaticCaller;->started:Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-started-unreviewed-waiting-clear",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_started_unreviewed_field",
+      "replacements": [
+        {
+          "before": "    :current\n\n    const/4 v0, 0x1\n\n    iput-boolean v0, p0, Lfixture/AutomaticCaller;->started:Z",
+          "after": "    :current\n\n    const/4 v0, 0x0\n\n    iput-boolean v0, p0, Lfixture/AutomaticCaller;->waiting:Z\n\n    const/4 v0, 0x1\n\n    iput-boolean v0, p0, Lfixture/AutomaticCaller;->started:Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-success-extra-scheduler-release",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_unreviewed_invoke",
+      "replacements": [
+        {
+          "before": "    :success_status_done\n    :try_reviewed_terminal_start",
+          "after": "    :success_status_done\n    invoke-static/range {v0 .. v6}, Lthreadsmod/autoblock/AutoBlockSync;->access$releaseSchedulerAndContinue(JLandroid/app/Activity;Ljava/lang/String;JZ)V\n\n    :try_reviewed_terminal_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-success-unreviewed-retry-schedule",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_success_unreviewed_invoke",
+      "replacements": [
+        {
+          "before": "    :manual_success_state_done\n    :try_dispatch_start",
+          "after": "    :manual_success_state_done\n    const-wide/16 v0, 0x0\n\n    invoke-static {v0, v1}, Lthreadsmod/autoblock/AutoBlockSync;->scheduleManualDrain(J)V\n\n    :try_dispatch_start",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-success-status-constant-count",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_success_success_status_count_argument",
+      "replacements": [
+        {
+          "before": "    iget v4, p0, Lfixture/AutomaticCaller;->successesThisRun:I\n\n    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;",
+          "after": "    const/4 v4, 0x1\n\n    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-watchdog-runnable-hidden-state-write",
+      "relativePath": "fixture/AutomaticCaller$WatchdogRunnable.smali",
+      "expectedCode": "automatic_caller_enqueue_watchdog_elapsed_run_unreviewed_invoke",
+      "replacements": [
+        {
+          "before": ".end method\n\n.method public final run()V",
+          "after": ".end method\n\n.method private static synthetic tamperWaiting(Lfixture/AutomaticCaller;)V\n    .locals 1\n\n    const/4 v0, 0x0\n\n    iput-boolean v0, p0, Lfixture/AutomaticCaller;->waiting:Z\n\n    return-void\n.end method\n\n.method public final run()V",
+          "expectedCount": 1
+        },
+        {
+          "before": "    if-ne v0, v1, :done\n\n    iget-object v0, p0, Lfixture/AutomaticCaller$WatchdogRunnable;->this$0:Lfixture/AutomaticCaller;\n\n    invoke-static {v0}, Lfixture/AutomaticCaller;->access$currentId(Lfixture/AutomaticCaller;)Ljava/lang/String;",
+          "after": "    if-ne v0, v1, :done\n\n    iget-object v0, p0, Lfixture/AutomaticCaller$WatchdogRunnable;->this$0:Lfixture/AutomaticCaller;\n\n    invoke-static {v0}, Lfixture/AutomaticCaller$WatchdogRunnable;->tamperWaiting(Lfixture/AutomaticCaller;)V\n\n    iget-object v0, p0, Lfixture/AutomaticCaller$WatchdogRunnable;->this$0:Lfixture/AutomaticCaller;\n\n    invoke-static {v0}, Lfixture/AutomaticCaller;->access$currentId(Lfixture/AutomaticCaller;)Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "fetch-delivery-targets-field-overwrite",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker$DeliveryRunnable.smali",
+      "expectedCode": "fetch_worker_enqueue_runnable_unreviewed_field_write",
+      "replacements": [
+        {
+          "before": ".method public run()V\n    .locals 8\n\n    iget-object v0, p0, Lthreadsmod/autoblock/AutoBlockSync$FetchWorker$DeliveryRunnable;->this$0:Lthreadsmod/autoblock/AutoBlockSync$FetchWorker;",
+          "after": ".method public run()V\n    .locals 8\n\n    const/4 v7, 0x0\n\n    iput-object v7, p0, Lthreadsmod/autoblock/AutoBlockSync$FetchWorker$DeliveryRunnable;->val$targets:Ljava/util/List;\n\n    iget-object v0, p0, Lthreadsmod/autoblock/AutoBlockSync$FetchWorker$DeliveryRunnable;->this$0:Lthreadsmod/autoblock/AutoBlockSync$FetchWorker;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "schedule-manual-drain-accepted-loop",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "schedule_manual_drain_enqueue_accepted_terminal_return_count",
+      "replacements": [
+        {
+          "before": "    if-nez v0, :accepted",
+          "after": "    if-nez v0, :schedule_accepted_attack",
+          "expectedCount": 1
+        },
+        {
+          "before": "    :accepted\n    return-void\n.end method",
+          "after": "    :schedule_accepted_attack\n    goto :schedule_accepted_attack\n\n    :accepted\n    return-void\n.end method",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-release-viewer-decimal-branch-invert",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_release_core_viewer_decimal_branch",
+      "replacements": [
+        {
+          "before": "    invoke-static {p3}, Lthreadsmod/autoblock/AutoBlockSync;->isDecimalId(Ljava/lang/String;)Z\n\n    move-result p1\n\n    if-eqz p1, :release_return",
+          "after": "    invoke-static {p3}, Lthreadsmod/autoblock/AutoBlockSync;->isDecimalId(Ljava/lang/String;)Z\n\n    move-result p1\n\n    if-nez p1, :release_return",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-release-viewer-length-branch-invert",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_release_core_viewer_length_branch",
+      "replacements": [
+        {
+          "before": "    const/16 v0, 0x18\n\n    if-le p1, v0, :load_release_context",
+          "after": "    const/16 v0, 0x18\n\n    if-gt p1, v0, :load_release_context",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-release-host-null-branch-invert",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_release_core_activity_null_branch",
+      "replacements": [
+        {
+          "before": "    if-eqz p1, :release_return\n\n    if-eqz v0, :release_return\n\n    if-eqz v3, :release_return",
+          "after": "    if-nez p1, :release_return\n\n    if-eqz v0, :release_return\n\n    if-eqz v3, :release_return",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-release-viewer-null-branch-invert",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_release_core_live_viewer_null_branch",
+      "replacements": [
+        {
+          "before": "    if-eqz p1, :release_return\n\n    if-eqz v0, :release_return\n\n    if-eqz v3, :release_return",
+          "after": "    if-eqz p1, :release_return\n\n    if-nez v0, :release_return\n\n    if-eqz v3, :release_return",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-release-session-null-branch-invert",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_release_core_session_null_branch",
+      "replacements": [
+        {
+          "before": "    if-eqz p1, :release_return\n\n    if-eqz v0, :release_return\n\n    if-eqz v3, :release_return",
+          "after": "    if-eqz p1, :release_return\n\n    if-eqz v0, :release_return\n\n    if-nez v3, :release_return",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-release-session-equality-branch-invert",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_release_core_session_equality_branch",
+      "replacements": [
+        {
+          "before": "    if-nez v3, :viewer_session_current",
+          "after": "    if-eqz v3, :viewer_session_current",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-release-session-equality-wrong-argument",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_release_core_session_equality_arguments",
+      "replacements": [
+        {
+          "before": "    invoke-virtual {v0, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z",
+          "after": "    invoke-virtual {v0, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-release-requested-viewer-branch-invert",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_release_core_viewer_context_equality_branch",
+      "replacements": [
+        {
+          "before": "    if-eqz v0, :context_changed",
+          "after": "    if-nez v0, :context_changed",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-release-requested-viewer-self-equality",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_release_core_viewer_context_equality_arguments",
+      "replacements": [
+        {
+          "before": "    invoke-virtual {p3, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z",
+          "after": "    invoke-virtual {p3, p3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-release-activity-context-branch-invert",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_release_core_activity_context_branch",
+      "replacements": [
+        {
+          "before": "    if-eq p1, p2, :context_current",
+          "after": "    if-ne p1, p2, :context_current",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-release-next-queued-branch-invert",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_release_core_next_queued_branch",
+      "replacements": [
+        {
+          "before": "    if-eqz p2, :check_automatic_drain",
+          "after": "    if-nez p2, :check_automatic_drain",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-release-manual-pending-branch-invert",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_release_core_manual_pending_branch",
+      "replacements": [
+        {
+          "before": "    if-nez p0, :requested_drain",
+          "after": "    if-eqz p0, :requested_drain",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-release-resume-auto-branch-invert",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_release_core_resume_auto_branch",
+      "replacements": [
+        {
+          "before": "    if-eqz p6, :release_return",
+          "after": "    if-nez p6, :release_return",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-release-enabled-branch-invert",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_release_core_enabled_branch",
+      "replacements": [
+        {
+          "before": "    invoke-static {p1}, Lthreadsmod/autoblock/AutoBlockSync;->isEnabled(Landroid/content/Context;)Z\n\n    move-result p0\n\n    if-eqz p0, :release_return",
+          "after": "    invoke-static {p1}, Lthreadsmod/autoblock/AutoBlockSync;->isEnabled(Landroid/content/Context;)Z\n\n    move-result p0\n\n    if-nez p0, :release_return",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "scheduler-release-drain-delay-routes-swapped",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync.smali",
+      "expectedCode": "scheduler_release_core_viewer_context_equality_branch",
+      "replacements": [
+        {
+          "before": "    :requested_drain\n    invoke-static {p4, p5}, Lthreadsmod/autoblock/AutoBlockSync;->scheduleManualDrain(J)V",
+          "after": "    :requested_drain\n    invoke-static {v1, v2}, Lthreadsmod/autoblock/AutoBlockSync;->scheduleManualDrain(J)V",
+          "expectedCount": 1
+        },
+        {
+          "before": "    :context_changed\n    invoke-static {v1, v2}, Lthreadsmod/autoblock/AutoBlockSync;->scheduleManualDrain(J)V",
+          "after": "    :context_changed\n    invoke-static {p4, p5}, Lthreadsmod/autoblock/AutoBlockSync;->scheduleManualDrain(J)V",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-selected-status-null-message",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_bridge_target_selected_route_selected_status_message_provenance",
+      "replacements": [
+        {
+          "before": "    const-string v4, \"Blocking selected target.\"",
+          "after": "    const/4 v4, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-started-status-null-message",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_callback_started_status_message_provenance",
+      "replacements": [
+        {
+          "before": "    const-string v3, \"Blocking selected target...\"",
+          "after": "    const/4 v3, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-started-status-null-message",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_started_status_message_provenance",
+      "replacements": [
+        {
+          "before": "    const-string v3, \"Blocking the selected profile...\"",
+          "after": "    const/4 v3, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-started-runtime-detail-null",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_callback_started_runtime_state_arguments",
+      "replacements": [
+        {
+          "before": "    const-string v3, \"An inline block is in flight.\"",
+          "after": "    const/4 v3, 0x0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "fetch-worker-handler-tail-normal-entry",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker.smali",
+      "expectedCode": "fetch_worker_enqueue_outer_control_flow_handler_tail_normal_entry",
+      "replacements": [
+        {
+          "before": "    :accepted\n    goto :done",
+          "after": "    :accepted\n    goto :catch_owner_current",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "fetch-worker-accepted-loop",
+      "relativePath": "threadsmod/autoblock/AutoBlockSync$FetchWorker.smali",
+      "expectedCode": "fetch_worker_enqueue_accepted_terminal_return_count",
+      "replacements": [
+        {
+          "before": "    if-nez v0, :accepted",
+          "after": "    if-nez v0, :fetch_accepted_attack",
+          "expectedCount": 1
+        },
+        {
+          "before": "    :accepted\n    goto :done",
+          "after": "    goto :accepted\n\n    :fetch_accepted_attack\n    goto :fetch_accepted_attack\n\n    :accepted\n    goto :done",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-pre-pace-accepted-loop",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_enqueue_pre_pace_accepted_terminal_return_count",
+      "replacements": [
+        {
+          "before": "    :pre_pace_post_accepted\n    return-void",
+          "after": "    :pre_pace_post_accepted\n    :pre_pace_accepted_loop\n    goto :pre_pace_accepted_loop\n\n    return-void",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "automatic-watchdog-accepted-loop",
+      "relativePath": "fixture/AutomaticCaller.smali",
+      "expectedCode": "automatic_caller_enqueue_watchdog_accepted_terminal_return_count",
+      "replacements": [
+        {
+          "before": "    if-nez v0, :watchdog_accepted\n\n    invoke-direct {p0, v5}, Lfixture/AutomaticCaller;->handleUncertainMutation(Ljava/lang/String;)V",
+          "after": "    if-nez v0, :automatic_watchdog_accepted_attack\n\n    invoke-direct {p0, v5}, Lfixture/AutomaticCaller;->handleUncertainMutation(Ljava/lang/String;)V",
+          "expectedCount": 1
+        },
+        {
+          "before": "    :watchdog_accepted\n    return-void\n\n    :catch_bridge",
+          "after": "    goto :watchdog_accepted\n\n    :automatic_watchdog_accepted_attack\n    goto :automatic_watchdog_accepted_attack\n\n    :watchdog_accepted\n    return-void\n\n    :catch_bridge",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-watchdog-accepted-loop",
+      "relativePath": "fixture/ManualCaller.smali",
+      "expectedCode": "manual_caller_enqueue_watchdog_accepted_terminal_return_count",
+      "replacements": [
+        {
+          "before": "    if-nez v0, :watchdog_accepted\n\n    invoke-direct {p0}, Lfixture/ManualCaller;->abandonUncertainMutation()V",
+          "after": "    if-nez v0, :manual_watchdog_accepted_attack\n\n    invoke-direct {p0}, Lfixture/ManualCaller;->abandonUncertainMutation()V",
+          "expectedCount": 1
+        },
+        {
+          "before": "    :watchdog_accepted\n    return-void\n\n    :catch_bridge",
+          "after": "    goto :watchdog_accepted\n\n    :manual_watchdog_accepted_attack\n    goto :manual_watchdog_accepted_attack\n\n    :watchdog_accepted\n    return-void\n\n    :catch_bridge",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "stable-inline-media-lookup-call",
+      "relativePath": "com/threadsmod/autoblock/FixtureModNamespace.smali",
+      "expectedCode": "private_inline_media_lookup_unreviewed_caller",
+      "replacements": [
+        {
+          "before": "    return-void\n.end method",
+          "after": "    invoke-static {p0, p0}, Lfixture/MediaLookup;->find(Lfixture/Session;Ljava/lang/String;)Lfixture/Media;\n\n    return-void\n.end method",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "stable-inline-author-lookup-call",
+      "relativePath": "com/threadsmod/autoblock/FixtureModNamespace.smali",
+      "expectedCode": "private_inline_author_lookup_unreviewed_caller",
+      "replacements": [
+        {
+          "before": "    return-void\n.end method",
+          "after": "    invoke-static {p0}, Lfixture/MediaAuthor;->author(Lfixture/Media;)Lfixture/Model;\n\n    return-void\n.end method",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "stable-inline-username-call",
+      "relativePath": "com/threadsmod/autoblock/FixtureModNamespace.smali",
+      "expectedCode": "private_inline_username_unreviewed_caller",
+      "replacements": [
+        {
+          "before": "    return-void\n.end method",
+          "after": "    invoke-static {p0}, Lfixture/Username;->name(Lfixture/Model;)Ljava/lang/String;\n\n    return-void\n.end method",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "non-primary-dex",
+      "relativePath": "threadsmod/autoblock/ThreadsBlockBridge.smali",
+      "dexEntryName": "classes2.dex",
+      "expectedCode": "unexpected_dex",
+      "replacements": []
+    }
+  ]
+}

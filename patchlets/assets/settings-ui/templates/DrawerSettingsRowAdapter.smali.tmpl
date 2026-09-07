@@ -1,0 +1,31 @@
+.class public final Lthreadsmod/drawer/DrawerSettingsRowAdapter;
+.super Ljava/lang/Object;
+.source "DrawerSettingsRowAdapter.smali"
+
+# direct methods
+.method private constructor <init>()V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+    return-void
+.end method
+
+.method public static render({{composerDescriptor}}{{modifierDescriptor}})V
+    .locals 8
+
+    if-eqz p0, :return
+    if-eqz p1, :return
+
+    move-object v0, p0
+    move-object v1, p1
+    const-string v2, "Clone Blocker settings"
+    sget-object v3, Lthreadsmod/drawer/DrawerSettingsClick;->INSTANCE:Lthreadsmod/drawer/DrawerSettingsClick;
+    const/4 v4, 0x0
+    const/16 v5, 0xc00
+    const/4 v6, 0x4
+    const/4 v7, 0x0
+    invoke-static/range {v0 .. v7}, {{nativeDrawerRowMethod}}
+
+    :return
+    return-void
+.end method

@@ -1,0 +1,174 @@
+{
+  "$schema": "../../schemas/patchlet.schema.json",
+  "schemaVersion": 1,
+  "id": "030-native-block-bridge",
+  "revision": 7,
+  "title": "Version-bound Threads block bridge",
+  "summary": "Select an exact-resolution-owned Smali template and rendered reference, render the direct adapter and callback from reviewed private Threads symbols, expose a callback-free passive preflight before passive-running persistence and atomic attempt-plus-delay reservation, accept only an ID-matching opaque resolved author model, use the session user-cache null-seed get-or-create-by-ID placeholder path, bind both reviewed native mutation argument layouts to exact signed-DEX flow, isolate each private seam in a narrow fixed-stage region, route every result through the asynchronous stable dispatcher, keep operation zero as Block, and require terminal callback proofs.",
+  "stage": "render",
+  "dependsOn": ["020-autoblock-runtime"],
+  "resolution": {
+    "required": true,
+    "binding": "exact-apk-sha256",
+    "sourceSha256Pointer": "/source/sha256",
+    "requiredSections": ["source", "bridge", "proofs"],
+    "rewriteSets": []
+  },
+  "risk": ["account-mutation", "private-api", "packaging"],
+  "ownership": {
+    "classPrefixes": [],
+    "classDescriptors": [
+      "Lthreadsmod/autoblock/ThreadsBlockBridge;",
+      "Lthreadsmod/autoblock/MutationCallback;"
+    ],
+    "rewriteRuleIds": [],
+    "manifestComponents": [],
+    "hostHooks": [],
+    "preferenceKeys": [],
+    "databaseSchemas": []
+  },
+  "inputs": [
+    {
+      "id": "bridge-templates",
+      "kind": "asset-tree",
+      "pathFromResolution": "/bridge/templateRoot",
+      "sha256FromResolution": "/assets/bridgeTemplateTreeSha256",
+      "required": true
+    },
+    {
+      "id": "exact-version-rendered-bridge-reference",
+      "kind": "asset-tree",
+      "pathFromResolution": "/bridge/referenceRoot",
+      "sha256FromResolution": "/assets/bridgeReferenceTreeSha256",
+      "required": true
+    },
+    {
+      "id": "resolved-bridge-symbols",
+      "kind": "resolution-section",
+      "pointer": "/bridge/symbols",
+      "required": true
+    },
+    {
+      "id": "resolved-symbol-proofs",
+      "kind": "resolution-section",
+      "pointer": "/proofs",
+      "required": true
+    }
+  ],
+  "operations": [
+    {
+      "id": "render-native-bridge",
+      "type": "render-smali-templates",
+      "source": "resolution:/bridge/templateRoot",
+      "target": "decoded-apk:primary-dex",
+      "bindingsPointer": "/bridge/symbols",
+      "idempotency": "rendered-content-hash",
+      "verifyNoPlaceholders": true
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "resolution-sha-matches-input",
+      "check": "source-apk-sha256-equals-resolution",
+      "pointer": "/source/sha256",
+      "severity": "error"
+    },
+    {
+      "id": "all-symbol-proofs-match",
+      "check": "resolution-proofs-match-decoded-apk",
+      "pointer": "/proofs",
+      "severity": "error"
+    },
+    {
+      "id": "all-template-bindings-resolved",
+      "check": "template-placeholders-have-resolution-values",
+      "pointer": "/bridge/symbols",
+      "severity": "error"
+    }
+  ],
+  "postconditions": [
+    {
+      "id": "no-template-placeholders-remain",
+      "check": "rendered-tree-has-no-template-placeholders",
+      "severity": "error"
+    },
+    {
+      "id": "bridge-class-present-once",
+      "check": "class-descriptor-count",
+      "value": "Lthreadsmod/autoblock/ThreadsBlockBridge;",
+      "expectedCount": 1,
+      "severity": "error"
+    },
+    {
+      "id": "block-operation-remains-zero",
+      "check": "bridge-block-mode-constant-is-zero",
+      "severity": "error"
+    },
+    {
+      "id": "callback-terminal-map-complete",
+      "check": "bridge-callback-interface-methods-accounted-for",
+      "severity": "error"
+    },
+    {
+      "id": "resolved-model-id-match",
+      "check": "opaque-resolved-model-is-cast-only-in-sha-bound-smali-and-its-canonical-model-id-must-equal-the-requested-target-before-block-model",
+      "severity": "error"
+    },
+    {
+      "id": "null-model-native-cache-placeholder-fallback",
+      "check": "null-resolved-model-uses-cache-first-then-the-reviewed-session-user-cache-get-or-create-by-id-model-with-exact-id-validation-before-mutation-and-no-profile-fetch-prerequisite",
+      "severity": "error"
+    },
+    {
+      "id": "legacy-profile-lookup-removed",
+      "check": "rendered-bridge-has-no-user-info-fetch-callback-or-lookup-failure-path",
+      "severity": "error"
+    },
+    {
+      "id": "bridge-failure-stage-vocabulary-closed",
+      "check": "rendered-bridge-and-mutation-callback-emit-only-reviewed-fixed-stage-tokens-owned-by-block-diagnostic",
+      "severity": "error"
+    },
+    {
+      "id": "bridge-private-seam-handlers-narrow",
+      "check": "direct-and-passive-preflight-session-cache-lookup-cache-factory-cache-placeholder-resolved-session-resolved-model-model-id-already-blocked-preparation-dispatch-and-native-mutation-seams-have-separate-narrow-ranges-with-fixed-stage-result-or-callback-flows-outside-those-ranges-and-exact-reviewed-private-call-owner-provenance-with-no-extra-mod-namespace-callers",
+      "severity": "error"
+    },
+    {
+      "id": "passive-native-already-blocked-preflight",
+      "check": "callback-free-passive-preflight-uses-the-reviewed-cache-first-exact-id-model-preparation-and-returns-null-only-for-mutation-ready-already-blocked-success-only-for-native-blocked-or-an-existing-fixed-stage-before-passive-running-persistence-and-atomic-attempt-plus-delay-reservation",
+      "severity": "error"
+    },
+    {
+      "id": "bridge-entry-reachability-exact",
+      "check": "signed-primary-dex-binds-block-entry-to-session-cast-and-entry-reachable-cache-lookup-factory-placeholder-and-dispatch-block-resolved-entry-to-the-model-presence-branch-and-both-null-and-resolved-paths-prepare-model-entry-to-author-id-and-all-outcomes-and-block-model-entry-to-prepare-model-before-any-result-or-mutation-route",
+      "severity": "error"
+    },
+    {
+      "id": "native-callbacks-cross-asynchronous-firewall",
+      "check": "bridge-and-mutation-callback-have-no-direct-mod-callback-invoke-and-route-every-result-plus-started-failure-and-success-through-the-stable-asynchronous-dispatcher",
+      "severity": "error"
+    }
+  ],
+  "releaseGates": [
+    "resolution-proofs",
+    "bridge-callgraph",
+    "resolved-model-id-match-contract",
+    "cache-placeholder-id-match-contract",
+    "bridge-failure-stage-vocabulary-contract",
+    "bridge-private-seam-handler-contract",
+    "passive-native-already-blocked-preflight-contract",
+    "bridge-entry-reachability-contract",
+    "bridge-signed-dex-flow-contract",
+    "bridge-callback-firewall-contract",
+    "callback-terminal-map",
+    "smali-assembly"
+  ],
+  "ai": {
+    "allowed": true,
+    "taskTemplate": "../../ai/tasks/RESOLVE-NATIVE-BLOCK-BRIDGE.md",
+    "output": "proposal-json-only",
+    "mayEditProductionTree": false,
+    "mayRelaxChecks": false
+  }
+}

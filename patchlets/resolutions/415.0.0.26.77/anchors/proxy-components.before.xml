@@ -1,0 +1,2 @@
+        <meta-data android:name="com.android.dynamic.apk.fused.modules" android:value="base,longtail"/>
+        <meta-data android:name="com.android.vending.splits" android:resource="@xml/splits0"/>

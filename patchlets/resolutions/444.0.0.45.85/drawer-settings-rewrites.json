@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "drawer-settings-button-hook-v1",
+      "path": "smali_classes3/X/02Gf.smali",
+      "beforeFile": "anchors/drawer-settings-v1.before.smali",
+      "afterFile": "anchors/drawer-settings-v1.after.smali",
+      "expectedCount": 1
+    },
+    {
+      "id": "drawer-settings-button-hook-v2",
+      "path": "smali_classes4/X/00sD.smali",
+      "beforeFile": "anchors/drawer-settings-v2.before.smali",
+      "afterFile": "anchors/drawer-settings-v2.after.smali",
+      "expectedCount": 1
+    }
+  ]
+}

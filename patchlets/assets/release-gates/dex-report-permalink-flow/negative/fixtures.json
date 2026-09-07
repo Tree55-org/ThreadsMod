@@ -1,0 +1,491 @@
+{
+  "schemaVersion": 1,
+  "expectedFixtureCount": 41,
+  "fixtures": [
+    {
+      "id": "factory-clobbered-permalink",
+      "expectedCode": "factory_permalink_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    move-object v8, v1",
+          "after": "    const-string v8, \"\"",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-wrong-constructor-slot",
+      "expectedCode": "factory_permalink_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    const-string v3, \"item\"\n    move-object v4, v11\n    const-string v5, \"1234\"\n    const-string v7, \"\"\n    move-object v8, v1",
+          "after": "    move-object v3, v1\n    move-object v4, v11\n    const-string v5, \"1234\"\n    const-string v7, \"\"\n    const-string v8, \"\"",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "request-stores-raw-permalink",
+      "expectedCode": "request_permalink_storage_flow",
+      "relativePath": "threadsmod/reporting/ReportRequest.smali",
+      "replacements": [
+        {
+          "before": "    iput-object v0, p0, Lthreadsmod/reporting/ReportRequest;->permalink:Ljava/lang/String;",
+          "after": "    iput-object p6, p0, Lthreadsmod/reporting/ReportRequest;->permalink:Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "request-later-raw-permalink-overwrite",
+      "expectedCode": "request_permalink_store_count",
+      "relativePath": "threadsmod/reporting/ReportRequest.smali",
+      "replacements": [
+        {
+          "before": "    iput-object v0, p0, Lthreadsmod/reporting/ReportRequest;->permalink:Ljava/lang/String;\n    return-void",
+          "after": "    iput-object v0, p0, Lthreadsmod/reporting/ReportRequest;->permalink:Ljava/lang/String;\n    iput-object p6, p0, Lthreadsmod/reporting/ReportRequest;->permalink:Ljava/lang/String;\n    return-void",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "request-permalink-field-not-final",
+      "expectedCode": "request_permalink_field_immutable",
+      "relativePath": "threadsmod/reporting/ReportRequest.smali",
+      "replacements": [
+        {
+          "before": ".field private final permalink:Ljava/lang/String;",
+          "after": ".field private permalink:Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "request-new-queue-skips-permalink-guard",
+      "expectedCode": "request_new_queue_validity_flow",
+      "relativePath": "threadsmod/reporting/ReportRequest.smali",
+      "replacements": [
+        {
+          "before": "    invoke-virtual {v0}, Ljava/lang/String;->length()I\n    move-result v0\n    if-lez v0, :invalid",
+          "after": "    invoke-virtual {v0}, Ljava/lang/String;->length()I\n    move-result v0\n    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "request-shared-return-extra-success",
+      "expectedCode": "request_validity_success_definition_count",
+      "relativePath": "threadsmod/reporting/ReportRequest.smali",
+      "replacements": [
+        {
+          "before": "    :invalid\n    const/4 v0, 0x0\n\n    :result\n    return v0",
+          "after": "    :invalid\n    const/4 v0, 0x1\n\n    :result\n    return v0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "payload-validity-guard-bypassed",
+      "expectedCode": "payload_validity_guard_flow",
+      "relativePath": "threadsmod/reporting/ReportPayload.smali",
+      "replacements": [
+        {
+          "before": "    if-nez v1, :payload_valid",
+          "after": "    goto :payload_valid",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "payload-success-returns-throwaway-root",
+      "expectedCode": "payload_root_flow",
+      "relativePath": "threadsmod/reporting/ReportPayload.smali",
+      "replacements": [
+        {
+          "before": "    const-string v3, \"evidence\"\n    invoke-virtual {v0, v3, v4}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;\n    :try_end\n    .catch Ljava/lang/Throwable; {:try_start .. :try_end} :catch\n    return-object v0",
+          "after": "    const-string v3, \"evidence\"\n    invoke-virtual {v0, v3, v4}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;\n    :try_end\n    .catch Ljava/lang/Throwable; {:try_start .. :try_end} :catch\n    new-instance v6, Lorg/json/JSONObject;\n    invoke-direct {v6}, Lorg/json/JSONObject;-><init>()V\n    return-object v6",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "payload-target-url-different-value",
+      "expectedCode": "payload_target_url_flow",
+      "relativePath": "threadsmod/reporting/ReportPayload.smali",
+      "replacements": [
+        {
+          "before": "    move-result-object v2\n    const-string v3, \"targetUrl\"",
+          "after": "    move-result-object v2\n    const-string v2, \"different\"\n    const-string v3, \"targetUrl\"",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "payload-evidence-different-value",
+      "expectedCode": "payload_evidence_flow",
+      "relativePath": "threadsmod/reporting/ReportPayload.smali",
+      "replacements": [
+        {
+          "before": "    move-result-object v5\n    invoke-virtual {v4, v5}, Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;",
+          "after": "    move-result-object v5\n    const-string v5, \"different\"\n    invoke-virtual {v4, v5}, Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "payload-duplicate-evidence-entry",
+      "expectedCode": "payload_evidence_count",
+      "relativePath": "threadsmod/reporting/ReportPayload.smali",
+      "replacements": [
+        {
+          "before": "    invoke-virtual {v4, v5}, Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;",
+          "after": "    invoke-virtual {v4, v5}, Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;\n    invoke-virtual {v4, v5}, Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "payload-indexed-evidence-put",
+      "expectedCode": "payload_evidence_array_use_flow",
+      "relativePath": "threadsmod/reporting/ReportPayload.smali",
+      "replacements": [
+        {
+          "before": "    invoke-virtual {v4, v5}, Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;",
+          "after": "    invoke-virtual {v4, v5}, Lorg/json/JSONArray;->put(Ljava/lang/Object;)Lorg/json/JSONArray;\n    const/4 v6, 0x0\n    invoke-virtual {v4, v6, v5}, Lorg/json/JSONArray;->put(ILjava/lang/Object;)Lorg/json/JSONArray;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-caption-receiver-diverges",
+      "expectedCode": "factory_caption_receiver_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    {{mediaInvokeOpcode}} {v0}, {{mediaCaptionMethod}}",
+          "after": "    const/4 v0, 0x0\n    {{mediaInvokeOpcode}} {v0}, {{mediaCaptionMethod}}",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-exception-handler-bypasses-guard",
+      "expectedCode": "factory_return_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    :catch\n    move-exception v9\n    const/4 v2, 0x0\n    return-object v2",
+          "after": "    :catch\n    move-exception v9\n    return-object v2",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "payload-target-url-uses-throwaway-root",
+      "expectedCode": "payload_root_flow",
+      "relativePath": "threadsmod/reporting/ReportPayload.smali",
+      "replacements": [
+        {
+          "before": "    const-string v3, \"targetUrl\"\n    invoke-virtual {v0, v3, v2}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;",
+          "after": "    const-string v3, \"targetUrl\"\n    new-instance v6, Lorg/json/JSONObject;\n    invoke-direct {v6}, Lorg/json/JSONObject;-><init>()V\n    invoke-virtual {v6, v3, v2}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "payload-attaches-throwaway-evidence-array",
+      "expectedCode": "payload_evidence_array_constructor_count",
+      "relativePath": "threadsmod/reporting/ReportPayload.smali",
+      "replacements": [
+        {
+          "before": "    const-string v3, \"evidence\"\n    invoke-virtual {v0, v3, v4}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;",
+          "after": "    const-string v3, \"evidence\"\n    new-instance v6, Lorg/json/JSONArray;\n    invoke-direct {v6}, Lorg/json/JSONArray;-><init>()V\n    invoke-virtual {v0, v3, v6}, Lorg/json/JSONObject;->put(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "controller-skips-new-queue-validity-guard",
+      "expectedCode": "controller_new_queue_validity_guard_flow",
+      "relativePath": "threadsmod/reporting/ReportController.smali",
+      "replacements": [
+        {
+          "before": "    if-eqz v0, :invalid",
+          "after": "    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "client-skips-new-queue-validity-guard",
+      "expectedCode": "client_new_queue_validity_guard_flow",
+      "relativePath": "threadsmod/reporting/ReportClient.smali",
+      "replacements": [
+        {
+          "before": "    if-eqz v0, :invalid",
+          "after": "    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-code-receiver-diverges",
+      "expectedCode": "factory_code_receiver_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    {{mediaInvokeOpcode}} {v0}, {{mediaCodeMethod}}",
+          "after": "    const/4 v0, 0x0\n    {{mediaInvokeOpcode}} {v0}, {{mediaCodeMethod}}",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-permalink-resolver-label-diverges",
+      "expectedCode": "factory_permalink_primary_label_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    invoke-static {v11, v1, v10}, Lthreadsmod/reporting/ReportRequest;->resolveHostPermalink(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+          "after": "    const-string v11, \"wrong\"\n    invoke-static {v11, v1, v10}, Lthreadsmod/reporting/ReportRequest;->resolveHostPermalink(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-permalink-resolver-candidate-diverges",
+      "expectedCode": "factory_permalink_primary_candidate_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    invoke-static {v11, v1, v10}, Lthreadsmod/reporting/ReportRequest;->resolveHostPermalink(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+          "after": "    const-string v1, \"wrong\"\n    invoke-static {v11, v1, v10}, Lthreadsmod/reporting/ReportRequest;->resolveHostPermalink(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-permalink-resolver-code-diverges",
+      "expectedCode": "factory_permalink_primary_code_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    invoke-static {v11, v1, v10}, Lthreadsmod/reporting/ReportRequest;->resolveHostPermalink(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+          "after": "    const-string v10, \"wrong\"\n    invoke-static {v11, v1, v10}, Lthreadsmod/reporting/ReportRequest;->resolveHostPermalink(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-caption-text-receiver-diverges",
+      "expectedCode": "factory_caption_text_receiver_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    invoke-interface {v9}, {{captionTextMethod}}",
+          "after": "    const/4 v9, 0x0\n    invoke-interface {v9}, {{captionTextMethod}}",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-caption-null-bypass-removed",
+      "expectedCode": "factory_caption_null_bypass_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    if-eqz v9, :excerpt_ready",
+          "after": "    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-excerpt-source-fabricated",
+      "expectedCode": "factory_excerpt_input_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    if-nez v6, :excerpt_ready\n    const-string v6, \"\"",
+          "after": "    if-nez v6, :excerpt_ready\n    const-string v6, \"fabricated\"",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-excerpt-resolver-clobbered",
+      "expectedCode": "factory_excerpt_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    invoke-static {v6}, Lthreadsmod/reporting/ReportRequest;->resolveHostExcerpt(Ljava/lang/String;)Ljava/lang/String;\n    move-result-object v6",
+          "after": "    invoke-static {v6}, Lthreadsmod/reporting/ReportRequest;->resolveHostExcerpt(Ljava/lang/String;)Ljava/lang/String;\n    const-string v6, \"fabricated\"",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-current-viewer-reintroduced",
+      "expectedCode": "factory_current_viewer_call_absence",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    :try_start\n    invoke-virtual {p0}, Lthreadsmod/inlinecontrol/InlineBlockRequest;->getResolvedMediaModel()Ljava/lang/Object;",
+          "after": "    :try_start\n    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->getCurrentViewer()Ljava/lang/String;\n    move-result-object v10\n    invoke-virtual {p0}, Lthreadsmod/inlinecontrol/InlineBlockRequest;->getResolvedMediaModel()Ljava/lang/Object;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "row-current-viewer-reintroduced",
+      "expectedCode": "row_current_viewer_call_absence",
+      "relativePath": "threadsmod/inlinecontrol/InlineActionRowAdapter.smali",
+      "replacements": [
+        {
+          "before": "    return-void",
+          "after": "    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->getCurrentViewer()Ljava/lang/String;\n    return-void",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-unconditional-permalink-fallback",
+      "expectedCode": "factory_permalink_fallback_guard_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    if-nez v8, :permalink_ready",
+          "after": "    nop",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-permalink-fallback-before-code",
+      "expectedCode": "factory_media_call_order",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    {{mediaInvokeOpcode}} {v0}, {{mediaCodeMethod}}",
+          "after": "    {{mediaInvokeOpcode}} {v0}, {{mediaPermalinkMethod}}\n    move-result-object v7\n    {{mediaInvokeOpcode}} {v0}, {{mediaCodeMethod}}",
+          "expectedCount": 1
+        },
+        {
+          "before": "    {{mediaInvokeOpcode}} {v0}, {{mediaPermalinkMethod}}\n    move-result-object v8",
+          "after": "    move-object v8, v7",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-inverted-permalink-fallback-branch",
+      "expectedCode": "factory_permalink_fallback_guard_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    if-nez v8, :permalink_ready",
+          "after": "    if-eqz v8, :permalink_ready",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-fallback-resolver-label-diverges",
+      "expectedCode": "factory_permalink_fallback_label_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    invoke-static {v11, v8, v10}, Lthreadsmod/reporting/ReportRequest;->resolveHostPermalink(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+          "after": "    const-string v11, \"wrong\"\n    invoke-static {v11, v8, v10}, Lthreadsmod/reporting/ReportRequest;->resolveHostPermalink(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-fallback-resolver-candidate-diverges",
+      "expectedCode": "factory_permalink_fallback_candidate_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    invoke-static {v11, v8, v10}, Lthreadsmod/reporting/ReportRequest;->resolveHostPermalink(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+          "after": "    const-string v8, \"wrong\"\n    invoke-static {v11, v8, v10}, Lthreadsmod/reporting/ReportRequest;->resolveHostPermalink(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-fallback-resolver-code-diverges",
+      "expectedCode": "factory_permalink_fallback_code_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    invoke-static {v11, v8, v10}, Lthreadsmod/reporting/ReportRequest;->resolveHostPermalink(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+          "after": "    const-string v10, \"wrong\"\n    invoke-static {v11, v8, v10}, Lthreadsmod/reporting/ReportRequest;->resolveHostPermalink(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "factory-divergent-permalink-merge",
+      "expectedCode": "factory_permalink_flow",
+      "relativePath": "threadsmod/reporting/InlineReportActionFactory.smali",
+      "replacements": [
+        {
+          "before": "    :permalink_ready\n    {{mediaInvokeOpcode}} {v0}, {{mediaCaptionMethod}}",
+          "after": "    :permalink_ready\n    const-string v1, \"wrong\"\n    {{mediaInvokeOpcode}} {v0}, {{mediaCaptionMethod}}",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "row-ufi-defaulted-modifier-mask",
+      "expectedCode": "row_ufi_default_mask_literal",
+      "relativePath": "threadsmod/inlinecontrol/InlineActionRowAdapter.smali",
+      "replacements": [
+        {
+          "before": "    const v12, 0xf700",
+          "after": "    const v12, 0xf680",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "row-ufi-zero-icon-size-mask",
+      "expectedCode": "row_ufi_default_mask_literal",
+      "relativePath": "threadsmod/inlinecontrol/InlineActionRowAdapter.smali",
+      "replacements": [
+        {
+          "before": "    const v12, 0xf700",
+          "after": "    const v12, 0xf600",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "row-ufi-final-modifier-clobbered",
+      "expectedCode": "row_ufi_modifier_flow",
+      "relativePath": "threadsmod/inlinecontrol/InlineActionRowAdapter.smali",
+      "replacements": [
+        {
+          "before": "    :animation_ready\n    move-object/from16 v0, p0",
+          "after": "    :animation_ready\n    sget-object v2, LX/08ub;->A00:LX/08yw;\n    move-object/from16 v0, p0",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "row-visibility-modifier-bypassed",
+      "expectedCode": "row_visibility_modifier_flow",
+      "relativePath": "threadsmod/inlinecontrol/InlineActionRowAdapter.smali",
+      "replacements": [
+        {
+          "before": "    move-result-object v2\n    const-string v4, \"threadsmod_inline_block\"\n    invoke-static {v2, v4}, LX/0DaO;->A00(LX/08ub;Ljava/lang/String;)LX/08ub;",
+          "after": "    move-result-object v2\n    sget-object v2, LX/08ub;->A00:LX/08yw;\n    const-string v4, \"threadsmod_inline_block\"\n    invoke-static {v2, v4}, LX/0DaO;->A00(LX/08ub;Ljava/lang/String;)LX/08ub;",
+          "expectedCount": 1
+        }
+      ]
+    }
+  ]
+}

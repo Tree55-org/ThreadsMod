@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "drawer-settings-button-hook",
+      "path": "smali_classes3/X/0MO.smali",
+      "beforeFile": "anchors/drawer-settings.before.smali",
+      "afterFile": "anchors/drawer-settings.after.smali",
+      "expectedCount": 1
+    }
+  ]
+}

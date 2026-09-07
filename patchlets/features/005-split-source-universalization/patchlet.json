@@ -1,0 +1,121 @@
+{
+  "$schema": "../../schemas/patchlet.schema.json",
+  "schemaVersion": 1,
+  "id": "005-split-source-universalization",
+  "revision": 1,
+  "title": "Deterministic split-source universalization",
+  "summary": "Validate the exact base, arm64-v8a, and xhdpi source APK set and use the SHA-pinned APKEditor 1.4.9 merge to derive one byte-reproducible unsigned standalone patch input while preserving all root DEX, native-library, and density payload bytes and removing split-delivery metadata.",
+  "stage": "prepare",
+  "dependsOn": [],
+  "resolution": {
+    "required": true,
+    "binding": "exact-split-set-and-derived-apk-sha256",
+    "sourceSha256Pointer": "/source/sha256",
+    "requiredSections": ["source", "toolchain"],
+    "rewriteSets": []
+  },
+  "risk": ["packaging", "native-code"],
+  "ownership": {
+    "classPrefixes": [],
+    "classDescriptors": [],
+    "rewriteRuleIds": [],
+    "manifestComponents": [],
+    "hostHooks": [],
+    "preferenceKeys": [],
+    "databaseSchemas": [],
+    "archiveTransforms": [
+      "split-set-to-standalone-apk",
+      "split-delivery-metadata-removal"
+    ]
+  },
+  "inputs": [
+    {
+      "id": "exact-split-source-set",
+      "kind": "split-source-set",
+      "pointer": "/source/splitMembers",
+      "sha256FromResolution": "/source/splitSetSha256",
+      "required": true
+    },
+    {
+      "id": "apkeditor-merge-tool",
+      "kind": "resolution-section",
+      "pointer": "/toolchain",
+      "required": true
+    },
+    {
+      "id": "derived-standalone-apk",
+      "kind": "derived-apk",
+      "pointer": "/source/sha256",
+      "required": true
+    }
+  ],
+  "operations": [
+    {
+      "id": "derive-standalone-apk",
+      "type": "deterministic-split-merge",
+      "source": "resolution:/source/splitMembers",
+      "target": "derived-standalone-apk",
+      "bindingsPointer": "/toolchain/apkEditorMergeArguments",
+      "expectedCount": 3,
+      "idempotency": "deterministic-output-hash"
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "exact-three-member-set",
+      "check": "top-level-apk-inventory-member-size-member-sha-and-aggregate-sha-equal-resolution",
+      "pointer": "/source/splitMembers",
+      "expectedCount": 3,
+      "severity": "error"
+    },
+    {
+      "id": "split-roles-match-manifests",
+      "check": "aapt2-proves-one-base-one-arm64-v8a-config-one-xhdpi-config-with-exact-package-version-split-type-and-has-code-state",
+      "severity": "error"
+    },
+    {
+      "id": "apkeditor-tool-is-exact",
+      "check": "apkeditor-and-arsclib-version-output-jar-sha-and-ordered-arguments-equal-resolution",
+      "severity": "error"
+    }
+  ],
+  "postconditions": [
+    {
+      "id": "merge-is-byte-reproducible",
+      "check": "two-fresh-independent-merges-have-identical-resolution-bound-sha256",
+      "pointer": "/source/sha256",
+      "severity": "error"
+    },
+    {
+      "id": "payloads-are-preserved",
+      "check": "all-root-dex-all-arm64-native-library-and-all-density-resource-entry-paths-and-bytes-are-preserved",
+      "severity": "error"
+    },
+    {
+      "id": "derived-apk-is-standalone",
+      "check": "aapt2-proves-package-version-sdk-extract-native-libs-and-density-configurations-with-no-split-delivery-metadata",
+      "severity": "error"
+    },
+    {
+      "id": "derived-apk-is-unsigned",
+      "check": "no-jar-signature-entry-and-apksigner-verification-fails-before-normal-build-signing",
+      "severity": "error"
+    }
+  ],
+  "releaseGates": [
+    "exact-split-source-set",
+    "split-role-manifest-contract",
+    "pinned-apkeditor-contract",
+    "deterministic-universalization",
+    "universal-payload-preservation",
+    "universal-standalone-manifest",
+    "universal-unsigned-boundary"
+  ],
+  "ai": {
+    "allowed": true,
+    "taskTemplate": "../../ai/tasks/RESOLVE-SPLIT-SOURCE-UNIVERSALIZATION.md",
+    "output": "proposal-json-only",
+    "mayEditProductionTree": false,
+    "mayRelaxChecks": false
+  }
+}

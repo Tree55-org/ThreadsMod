@@ -1,0 +1,4 @@
+        <meta-data android:name="com.android.vending.splits" android:resource="@xml/splits0"/>
+        <activity android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:name="com.threadsmod.CloneBlockerActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.DeviceDefault.NoActionBar"/>
+        <activity android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:name="com.threadsmod.CloneBlockerSettingsActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.DeviceDefault.NoActionBar"/>
+    </application>

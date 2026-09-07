@@ -1,0 +1,54 @@
+# Only `patchlets/` and the documentation are published. Everything below is
+# local build input, evidence, output, or credentials.
+#
+# NOTE: rules are path-anchored on purpose. `patchlets/` contains 19 binaries
+# that MUST be committed (the pinned eddsa jar, the smali-carrier stub, the
+# SOCKS5 native library, and 16 gzipped block-list fixtures), so a broad
+# pattern like `*.apk` or `*.gz` would silently drop required build inputs.
+
+# Per-run build, review and analysis evidence. ~10.9M files / ~100 GB.
+# AGENTS.md: evidence or output, never canonical source.
+/work/
+/decompiled/
+/$out/
+
+# Published APKs. Each is ~135 MB, over GitHub's 100 MB hard limit.
+# Releases belong on GitHub Releases, not in the tree.
+/dist/
+
+# Meta's signed upstream APKs. Not redistributable, and over the size limit.
+/Threads-*/
+/com.instagram.barcelona-*.apk
+
+# Vendored third-party toolchain (~286 MB: Apktool, APKEditor, JADX).
+# Versions and SHA-256 hashes are pinned in resolution.json instead.
+/.tools/
+
+# Live Firebase configuration for app.tree55.threads.
+/google-services.json
+
+# Local scratch and personal agent launchers.
+/bugs.txt
+/claude.ps1
+/codex.ps1
+
+# Credentials and signing material. None are in the tree today; these rules
+# exist so none arrives later by accident.
+.env
+.env.*
+!.env.example
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.pem
+*.key
+
+# Pipeline reports, if one is ever written outside work/.
+build-report.json
+release-check.json
+idempotency-check.json
+catalog-check.json
+resolution-check.json
+activity-ui-review.json
+patch-ledger.json

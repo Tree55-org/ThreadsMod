@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "main-activity-on-resume",
+      "path": "smali/com/instagram/barcelona/mainactivity/BarcelonaActivity.smali",
+      "beforeFile": "anchors/on-resume.before.smali",
+      "afterFile": "anchors/on-resume.after.smali",
+      "expectedCount": 1
+    },
+    {
+      "id": "main-activity-on-pause",
+      "path": "smali/com/instagram/barcelona/mainactivity/BarcelonaActivity.smali",
+      "beforeFile": "anchors/on-pause.before.smali",
+      "afterFile": "anchors/on-pause.after.smali",
+      "expectedCount": 1
+    }
+  ]
+}

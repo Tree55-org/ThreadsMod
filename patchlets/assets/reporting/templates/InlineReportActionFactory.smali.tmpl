@@ -1,0 +1,87 @@
+.class public final Lthreadsmod/reporting/InlineReportActionFactory;
+.super Ljava/lang/Object;
+.source "InlineReportActionFactory.smali"
+
+# direct methods
+.method private constructor <init>()V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+    return-void
+.end method
+
+.method public static createRequest(Lthreadsmod/inlinecontrol/InlineBlockRequest;)Lthreadsmod/reporting/ReportRequest;
+    .locals 16
+
+    :try_start_0
+    move-object/from16 v2, p0
+    if-eqz v2, :return_null
+    invoke-virtual {v2}, Lthreadsmod/inlinecontrol/InlineBlockRequest;->isValid()Z
+    move-result v4
+    if-eqz v4, :return_null
+
+    invoke-virtual {v2}, Lthreadsmod/inlinecontrol/InlineBlockRequest;->getMediaKey()Ljava/lang/String;
+    move-result-object v0
+    invoke-virtual {v2}, Lthreadsmod/inlinecontrol/InlineBlockRequest;->getAuthorId()Ljava/lang/String;
+    move-result-object v3
+    if-eqz v3, :return_null
+    invoke-virtual {v2}, Lthreadsmod/inlinecontrol/InlineBlockRequest;->getLabel()Ljava/lang/String;
+    move-result-object v5
+    if-eqz v5, :return_null
+    invoke-virtual {v2}, Lthreadsmod/inlinecontrol/InlineBlockRequest;->getResolvedMediaModel()Ljava/lang/Object;
+    move-result-object v1
+    if-eqz v1, :return_null
+    check-cast v1, {{mediaDescriptor}}
+
+    invoke-static {}, Lthreadsmod/autoblock/AutoBlockSync;->getCurrentViewer()Ljava/lang/String;
+    move-result-object v4
+    if-eqz v4, :return_null
+    invoke-virtual {v4, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+    move-result v4
+    if-nez v4, :return_null
+
+    iget-object v7, v1, {{mediaBackingField}}
+    if-eqz v7, :return_null
+    invoke-interface {v7}, {{mediaPermalinkMethod}}
+    move-result-object v9
+
+    const-string v6, ""
+    invoke-interface {v7}, {{mediaCaptionMethod}}
+    move-result-object v8
+    if-eqz v8, :content_ready
+    invoke-interface {v8}, {{captionTextMethod}}
+    move-result-object v6
+    if-nez v6, :content_ready
+    const-string v6, ""
+
+    :content_ready
+    move-object v15, v9
+    new-instance v8, Lthreadsmod/reporting/ReportRequest;
+    move-object v9, v0
+    move-object v10, v5
+    move-object v11, v3
+    move-object v12, v6
+    const-string v13, ""
+    move-object v14, v15
+    invoke-direct/range {v8 .. v14}, Lthreadsmod/reporting/ReportRequest;-><init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v8}, Lthreadsmod/reporting/ReportRequest;->isValid()Z
+    move-result v4
+    if-eqz v4, :return_null
+    invoke-virtual {v8}, Lthreadsmod/reporting/ReportRequest;->getPermalink()Ljava/lang/String;
+    move-result-object v4
+    invoke-virtual {v4}, Ljava/lang/String;->length()I
+    move-result v4
+    if-eqz v4, :return_null
+
+    :try_end_0
+    .catch Ljava/lang/Throwable; {:try_start_0 .. :try_end_0} :catch_0
+
+    return-object v8
+
+    :catch_0
+    move-exception v15
+
+    :return_null
+    const/4 v0, 0x0
+    return-object v0
+.end method

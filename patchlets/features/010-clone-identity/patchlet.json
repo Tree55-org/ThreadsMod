@@ -1,0 +1,193 @@
+{
+  "$schema": "../../schemas/patchlet.schema.json",
+  "schemaVersion": 1,
+  "id": "010-clone-identity",
+  "revision": 5,
+  "title": "Separate Android application identity",
+  "summary": "Apply the reviewed, selective package, authority, permission, affinity, account-type, and current-package rewrites without renaming Threads component classes or globally replacing product identifiers, with explicit per-rule ownership of the exact 415 and 444 resolution alternatives.",
+  "stage": "rewrite",
+  "dependsOn": ["005-split-source-universalization"],
+  "resolution": {
+    "required": true,
+    "binding": "exact-apk-sha256",
+    "sourceSha256Pointer": "/source/sha256",
+    "requiredSections": ["source", "target", "rewriteSets"],
+    "rewriteSets": ["identity-rewrites.json"]
+  },
+  "risk": ["application-identity", "private-api"],
+  "ownership": {
+    "classPrefixes": [],
+    "classDescriptors": [],
+    "rewriteRuleIds": [
+      "manifest-package",
+      "manifest-system-permission",
+      "manifest-adm-permission",
+      "manifest-cross-process-permission",
+      "manifest-dynamic-receiver-permission",
+      "manifest-labels",
+      "manifest-secure-provider",
+      "manifest-file-provider",
+      "manifest-lite-provider",
+      "manifest-affinity-clips-music",
+      "manifest-affinity-clips-thread",
+      "manifest-affinity-notes-music",
+      "manifest-affinity-share",
+      "manifest-shortcut-permission",
+      "manifest-birthday-action",
+      "manifest-affinity-url-handler",
+      "manifest-push-categories",
+      "manifest-phoneid-provider",
+      "manifest-androidx-startup-provider",
+      "resource-app-label",
+      "account-manager-type",
+      "billing-package",
+      "share-file-provider",
+      "preload-package",
+      "file-provider-helper",
+      "billing-helper-package",
+      "metadata-package",
+      "share-package",
+      "share-provider",
+      "split-package",
+      "component-factory-self-package",
+      "service-inspection-package",
+      "appops-package",
+      "birthday-receiver-action",
+      "birthday-sender-action",
+      "consent-url-package",
+      "password-url-package",
+      "context-self-package",
+      "account-type-7uk",
+      "account-type-7um",
+      "account-type-9xv",
+      "account-type-9xw",
+      "account-type-dgk",
+      "lite-provider-dyl",
+      "package-ghv",
+      "lite-provider-hdl",
+      "share-handler-package",
+      "achilles-package",
+      "package-0eg",
+      "package-0pg",
+      "package-3lu",
+      "package-4vx",
+      "package-4wc",
+      "package-8lb",
+      "manifest-usdid-provider",
+      "manifest-access-library-provider",
+      "manifest-affinity-feed-carousel-basel",
+      "manifest-androidx-startup-providers",
+      "billing-override-package",
+      "play-app-update-package",
+      "play-split-install-package",
+      "play-delivery-metadata-package",
+      "widget-remoteviews-package",
+      "account-type-08v6",
+      "account-type-08vm",
+      "account-type-08wp",
+      "account-type-0aus",
+      "usdid-provider-owner-package",
+      "usdid-provider-uri",
+      "lite-provider-owner-package-a",
+      "lite-provider-uri-a",
+      "lite-provider-owner-package-b",
+      "lite-provider-uri-b",
+      "access-library-provider-owner-package",
+      "access-library-lite-provider-authority",
+      "package-fpo",
+      "baseline-profile-package-path",
+      "metadata-reader-package",
+      "optimization-orchestrator-package",
+      "optimization-config-package",
+      "optimization-native-package",
+      "foa-event-sender-package",
+      "play-split-package-info-a",
+      "play-split-package-info-b",
+      "autofill-package"
+    ],
+    "manifestComponents": [],
+    "hostHooks": [],
+    "preferenceKeys": [],
+    "databaseSchemas": []
+  },
+  "inputs": [
+    {
+      "id": "decoded-source-apk",
+      "kind": "decoded-apk",
+      "path": ".",
+      "required": true
+    },
+    {
+      "id": "identity-rewrite-set",
+      "kind": "resolution-rewrite-set",
+      "pathFromResolution": "identity-rewrites.json",
+      "required": true
+    }
+  ],
+  "operations": [
+    {
+      "id": "apply-reviewed-identity-rewrites",
+      "type": "exact-rewrite-set",
+      "source": "resolution:identity-rewrites.json",
+      "target": "decoded-apk",
+      "expectedCount": "per-rule",
+      "idempotency": "before-xor-after"
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "resolution-sha-matches-input",
+      "check": "source-apk-sha256-equals-resolution",
+      "pointer": "/source/sha256",
+      "severity": "error"
+    },
+    {
+      "id": "source-package-is-reviewed",
+      "check": "decoded-manifest-package-equals-resolution-source",
+      "pointer": "/source/applicationId",
+      "severity": "error"
+    },
+    {
+      "id": "every-rule-has-one-valid-state",
+      "check": "rewrite-before-xor-after-at-expected-count",
+      "expectedCount": "per-rule",
+      "severity": "error"
+    }
+  ],
+  "postconditions": [
+    {
+      "id": "target-package-applied",
+      "check": "decoded-manifest-package-equals-resolution-target",
+      "pointer": "/target/applicationId",
+      "severity": "error"
+    },
+    {
+      "id": "all-reviewed-rewrites-applied",
+      "check": "rewrite-after-at-expected-count",
+      "expectedCount": "per-rule",
+      "severity": "error"
+    },
+    {
+      "id": "component-descriptors-preserved",
+      "check": "manifest-component-class-descriptors-match-source",
+      "severity": "error"
+    },
+    {
+      "id": "no-unclassified-identity-occurrences",
+      "check": "identity-occurrence-classification-complete",
+      "severity": "error"
+    }
+  ],
+  "releaseGates": [
+    "exact-rewrite-counts",
+    "component-class-preservation",
+    "identity-collision-scan"
+  ],
+  "ai": {
+    "allowed": true,
+    "taskTemplate": "../../ai/tasks/RESOLVE-IDENTITY.md",
+    "output": "proposal-json-only",
+    "mayEditProductionTree": false,
+    "mayRelaxChecks": false
+  }
+}

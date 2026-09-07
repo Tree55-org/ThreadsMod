@@ -1,0 +1,239 @@
+{
+  "$schema": "../../schemas/patchlet.schema.json",
+  "schemaVersion": 1,
+  "id": "070-consented-reporting",
+  "revision": 10,
+  "title": "Combined-modal report backend and row request factory",
+  "summary": "Consume patchlet 060's immutable exact-host row snapshot to build one bounded ReportRequest without re-resolving private author identity or requiring viewer readiness during composition, derive the same row's post link code-first from the reviewed SHA-bound media code accessor with the optional permalink accessor as strict fallback, canonicalize through stable threads.com validation, supply the extension-compatible no-text excerpt only when the captured caption cleans empty, then let only the combined modal's explicit positive action durably queue that request before foreground-only delivery to the exact reviewed HTTPS relay.",
+  "stage": "render",
+  "dependsOn": ["050-mod-settings-ui"],
+  "resolution": {
+    "required": true,
+    "binding": "exact-apk-sha256",
+    "sourceSha256Pointer": "/source/sha256",
+    "requiredSections": ["source", "reporting", "inlineControls", "proofs", "assets", "release"],
+    "rewriteSets": []
+  },
+  "risk": [
+    "network-write",
+    "personal-data",
+    "user-interface",
+    "settings-storage",
+    "inline-feed-hook",
+    "private-api",
+    "packaging"
+  ],
+  "ownership": {
+    "classPrefixes": ["Lthreadsmod/reporting/"],
+    "classDescriptors": [
+      "Lthreadsmod/reporting/ReportClient;",
+      "Lthreadsmod/reporting/ReportController;",
+      "Lthreadsmod/reporting/ReportEndpoint;",
+      "Lthreadsmod/reporting/ReportJson;",
+      "Lthreadsmod/reporting/ReportPayload;",
+      "Lthreadsmod/reporting/ReportRequest;",
+      "Lthreadsmod/reporting/ReportResult;",
+      "Lthreadsmod/reporting/ReportResultCallback;",
+      "Lthreadsmod/reporting/ReportStore;",
+      "Lthreadsmod/reporting/ReportValues;",
+      "Lthreadsmod/reporting/InlineReportActionFactory;",
+      "Lthreadsmod/reporting/InstallStats;",
+      "Lthreadsmod/reporting/InstallStatsPayload;"
+    ],
+    "rewriteRuleIds": [],
+    "manifestComponents": [],
+    "hostHooks": [
+      "resolved report username caption and post-permalink extraction consume patchlet 060's immutable row snapshot and captured media and return only one immutable bounded ReportRequest"
+    ],
+    "preferenceKeys": [
+      "report_install_secret_v1",
+      "stats_install_secret_v1",
+      "stats_sent_build_v1"
+    ],
+    "databaseSchemas": [
+      "database:threadsmod_reporting.db",
+      "schema:threadsmod_reporting.db:v2",
+      "migration:threadsmod_reporting.db:v1-to-v2",
+      "table:threadsmod_reporting.db:report_outbox",
+      "table:threadsmod_reporting.db:report_history",
+      "index:threadsmod_reporting.db:report_outbox_due_idx",
+      "index:threadsmod_reporting.db:report_history_viewer_idx"
+    ]
+  },
+  "inputs": [
+    {
+      "id": "report-runtime-java",
+      "kind": "asset-tree",
+      "path": "assets/autoblock/java/threadsmod/reporting",
+      "sha256FromResolution": "/assets/reportJavaTreeSha256",
+      "required": true
+    },
+    {
+      "id": "report-smali-templates",
+      "kind": "asset-tree",
+      "pathFromResolution": "/reporting/templateRoot",
+      "sha256FromResolution": "/assets/reportTemplateTreeSha256",
+      "required": true
+    },
+    {
+      "id": "resolved-reporting-symbols",
+      "kind": "resolution-section",
+      "pointer": "/reporting",
+      "required": true
+    },
+    {
+      "id": "resolved-report-proofs",
+      "kind": "resolution-section",
+      "pointer": "/proofs",
+      "required": true
+    }
+  ],
+  "operations": [
+    {
+      "id": "compile-report-runtime-java-to-smali",
+      "type": "java-to-smali",
+      "sources": [
+        "assets/autoblock/java/threadsmod/reporting"
+      ],
+      "target": "decoded-apk:primary-dex",
+      "idempotency": "class-set-and-content-hash"
+    },
+    {
+      "id": "render-inline-report-action",
+      "type": "render-smali-templates",
+      "source": "resolution:/reporting/templateRoot",
+      "target": "decoded-apk:primary-dex",
+      "destination": "smali/threadsmod/reporting",
+      "templateNames": [
+        "InlineReportActionFactory.smali.tmpl"
+      ],
+      "bindingsPointer": "/reporting/symbols",
+      "idempotency": "rendered-content-hash",
+      "verifyNoPlaceholders": true
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "resolution-sha-matches-input",
+      "check": "source-apk-sha256-equals-resolution",
+      "pointer": "/source/sha256",
+      "severity": "error"
+    },
+    {
+      "id": "report-symbol-proofs-match",
+      "check": "username-caption-text-and-media-permalink-proofs-match-decoded-apk",
+      "pointer": "/proofs",
+      "severity": "error"
+    },
+    {
+      "id": "report-endpoint-exact",
+      "check": "write-endpoint-is-exact-reviewed-https-relay",
+      "pointer": "/release/requiredWriteEndpoint",
+      "severity": "error"
+    }
+  ],
+  "postconditions": [
+    {
+      "id": "report-classes-present-once",
+      "check": "owned-class-descriptors-present-once",
+      "severity": "error"
+    },
+    {
+      "id": "report-action-factory-present",
+      "check": "row-bound-report-request-factory-returns-only-one-immutable-bounded-report-request-and-renders-no-host-control-or-click-action",
+      "severity": "error"
+    },
+    {
+      "id": "report-shared-row-snapshot",
+      "check": "report-factory-consumes-the-same-immutable-host-bound-request-and-opaque-media-model-as-block-with-no-private-media-author-or-author-id-re-resolution",
+      "severity": "error"
+    },
+    {
+      "id": "report-post-permalink",
+      "check": "new-report-permalink-is-derived-from-one-captured-row-media-with-the-resolution-owned-code-accessor-first-and-permalink-accessor-only-as-fallback-normalized-by-one-stable-helper-to-the-exact-https-www-threads-com-author-post-shortcode-shape-bound-to-the-request-username-written-identically-to-target-url-and-the-sole-evidence-entry-and-empty-link-legacy-outbox-rows-remain-decodable",
+      "severity": "error"
+    },
+    {
+      "id": "explicit-combined-submit-only",
+      "check": "only-the-combined-modal-positive-action-may-submit-one-valid-request-and-reason-to-the-durable-queue-api-with-no-editor-preview-review-consent-or-automatic-report-creation",
+      "severity": "error"
+    },
+    {
+      "id": "report-submit-owner-bound",
+      "check": "queue-authority-is-bound-to-the-initiating-foreground-activity-live-viewer-and-unchanged-owner-generation-before-local-commit",
+      "severity": "error"
+    },
+    {
+      "id": "report-payload-bounded",
+      "check": "nonempty-username-four-to-twenty-four-digit-id-nonempty-unicode-safe-280-utf16-excerpt-selected-reason-and-canonical-credential-free-port-free-query-free-fragment-free-current-threads-com-post-permalink-are-required-for-every-new-queue-with-the-fixed-extension-compatible-no-text-excerpt-used-only-after-the-captured-caption-cleans-empty",
+      "severity": "error"
+    },
+    {
+      "id": "viewer-pseudonymous",
+      "check": "raw-viewer-id-absent-from-payload-and-report-storage",
+      "severity": "error"
+    },
+    {
+      "id": "outbox-before-network",
+      "check": "viewer-scoped-outbox-and-attempt-reservation-commit-before-post",
+      "severity": "error"
+    },
+    {
+      "id": "report-disclosure-complete",
+      "check": "combined-modal-concisely-discloses-queued-report-pseudonym-language-time-zone-server-visible-ip-user-agent-coarse-location-and-operator-access-while-settings-retains-full-local-and-server-retention-and-cancel-race-detail",
+      "severity": "error"
+    },
+    {
+      "id": "report-delivery-foreground-only",
+      "check": "foreground-single-flight-retry-wakes-review-state-and-no-silent-eviction-present",
+      "severity": "error"
+    },
+    {
+      "id": "report-database-contract",
+      "check": "sqlite-v2-schema-integrity-unique-report-id-without-target-level-dedupe-indexed-touched-row-transitions-full-foreground-preflight-cross-table-id-disjointness-self-target-rejection-pseudonym-read-review-state-propagation-conditional-history-trim-plausible-time-and-row-bounds-match-contract",
+      "severity": "error"
+    },
+    {
+      "id": "report-database-v1-to-v2-migration",
+      "check": "only-v1-to-v2-transactional-migration-validates-exact-v1-tables-indexes-history-and-quick-check-copies-every-outbox-row-and-count-removes-only-viewer-target-unique-constraint-and-recreates-due-index-or-rolls-back-unchanged",
+      "severity": "error"
+    },
+    {
+      "id": "report-success-response-contract",
+      "check": "pending-report-is-terminally-sent-only-after-two-xx-and-bounded-valid-utf8-strict-duplicate-free-json-with-unique-boolean-ok-true",
+      "severity": "error"
+    },
+    {
+      "id": "report-block-independent",
+      "check": "report-package-has-no-block-bridge-or-native-account-mutation-path",
+      "severity": "error"
+    }
+  ],
+  "releaseGates": [
+    "report-resolution-proofs",
+    "report-shared-row-snapshot-contract",
+    "report-post-permalink-contract",
+    "report-explicit-combined-submit",
+    "report-submit-owner-binding",
+    "report-retired-ui-absence",
+    "viewer-scope-memory-contract",
+    "report-payload-contract",
+    "report-pseudonym-contract",
+    "report-outbox-retry-contract",
+    "report-database-contract",
+    "report-database-v1-to-v2-migration-contract",
+    "report-success-response-contract",
+    "report-disclosure-contract",
+    "report-cancel-race-contract",
+    "report-endpoint-policy",
+    "report-block-independence",
+    "smali-assembly"
+  ],
+  "ai": {
+    "allowed": true,
+    "taskTemplate": "../../ai/tasks/RESOLVE-INLINE-REPORT.md",
+    "output": "proposal-json-only",
+    "mayEditProductionTree": false,
+    "mayRelaxChecks": false
+  }
+}

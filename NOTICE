@@ -1,0 +1,43 @@
+ThreadsMod / Clone Blocker
+Copyright (c) 2026 Tree55
+
+This product is licensed under the MIT License (see LICENSE). The MIT grant
+covers this project's own code and documentation only. It does not extend to
+Meta Platforms' Threads application, to any APK derived from it, or to any
+Meta trademark. Those are not redistributed by this repository.
+
+This repository bundles the third-party components below. Their full license
+texts ship alongside the binaries in the paths named.
+
+-------------------------------------------------------------------------------
+hev-socks5-tunnel
+-------------------------------------------------------------------------------
+Prebuilt at patchlets/assets/socks5-proxy/native/arm64-v8a/libhev-socks5-tunnel.so
+Source: https://github.com/heiher/hev-socks5-tunnel
+Commit: a404c11cd61d8e29e6f4c590b7e659d127fb843e
+License: MIT
+Notice:  patchlets/assets/socks5-proxy/native/NOTICE.hev-socks5-tunnel-and-lwip.txt
+Build provenance: patchlets/assets/socks5-proxy/native/PROVENANCE.md
+
+-------------------------------------------------------------------------------
+lwIP
+-------------------------------------------------------------------------------
+Statically linked into the library above, via the pinned third-part/lwip
+submodule at 2a11c14c7a32887af25a034e82ef18b0b12076ac.
+License: BSD 3-Clause (Swedish Institute of Computer Science)
+Notice:  patchlets/assets/socks5-proxy/native/NOTICE.hev-socks5-tunnel-and-lwip.txt
+
+-------------------------------------------------------------------------------
+ed25519-java (net.i2p.crypto:eddsa 0.3.1)
+-------------------------------------------------------------------------------
+Bundled at patchlets/assets/autoblock/lib/net-i2p-crypto-eddsa-0.3.1.jar
+Source: https://github.com/str4d/ed25519-java
+License: CC0 1.0 Universal (public domain dedication)
+Text:    patchlets/assets/autoblock/lib/net-i2p-crypto-eddsa-0.3.1-LICENSE.txt
+
+-------------------------------------------------------------------------------
+Build-time tooling (referenced by pinned hash, not redistributed here)
+-------------------------------------------------------------------------------
+Apktool 3.0.3          Apache-2.0    https://apktool.org
+APKEditor 1.4.9        Apache-2.0    https://github.com/REAndroid/APKEditor
+JADX 1.5.6             Apache-2.0    https://github.com/skylot/jadx

@@ -1,0 +1,60 @@
+{
+  "$schema": "../../schemas/ai-resolution.schema.json",
+  "schemaVersion": 1,
+  "taskId": "threads-415-native-bridge-example",
+  "sourceApkSha256": "0f6b4515902f78ea194b1bc0563bfcab07f2559d8e80cf6f329d3d1ef786487e",
+  "status": "needs-review",
+  "proposals": [
+    {
+      "role": "user-cache-factory-owner",
+      "selectedCandidateId": "candidate-cache-factory-2gx-a00",
+      "confidence": 0.99,
+      "evidenceIds": ["evidence-cache-factory-signature", "evidence-null-seed-user-id-callsite"],
+      "alternatives": [],
+      "reason": "The same-APK session factory and null-seed UserId caller evidence identify the reviewed user cache.",
+      "requiresHumanReview": true
+    },
+    {
+      "role": "user-cache-get-or-put-owner",
+      "selectedCandidateId": "candidate-cache-get-or-put-2gy-a02",
+      "confidence": 0.99,
+      "evidenceIds": ["evidence-cache-get-or-put-signature", "evidence-null-seed-user-id-callsite"],
+      "alternatives": [],
+      "reason": "The exact get-or-put descriptor is reached with a null seed and numeric UserId in the same APK.",
+      "requiresHumanReview": true
+    },
+    {
+      "role": "model-id-accessor-owner",
+      "selectedCandidateId": "candidate-model-id-2fp-getid",
+      "confidence": 0.99,
+      "evidenceIds": ["evidence-model-id-signature"],
+      "alternatives": [],
+      "reason": "The reviewed model exposes the canonical String ID used by the immutable target-equality guard.",
+      "requiresHumanReview": true
+    },
+    {
+      "role": "mutation-callback-interface-owner",
+      "selectedCandidateId": "candidate-callback-interface-mwt",
+      "confidence": 0.99,
+      "evidenceIds": ["evidence-callback-interface", "evidence-pre-start-guard"],
+      "alternatives": [],
+      "reason": "The callback interface is passed to the block helper; accepted paths call started while the invalid-type guard may return first.",
+      "requiresHumanReview": true
+    },
+    {
+      "role": "block-mutation-route-owner",
+      "selectedCandidateId": "candidate-block-dno-a00",
+      "confidence": 0.99,
+      "evidenceIds": ["evidence-block-route", "evidence-block-signature", "evidence-pre-start-guard"],
+      "alternatives": [],
+      "reason": "The exact block route, mutation signature, callback interface, and pre-start guard occur in one SHA-bound helper.",
+      "requiresHumanReview": true
+    }
+  ],
+  "unresolved": [],
+  "provenance": {
+    "model": "example-only",
+    "promptSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "createdAt": "2026-09-01T00:00:00+07:00"
+  }
+}

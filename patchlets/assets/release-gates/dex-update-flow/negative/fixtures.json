@@ -1,0 +1,1156 @@
+{
+  "schemaVersion": 1,
+  "expectedFixtureCount": 96,
+  "fixtures": [
+    {
+      "id": "eligibility-mod-build-inclusive",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "manifest.modBuild > CURRENT_MOD_BUILD",
+          "after": "manifest.modBuild >= CURRENT_MOD_BUILD",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "eligibility_mod_build"
+    },
+    {
+      "id": "eligibility-version-code-inclusive",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "manifest.versionCode > installedVersion",
+          "after": "manifest.versionCode >= installedVersion",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "eligibility_version_code"
+    },
+    {
+      "id": "eligibility-disjunction",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "manifest.modBuild > CURRENT_MOD_BUILD\n                && manifest.versionCode > installedVersion",
+          "after": "manifest.modBuild > CURRENT_MOD_BUILD\n                || manifest.versionCode > installedVersion",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "eligibility_conjunction"
+    },
+    {
+      "id": "eligibility-mod-build-unconsumed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "boolean updateAvailable = manifest.modBuild > CURRENT_MOD_BUILD\n                && manifest.versionCode > installedVersion;",
+          "after": "boolean newerModBuild = manifest.modBuild > CURRENT_MOD_BUILD;\n        boolean updateAvailable = manifest.versionCode > installedVersion;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "eligibility_mod_build"
+    },
+    {
+      "id": "verified-store-result-unbound",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "result = UpdateStore.installVerified(",
+          "after": "UpdateStore.installVerified(",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "verified_store_result"
+    },
+    {
+      "id": "required-dialog-cancelable",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "shown.setCancelable(!required);",
+          "after": "shown.setCancelable(true);",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "required_cancelability"
+    },
+    {
+      "id": "required-dialog-gets-later",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "if (!required) {\n            builder.setNegativeButton(\"Later\"",
+          "after": "if (required) {\n            builder.setNegativeButton(\"Later\"",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "required_action_topology"
+    },
+    {
+      "id": "optional-later-label-missing",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "builder.setNegativeButton(\"Later\"",
+          "after": "builder.setNegativeButton(\"Skip\"",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "optional_later_action"
+    },
+    {
+      "id": "optional-cancel-persists-dismissal",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "@Override public void onCancel(DialogInterface ignored) {\n                    runFallback(activity, generation);\n                }",
+          "after": "@Override public void onCancel(DialogInterface ignored) {\n                    UpdateStore.dismiss(activity, manifest.revision);\n                    runFallback(activity, generation);\n                }",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "optional_cancel_persistence"
+    },
+    {
+      "id": "optional-dialog-noncancelable",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "shown.setCancelable(!required);",
+          "after": "shown.setCancelable(false);",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "optional_cancelability"
+    },
+    {
+      "id": "retained-on-resume-install-authority",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "if (retainedRequiredOnly) {\n            showRetainedRequiredUnavailable(activity, generation);\n            requiredPresented = true;\n        }",
+          "after": "if (retainedRequiredOnly) {\n            beginInstall(activity, generation, cached, dialog);\n            requiredPresented = true;\n        }",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "retained_on_resume_authority"
+    },
+    {
+      "id": "retained-worker-install-authority",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "if (UpdateStore.hasRetainedRequiredForEnforcement(\n                                        CURRENT_MOD_BUILD)) {\n                                    showRetainedRequiredUnavailable(activity, generation);\n                                    return;\n                                }",
+          "after": "if (UpdateStore.hasRetainedRequiredForEnforcement(\n                                        CURRENT_MOD_BUILD)) {\n                                    beginInstall(activity, generation, retained, dialog);\n                                    return;\n                                }",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "retained_worker_authority"
+    },
+    {
+      "id": "retained-start-failure-install-authority",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "if (UpdateStore.hasRetainedRequiredForEnforcement(CURRENT_MOD_BUILD)) {\n                showRetainedRequiredUnavailable(activity, generation);\n                return;\n            }",
+          "after": "if (UpdateStore.hasRetainedRequiredForEnforcement(CURRENT_MOD_BUILD)) {\n                beginInstall(activity, generation, retained, dialog);\n                return;\n            }",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "retained_start_failure_authority"
+    },
+    {
+      "id": "download-without-update-tap",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "        shown.show();\n    }\n\n    private static void beginInstall(",
+          "after": "        shown.show();\n        beginInstall(activity, generation, manifest, shown);\n    }\n\n    private static void beginInstall(",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "explicit_update_tap"
+    },
+    {
+      "id": "verify-file-kind-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "if (!apk.isFile() || apk.length() != manifest.apkSize",
+          "after": "if (apk.length() != manifest.apkSize",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "verify_file_kind"
+    },
+    {
+      "id": "verify-size-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "!apk.isFile() || apk.length() != manifest.apkSize",
+          "after": "!apk.isFile() || false",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "verify_size"
+    },
+    {
+      "id": "verify-hash-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "|| !manifest.apkSha256.equals(sha256(apk))) return false;",
+          "after": "|| false) return false;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "verify_hash"
+    },
+    {
+      "id": "verify-archive-null-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "if (archive == null || !UpdateManifest.APPLICATION_ID.equals(archive.packageName)",
+          "after": "if (!UpdateManifest.APPLICATION_ID.equals(archive.packageName)",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "verify_archive_presence"
+    },
+    {
+      "id": "verify-package-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "archive == null || !UpdateManifest.APPLICATION_ID.equals(archive.packageName)",
+          "after": "archive == null || false",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "verify_package"
+    },
+    {
+      "id": "verify-version-code-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "|| archive.getLongVersionCode() != manifest.versionCode",
+          "after": "|| false",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "verify_version_code"
+    },
+    {
+      "id": "verify-version-name-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "|| !manifest.versionName.equals(archive.versionName)",
+          "after": "|| false",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "verify_version_name"
+    },
+    {
+      "id": "verify-newer-version-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "|| archive.getLongVersionCode() <= current.getLongVersionCode()) return false;",
+          "after": "|| false) return false;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "verify_newer_version"
+    },
+    {
+      "id": "verify-single-signer-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "if (signers == null || signers.length != 1) return \"\";",
+          "after": "if (signers == null) return \"\";",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "verify_single_signer"
+    },
+    {
+      "id": "verify-signer-pin-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "return manifest.signerSha256.equals(UpdateManifest.REQUIRED_SIGNER_SHA256)",
+          "after": "return true",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "verify_signer_pin"
+    },
+    {
+      "id": "verify-archive-signer-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "&& manifest.signerSha256.equals(archiveSigner)",
+          "after": "&& true",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "verify_archive_signer"
+    },
+    {
+      "id": "verify-current-signer-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "&& manifest.signerSha256.equals(currentSigner);",
+          "after": "&& true;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "verify_current_signer"
+    },
+    {
+      "id": "verify-unconditional-success",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "return manifest.signerSha256.equals(UpdateManifest.REQUIRED_SIGNER_SHA256)\n                && manifest.signerSha256.equals(archiveSigner)\n                && manifest.signerSha256.equals(currentSigner);",
+          "after": "return true;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "verify_unconditional_success"
+    },
+    {
+      "id": "verified-file-provenance-replaced",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "final File completed = apk;",
+          "after": "final File completed = new File(activity.getCacheDir(), \"unverified.apk\");",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "verified_file_provenance"
+    },
+    {
+      "id": "current-binary-revalidation-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "installResult = UpdateStore.runIfCurrentBinary(\n                    activity, System.currentTimeMillis(), taskManifest,\n                    new UpdateStore.CurrentBinaryAction() {\n                        @Override public boolean run() {\n                            return launchInstaller(installerActivity, completed);\n                        }\n                    });",
+          "after": "installResult = launchInstaller(installerActivity, completed)\n                    ? UpdateStore.CURRENT_BINARY_ACTION_SUCCEEDED\n                    : UpdateStore.CURRENT_BINARY_ACTION_FAILED;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "current_binary_revalidation"
+    },
+    {
+      "id": "current-binary-monitor-removed",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": "static synchronized int runIfCurrentBinary(",
+          "after": "static int runIfCurrentBinary(",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "current_binary_monitor"
+    },
+    {
+      "id": "finish-owner-check-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "if (!isCurrentOwner(activity, generation) || shown == null) return;",
+          "after": "if (shown == null) return;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "finish_owner"
+    },
+    {
+      "id": "finish-showing-check-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "if (dialog != shown || !shown.isShowing()) return;",
+          "after": "if (false) return;",
+          "expectedCount": 2
+        }
+      ],
+      "expectedCode": "current_dialog_showing"
+    },
+    {
+      "id": "begin-owner-check-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "final UpdateManifest manifest, final AlertDialog shown) {\n        if (!isCurrentOwner(activity, generation)) return;\n        if (Build.VERSION.SDK_INT",
+          "after": "final UpdateManifest manifest, final AlertDialog shown) {\n        if (Build.VERSION.SDK_INT",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "begin_owner"
+    },
+    {
+      "id": "download-exception-grants-file",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "} catch (Throwable ignored) {\n                    apk = null;\n                }\n                final File completed = apk;",
+          "after": "} catch (Throwable ignored) {\n                    apk = new File(activity.getCacheDir(), \"exception.apk\");\n                }\n                final File completed = apk;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "download_exception_file"
+    },
+    {
+      "id": "current-policy-exception-installs",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "} catch (Throwable invalidLatestPolicy) {\n            shown.setMessage(\"The latest update policy cannot be verified. Try again.\");\n            shown.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);\n            return;\n        }",
+          "after": "} catch (Throwable invalidLatestPolicy) {\n            launchInstaller(installerActivity, completed);\n            return;\n        }",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "current_policy_exception"
+    },
+    {
+      "id": "mirror-exception-returns-partial",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "} catch (Throwable ignoredMirror) {\n                if (partial.exists()) partial.delete();\n            }",
+          "after": "} catch (Throwable ignoredMirror) {\n                return partial;\n            }",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "mirror_exception_file"
+    },
+    {
+      "id": "policy-commit-exception-succeeds",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": "} catch (Throwable failedCommit) {\n            throw new IllegalStateException(\"update manifest persistence failed\", failedCommit);\n        }",
+          "after": "} catch (Throwable failedCommit) {\n            saved = true;\n        }",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "policy_commit_exception"
+    },
+    {
+      "id": "installer-exception-reports-success",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "activity.startActivity(intent);\n            return true;\n        } catch (Throwable ignored) {\n            return false;\n        }",
+          "after": "activity.startActivity(intent);\n            return true;\n        } catch (Throwable ignored) {\n            return true;\n        }",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "installer_exception_success"
+    },
+    {
+      "id": "package-exception-optional-ui",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "} catch (Throwable invalidPackage) {\n            if (required) {",
+          "after": "} catch (Throwable invalidPackage) {\n            if (!required) {",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "package_exception_policy"
+    },
+    {
+      "id": "metadata-exception-treated-success",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "} catch (Throwable invalid) {\n                    failure = invalid;\n                }",
+          "after": "} catch (Throwable invalid) {\n                    failure = null;\n                }",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "metadata_exception_policy"
+    },
+    {
+      "id": "required-dialog-fallback-guard-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "if (dialogRequired && dialogOwnerGeneration == generation\n                    && dialog != null && dialog.isShowing()) return;",
+          "after": "if (false) return;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "required_fallback_guard"
+    },
+    {
+      "id": "bootstrap-continuation-not-empty",
+      "relativePath": "threadsmod/bootstrap/ModBootstrap.java",
+      "expectedCode": "bootstrap_fallback_not_empty",
+      "replacements": [
+        {
+          "before": "            public void run() {\n            }",
+          "after": "            public void run() {\n                AutoBlockSync.getCurrentViewer();\n            }",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "bootstrap-continuation-captures-activity",
+      "relativePath": "threadsmod/bootstrap/ModBootstrap.java",
+      "expectedCode": "bootstrap_update_arbitration",
+      "replacements": [
+        {
+          "before": "            public void run() {\n            }",
+          "after": "            public void run() {\n                if (activity == null) {\n                    return;\n                }\n            }",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "bootstrap-demo-dialog-class-reintroduced",
+      "relativePath": "com/threadsmod/CloneBlockerUi.java",
+      "expectedCode": "bootstrap_demo_dialog_present",
+      "replacements": [
+        {
+          "before": "        view.setLayoutParams(params);\n    }\n}",
+          "after": "        view.setLayoutParams(params);\n    }\n}\n\nfinal class DemoDialog {\n    private DemoDialog() {}\n}",
+          "expectedCount": 1
+        }
+      ]
+    },
+    {
+      "id": "bootstrap-update-arbitration-bypassed",
+      "relativePath": "threadsmod/bootstrap/ModBootstrap.java",
+      "replacements": [
+        {
+          "before": "UpdateController.onResume(activity, new Runnable() {",
+          "after": "Runnable unusedContinuation = (new Runnable() {",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "bootstrap_update_arbitration"
+    },
+    {
+      "id": "signature-verification-bypassed",
+      "relativePath": "threadsmod/update/UpdateManifest.java",
+      "replacements": [
+        {
+          "before": "if (payloadJson == null || !UpdateSignature.verifyProduction(payloadJson, signature))",
+          "after": "if (payloadJson == null)",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "signature_result_guard"
+    },
+    {
+      "id": "signature-result-unconsumed",
+      "relativePath": "threadsmod/update/UpdateManifest.java",
+      "replacements": [
+        {
+          "before": "if (payloadJson == null || !UpdateSignature.verifyProduction(payloadJson, signature)) {\n            throw new SecurityException(\"update signature verification failed\");\n        }",
+          "after": "boolean signatureVerified = UpdateSignature.verifyProduction(payloadJson, signature);\n        if (payloadJson == null) {\n            throw new SecurityException(\"update signature verification failed\");\n        }",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "signature_result_guard"
+    },
+    {
+      "id": "envelope-exact-schema-bypassed",
+      "relativePath": "threadsmod/update/UpdateManifest.java",
+      "replacements": [
+        {
+          "before": "requireExactKeys(root, \"payload\", \"sig\", \"alg\");",
+          "after": "root.length();",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "envelope_exact_schema"
+    },
+    {
+      "id": "payload-exact-schema-bypassed",
+      "relativePath": "threadsmod/update/UpdateManifest.java",
+      "replacements": [
+        {
+          "before": "requireExactKeys(payload,\n                \"v\", \"purpose\", \"packageName\", \"revision\", \"publishedAt\", \"modBuild\",\n                \"minimumModBuild\", \"versionCode\", \"versionName\", \"notes\", \"apkSize\",\n                \"apkSha256\", \"signerSha256\", \"downloadUrls\");",
+          "after": "payload.length();",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "payload_exact_schema"
+    },
+    {
+      "id": "payload-purpose-bypassed",
+      "relativePath": "threadsmod/update/UpdateManifest.java",
+      "replacements": [
+        {
+          "before": "|| !PURPOSE.equals(requireString(payload, \"purpose\", 64))",
+          "after": "|| false",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "payload_purpose"
+    },
+    {
+      "id": "timestamp-roundtrip-bypassed",
+      "relativePath": "threadsmod/update/UpdateManifest.java",
+      "replacements": [
+        {
+          "before": "|| !publishedAt.equals(CANONICAL_TIMESTAMP.format(\n                Instant.ofEpochMilli(publishedAtMs)))",
+          "after": "|| false",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "timestamp_roundtrip"
+    },
+    {
+      "id": "payload-package-bypassed",
+      "relativePath": "threadsmod/update/UpdateManifest.java",
+      "replacements": [
+        {
+          "before": "if (!APPLICATION_ID.equals(requireString(payload, \"packageName\", 128)))",
+          "after": "if (false)",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "payload_package"
+    },
+    {
+      "id": "minimum-mod-build-upper-bound-bypassed",
+      "relativePath": "threadsmod/update/UpdateManifest.java",
+      "replacements": [
+        {
+          "before": "minimumModBuild < 0L || minimumModBuild > modBuild",
+          "after": "minimumModBuild < 0L || false",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "minimum_mod_build"
+    },
+    {
+      "id": "metadata-signer-pin-bypassed",
+      "relativePath": "threadsmod/update/UpdateManifest.java",
+      "replacements": [
+        {
+          "before": "if (!REQUIRED_SIGNER_SHA256.equals(signerSha))",
+          "after": "if (false)",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "metadata_signer_pin"
+    },
+    {
+      "id": "signature-base64-canonicality-bypassed",
+      "relativePath": "threadsmod/update/UpdateSignature.java",
+      "replacements": [
+        {
+          "before": "if (signature.length != 64 || !encodedSignature.equals(Base64.encodeToString(\n                    signature, Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP))) return null;",
+          "after": "if (signature.length != 64) return null;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "signature_base64_canonicality"
+    },
+    {
+      "id": "signature-scalar-canonicality-bypassed",
+      "relativePath": "threadsmod/update/UpdateSignature.java",
+      "replacements": [
+        {
+          "before": "|| !isCanonicalScalar(signature)) return false;",
+          "after": ") return false;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "signature_scalar_canonicality"
+    },
+    {
+      "id": "stored-envelope-build-binding-bypassed",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": "&& envelopeFloor.modBuild == modBuildFloor;",
+          "after": "&& true;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "stored_envelope_binding"
+    },
+    {
+      "id": "mismatch-equal-revision-repair",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": "&& candidate.revision <= strongestRevisionFloor",
+          "after": "&& candidate.revision < strongestRevisionFloor",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "mismatch_repair_revision"
+    },
+    {
+      "id": "stored-revision-rollback-bypassed",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": "if (candidate.revision < envelopeFloor.revision\n                    || candidate.modBuild < envelopeFloor.modBuild)",
+          "after": "if (false)",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "stored_revision_build_rollback"
+    },
+    {
+      "id": "stored-equivocation-bypassed",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": "candidate.revision == envelopeFloor.revision\n                    && !candidate.sameSignedRelease(envelopeFloor)",
+          "after": "false",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "stored_revision_equivocation"
+    },
+    {
+      "id": "stored-same-build-identity-bypassed",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": "candidate.modBuild == envelopeFloor.modBuild\n                    && !candidate.sameBinary(envelopeFloor)",
+          "after": "false",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "stored_same_build_identity"
+    },
+    {
+      "id": "stored-new-build-version-bypassed",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": "candidate.modBuild > envelopeFloor.modBuild\n                    && candidate.versionCode <= envelopeFloor.versionCode",
+          "after": "false",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "stored_new_build_version"
+    },
+    {
+      "id": "persistence-floor-not-retained",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": "policyPersistenceFloor = candidate;",
+          "after": "policyPersistenceFloor = null;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "persistence_floor_before_commit"
+    },
+    {
+      "id": "persistence-uncertainty-set-after-commit",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": "policyPersistenceFloor = candidate;\n        policyPersistenceUncertain = true;\n        boolean saved;",
+          "after": "policyPersistenceFloor = candidate;\n        boolean saved;",
+          "expectedCount": 1
+        },
+        {
+          "before": "if (!saved) throw new IllegalStateException(\"update manifest persistence failed\");\n        lastVerifiedManifestForEnforcement = candidate;",
+          "after": "if (!saved) throw new IllegalStateException(\"update manifest persistence failed\");\n        policyPersistenceUncertain = true;\n        lastVerifiedManifestForEnforcement = candidate;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "persistence_uncertainty_order"
+    },
+    {
+      "id": "persistence-exception-clears-uncertainty",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": "} catch (Throwable failedCommit) {\n            throw new IllegalStateException(\"update manifest persistence failed\", failedCommit);\n        }",
+          "after": "} catch (Throwable failedCommit) {\n            policyPersistenceUncertain = false;\n            policyPersistenceFloor = null;\n            throw new IllegalStateException(\"update manifest persistence failed\", failedCommit);\n        }",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "persistence_exception_uncertainty"
+    },
+    {
+      "id": "metadata-mirror-order-swapped",
+      "relativePath": "threadsmod/update/UpdateEndpoints.java",
+      "replacements": [
+        {
+          "before": "\"https://raw.githubusercontent.com/nsc55/cloneblocker-mirror/published/threadsmod-update.json\",\n            \"https://cdn.jsdelivr.net/gh/nsc55/cloneblocker-mirror@published/threadsmod-update.json\"",
+          "after": "\"https://cdn.jsdelivr.net/gh/nsc55/cloneblocker-mirror@published/threadsmod-update.json\",\n            \"https://raw.githubusercontent.com/nsc55/cloneblocker-mirror/published/threadsmod-update.json\"",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "metadata_mirror_order"
+    },
+    {
+      "id": "redirect-provider-class-bypassed",
+      "relativePath": "threadsmod/update/UpdateEndpoints.java",
+      "replacements": [
+        {
+          "before": "if (previousProvider == 0 || previousProvider != nextProvider)",
+          "after": "if (previousProvider == 0)",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "redirect_provider_class"
+    },
+    {
+      "id": "redirect-hop-limit-expanded",
+      "relativePath": "threadsmod/update/UpdateEndpoints.java",
+      "replacements": [
+        {
+          "before": "|| hop < 1 || hop > 3",
+          "after": "|| hop < 1 || hop > 4",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "redirect_hop_limit"
+    },
+    {
+      "id": "redirect-status-304-added",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "|| status == 307 || status == 308;",
+          "after": "|| status == 304 || status == 307 || status == 308;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "redirect_status_allowlist"
+    },
+    {
+      "id": "metadata-stops-after-first-valid",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "valid.add(UpdateManifest.parseAndVerify(body, System.currentTimeMillis()));",
+          "after": "valid.add(UpdateManifest.parseAndVerify(body, System.currentTimeMillis()));\n                break;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "metadata_all_mirrors"
+    },
+    {
+      "id": "metadata-lowest-revision-wins",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "candidate.revision > highest.revision",
+          "after": "candidate.revision < highest.revision",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "metadata_highest_revision"
+    },
+    {
+      "id": "metadata-equivocation-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "candidate.revision == highest.revision\n                        && !candidate.sameSignedRelease(highest)",
+          "after": "false",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "metadata_highest_equivocation"
+    },
+    {
+      "id": "signature-guard-alternate-predecessor",
+      "relativePath": "threadsmod/update/UpdateManifest.java",
+      "replacements": [
+        {
+          "before": "if (payloadJson == null || !UpdateSignature.verifyProduction(payloadJson, signature)) {\n            throw new SecurityException(\"update signature verification failed\");\n        }",
+          "after": "boolean signatureVerified;\n        if (signature.isEmpty()) {\n            signatureVerified = UpdateSignature.verifyProduction(payloadJson, signature);\n        } else {\n            signatureVerified = true;\n        }\n        if (payloadJson == null || !signatureVerified) {\n            throw new SecurityException(\"update signature verification failed\");\n        }",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "signature_result_guard"
+    },
+    {
+      "id": "stored-equivocation-decoy-guard",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": "if (candidate.revision == envelopeFloor.revision\n                    && !candidate.sameSignedRelease(envelopeFloor)) {\n                throw new SecurityException(\"update manifest revision conflicts\");\n            }",
+          "after": "candidate.sameSignedRelease(envelopeFloor);",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "stored_revision_equivocation"
+    },
+    {
+      "id": "stored-same-binary-decoy-guard",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": "if (candidate.modBuild == envelopeFloor.modBuild\n                    && !candidate.sameBinary(envelopeFloor)) {\n                throw new SecurityException(\"update policy changes existing binary identity\");\n            }",
+          "after": "candidate.sameBinary(envelopeFloor);",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "stored_same_build_identity"
+    },
+    {
+      "id": "verify-two-signers-accepted",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "signers.length != 1",
+          "after": "signers.length != 2",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "verify_single_signer"
+    },
+    {
+      "id": "redirect-status-polarity-flipped",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "return status == HttpsURLConnection.HTTP_MOVED_PERM\n                || status == HttpsURLConnection.HTTP_MOVED_TEMP\n                || status == HttpsURLConnection.HTTP_SEE_OTHER\n                || status == 307 || status == 308;",
+          "after": "return status != HttpsURLConnection.HTTP_MOVED_PERM\n                && status != HttpsURLConnection.HTTP_MOVED_TEMP\n                && status != HttpsURLConnection.HTTP_SEE_OTHER\n                && status != 307 && status != 308;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "redirect_status_allowlist"
+    },
+    {
+      "id": "current-policy-catch-indirect-action",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "try {\n            installResult = UpdateStore.runIfCurrentBinary(\n                    activity, System.currentTimeMillis(), taskManifest,\n                    new UpdateStore.CurrentBinaryAction() {\n                        @Override public boolean run() {\n                            return launchInstaller(installerActivity, completed);\n                        }\n                    });\n        } catch (Throwable invalidLatestPolicy) {\n            shown.setMessage(\"The latest update policy cannot be verified. Try again.\");\n            shown.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);\n            return;\n        }",
+          "after": "final UpdateStore.CurrentBinaryAction installerAction =\n                new UpdateStore.CurrentBinaryAction() {\n                    @Override public boolean run() {\n                        return launchInstaller(installerActivity, completed);\n                    }\n                };\n        try {\n            installResult = UpdateStore.runIfCurrentBinary(\n                    activity, System.currentTimeMillis(), taskManifest, installerAction);\n        } catch (Throwable invalidLatestPolicy) {\n            installerAction.run();\n            return;\n        }",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "current_policy_exception"
+    },
+    {
+      "id": "signature-pinned-key-decoy",
+      "relativePath": "threadsmod/update/UpdateSignature.java",
+      "replacements": [
+        {
+          "before": "return verifyWithKey(key, payload.getBytes(StandardCharsets.UTF_8), signature);",
+          "after": "byte[] unpinnedKey = key.clone();\n        unpinnedKey[0] ^= 1;\n        return verifyWithKey(unpinnedKey, payload.getBytes(StandardCharsets.UTF_8), signature);",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "signature_public_key_authority"
+    },
+    {
+      "id": "signature-algorithm-decoy",
+      "relativePath": "threadsmod/update/UpdateManifest.java",
+      "replacements": [
+        {
+          "before": "if (!\"ed25519\".equals(requireString(root, \"alg\", 16))) {\n            throw new SecurityException(\"update signature algorithm is invalid\");\n        }",
+          "after": "\"ed25519\".equals(requireString(root, \"alg\", 16));",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "envelope_algorithm"
+    },
+    {
+      "id": "manifest-constructor-version-decoy",
+      "relativePath": "threadsmod/update/UpdateManifest.java",
+      "replacements": [
+        {
+          "before": "versionCode, versionName, notes, apkName, apkSize,",
+          "after": "versionCode + 1L, versionName, notes, apkName, apkSize,",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "manifest_constructor_binding"
+    },
+    {
+      "id": "current-binary-self-comparison",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": "latest == null || !latest.sameBinary(expected)",
+          "after": "latest == null || !expected.sameBinary(expected)",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "current_binary_revalidation"
+    },
+    {
+      "id": "automatic-redirects-enabled",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "connection.setInstanceFollowRedirects(false);",
+          "after": "connection.setInstanceFollowRedirects(true);",
+          "expectedCount": 2
+        }
+      ],
+      "expectedCode": "automatic_redirects_disabled"
+    },
+    {
+      "id": "cached-verified-file-bypassed",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "if (cachedValid) return completed;",
+          "after": "if (true) return completed;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "cached_verified_file_guard"
+    },
+    {
+      "id": "download-rename-result-ignored",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "if (!partial.renameTo(completed)) throw new IllegalStateException(\"update commit failed\");",
+          "after": "partial.renameTo(completed);",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "download_rename_guard"
+    },
+    {
+      "id": "installer-file-provenance-substituted",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "return launchInstaller(installerActivity, completed);",
+          "after": "return launchInstaller(installerActivity, new File(activity.getCacheDir(), \"unverified.apk\"));",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "installer_file_provenance"
+    },
+    {
+      "id": "required-unavailable-cancelable",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "shown.setCancelable(false);",
+          "after": "shown.setCancelable(true);",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "required_unavailable_cancelability"
+    },
+    {
+      "id": "dialog-owner-generation-shifted",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "dialog = shown;\n            dialogOwnerGeneration = generation;\n            dialogRequired = required;",
+          "after": "dialog = shown;\n            dialogOwnerGeneration = generation + 1L;\n            dialogRequired = required;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "dialog_owner_generation_binding"
+    },
+    {
+      "id": "lifecycle-owner-conjunction-weakened",
+      "relativePath": "threadsmod/update/UpdateController.java",
+      "replacements": [
+        {
+          "before": "return owner.get() == activity && ownerGeneration == generation && isUsable(activity);",
+          "after": "return owner.get() == activity || ownerGeneration == generation || isUsable(activity);",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "lifecycle_owner_conjunction"
+    },
+    {
+      "id": "store-load-envelope-binding-inverted",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": "if (manifest.revision != (Long) rawRevision",
+          "after": "if (manifest.revision == (Long) rawRevision",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "store_load_envelope_binding"
+    },
+    {
+      "id": "store-persisted-revision-substituted",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": ".putLong(KEY_REVISION, candidate.revision)",
+          "after": ".putLong(KEY_REVISION, candidate.modBuild)",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "store_persisted_revision_binding"
+    },
+    {
+      "id": "store-typed-revision-floor-polarity",
+      "relativePath": "threadsmod/update/UpdateStore.java",
+      "replacements": [
+        {
+          "before": "revisionFloor >= 0L && candidate.revision < revisionFloor",
+          "after": "revisionFloor >= 0L && candidate.revision > revisionFloor",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "store_typed_revision_floor"
+    },
+    {
+      "id": "signature-verifier-result-bypassed",
+      "relativePath": "threadsmod/update/UpdateSignature.java",
+      "replacements": [
+        {
+          "before": "return verifyWithKey(key, payload.getBytes(StandardCharsets.UTF_8), signature);",
+          "after": "return true;",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "signature_verifier_result_binding"
+    },
+    {
+      "id": "manifest-constructor-minimum-substituted",
+      "relativePath": "threadsmod/update/UpdateManifest.java",
+      "replacements": [
+        {
+          "before": "revision, modBuild, minimumModBuild, publishedAt, publishedAtMs,",
+          "after": "revision, modBuild, 0L, publishedAt, publishedAtMs,",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "manifest_constructor_minimum_binding"
+    },
+    {
+      "id": "exact-schema-helper-weakened",
+      "relativePath": "threadsmod/update/UpdateManifest.java",
+      "replacements": [
+        {
+          "before": "if (!remaining.remove(names.next())) {",
+          "after": "if (false) {",
+          "expectedCount": 1
+        },
+        {
+          "before": "if (count != expected.length || !remaining.isEmpty()) {",
+          "after": "if (false) {",
+          "expectedCount": 1
+        }
+      ],
+      "expectedCode": "exact_schema_helper_semantics"
+    }
+  ]
+}
