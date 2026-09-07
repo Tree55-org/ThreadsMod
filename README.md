@@ -11,6 +11,12 @@ liên kết với Meta và không có trên kho ứng dụng nào.
 
 ## Cài đặt
 
+<a href="docs/media/threads55-install-guide.mp4"><img src="docs/media/threads55-install-guide-poster.jpg" width="270" alt="Video hướng dẫn cài đặt và chặn tài khoản giả mạo, 47 giây"></a>
+
+**[Video hướng dẫn — 47 giây](docs/media/threads55-install-guide.mp4)**: bấm vào ảnh để xem ngay trên GitHub,
+hoặc [tải tệp MP4](https://raw.githubusercontent.com/Tree55-org/ThreadsMod/main/docs/media/threads55-install-guide.mp4) về máy.
+Video là mô phỏng giao diện, không phải quay từ máy thật.
+
 Tải ở **[trang phát hành](https://github.com/Tree55-org/ThreadsMod/releases/tag/release)**:
 
 | Tệp | Dung lượng | Dùng khi nào |
