@@ -867,7 +867,7 @@ function Resolve-PatchletTemplateRoot {
         [Parameter(Mandatory)][string]$PatchletsRoot,
         [Parameter(Mandatory)]$Section,
         [Parameter(Mandatory)][string]$DefaultRelativeRoot,
-        [Parameter(Mandatory)][ValidateSet('bridge', 'bridge-reference', 'inline', 'reporting', 'settings')][string]$Kind
+        [Parameter(Mandatory)][ValidateSet('bridge', 'bridge-reference', 'inline', 'reporting', 'settings', 'video')][string]$Kind
     )
 
     $property = $Section.PSObject.Properties['templateRoot']
@@ -1602,6 +1602,38 @@ function Test-PatchletAssets {
                     'patchlets\assets\release-gates\dex-update-flow'
                 filter = '*'
                 expected = ([string]$Resolution.assets.dexUpdateFlowFixtureTreeSha256).ToLowerInvariant()
+            }
+        )
+    }
+    if ($null -ne $Resolution.PSObject.Properties['videoDownload']) {
+        $videoTemplateRoot = Resolve-PatchletTemplateRoot `
+            -PatchletsRoot $patchletsRoot -Section $Resolution.videoDownload `
+            -DefaultRelativeRoot 'assets\video-download\templates' -Kind 'video'
+        $checks += @(
+            [pscustomobject]@{
+                id = 'video-java-tree'; kind = 'tree'
+                path = Join-Path $assetsRoot 'java\threadsmod\video'; filter = '*.java'
+                expected = ([string]$Resolution.assets.videoJavaTreeSha256).ToLowerInvariant()
+            },
+            [pscustomobject]@{
+                id = 'video-template-tree'; kind = 'tree'
+                path = $videoTemplateRoot; filter = '*.tmpl'
+                expected = ([string]$Resolution.assets.videoTemplateTreeSha256).ToLowerInvariant()
+            },
+            [pscustomobject]@{
+                id = 'video-contract-tool'; kind = 'file'
+                path = Join-Path $RepositoryRoot 'patchlets\tools\Test-VideoDownloadContract.ps1'
+                expected = ([string]$Resolution.assets.videoContractTestSourceSha256).ToLowerInvariant()
+            },
+            [pscustomobject]@{
+                id = 'video-dex-inspector'; kind = 'file'
+                path = Join-Path $RepositoryRoot 'patchlets\tools\DexVideoDownloadInspector.java'
+                expected = ([string]$Resolution.assets.videoDexInspectorSourceSha256).ToLowerInvariant()
+            },
+            [pscustomobject]@{
+                id = 'video-contract-fixtures'; kind = 'tree'
+                path = Join-Path $RepositoryRoot 'patchlets\assets\release-gates\video-download'; filter = '*'
+                expected = ([string]$Resolution.assets.videoContractFixtureTreeSha256).ToLowerInvariant()
             }
         )
     }

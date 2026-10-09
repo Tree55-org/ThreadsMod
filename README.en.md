@@ -71,6 +71,8 @@ account, and are **not** undone by uninstalling.
 
 ## Status
 
+Video saving is being added through patchlet 075. See [how video saving works](docs/14-VIDEO-SAVING.md); the published APK below predates that feature.
+
 Current build `tree55-threads-mod.apk`, published 2026-09-06, from patchlet
 series 005 r1, 010 r5, 020 r24, 030 r7, 040 r2, 050 r17, 060 r14, 070 r10,
 080 r3, 085 r2, 090 r62.

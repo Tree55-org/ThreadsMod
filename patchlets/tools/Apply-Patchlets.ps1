@@ -217,6 +217,15 @@ $proxySet = if ($null -eq $proxyProperty) {
     Resolve-PatchletChildPath `
         -Root $resolutionDirectory -Child ([string]$proxyProperty.Value.rewriteSet)
 }
+$videoSet = $null
+if ($null -ne $resolution.PSObject.Properties['videoDownload']) {
+    if ([string]$resolution.videoDownload.rewriteSet -cne 'video-download-rewrites.json' `
+            -or @($resolution.patchlets | Where-Object { [string]$_ -ceq '075-video-download' }).Count -ne 1 `
+            -or @($resolution.rewriteSets | Where-Object { [string]$_ -ceq 'video-download-rewrites.json' }).Count -ne 1) {
+        throw 'Video download requires one owned patchlet and one exact video-download-rewrites.json set.'
+    }
+    $videoSet = Resolve-PatchletChildPath -Root $resolutionDirectory -Child 'video-download-rewrites.json'
+}
 $identity = @(Apply-PatchletRewriteSet -RewriteSetPath $identitySet -DecodedRoot $decodedRootFull)
 $settings = @(Apply-PatchletRewriteSet -RewriteSetPath $settingsSet -DecodedRoot $decodedRootFull)
 
@@ -248,6 +257,19 @@ $update = @(
     }
 )
 $postIdentity = @(Test-PatchletRewriteSet -RewriteSetPath $identitySet -DecodedRoot $decodedRootFull)
+$video = @(
+    if ($null -ne $videoSet) {
+        Apply-PatchletRewriteSet -RewriteSetPath $videoSet -DecodedRoot $decodedRootFull
+    }
+)
+$postVideo = @(
+    if ($null -ne $videoSet) {
+        Test-PatchletRewriteSet -RewriteSetPath $videoSet -DecodedRoot $decodedRootFull
+    }
+)
+if (@($postVideo | Where-Object state -ne 'applied').Count -ne 0) {
+    throw 'Video download rewrite postcondition failed.'
+}
 $postSettings = @(Test-PatchletRewriteSet -RewriteSetPath $settingsSet -DecodedRoot $decodedRootFull)
 $postHooks = @(Test-PatchletRewriteSet -RewriteSetPath $hookSet -DecodedRoot $decodedRootFull)
 $postDrawerSettings = @(Test-PatchletRewriteSet -RewriteSetPath $drawerSettingsSet -DecodedRoot $decodedRootFull)
@@ -333,6 +355,12 @@ $ledger = [ordered]@{
         rules = $update
     }
     status = 'passed'
+    videoDownload = [ordered]@{
+        total = $video.Count
+        applied = @($video | Where-Object action -eq 'applied').Count
+        noOp = @($video | Where-Object action -eq 'no-op').Count
+        rules = $video
+    }
 }
 
 if ($LedgerPath) {

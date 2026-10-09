@@ -70,6 +70,8 @@ thiết bị dùng tài khoản đó, và **không** được hoàn tác khi b�
 
 ## Tình trạng
 
+Tính năng lưu video đang được bổ sung qua patchlet 075. Xem [hướng dẫn lưu video](docs/14-VIDEO-SAVING.md); APK đã phát hành bên dưới chưa có tính năng này.
+
 Bản hiện tại `tree55-threads-mod.apk`, phát hành 2026-09-06, từ loạt patchlet
 005 r1, 010 r5, 020 r24, 030 r7, 040 r2, 050 r17, 060 r14, 070 r10, 080 r3,
 085 r2, 090 r62.

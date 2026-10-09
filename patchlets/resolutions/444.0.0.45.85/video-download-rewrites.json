@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "video-menu-captured-media-hook",
+      "path": "smali_classes6/X/0Lbf.smali",
+      "beforeFile": "anchors/video-menu.before.smali",
+      "afterFile": "anchors/video-menu.after.smali",
+      "expectedCount": 1
+    },
+    {
+      "id": "video-private-save-activity",
+      "path": "AndroidManifest.xml",
+      "beforeFile": "anchors/video-manifest.before.xml",
+      "afterFile": "anchors/video-manifest.after.xml",
+      "expectedCount": 1
+    }
+  ]
+}

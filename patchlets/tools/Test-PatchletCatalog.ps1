@@ -616,6 +616,15 @@ if ($sourceVersionName -ceq '415.0.0.26.77') {
 $expectedJadxTargetNames = @(
     'com.instagram.barcelona.mainactivity.BarcelonaActivity'
 ) + $reviewedHostJadxTargetNames + $commonJadxTargetNames
+if ($null -ne $resolution.PSObject.Properties['videoDownload']) {
+    $expectedJadxTargetNames += @(
+        'threadsmod.video.VideoSaveRequest',
+        'threadsmod.video.VideoSaveController',
+        'threadsmod.video.VideoSaveActivity',
+        'threadsmod.video.VideoTransfer',
+        'threadsmod.video.VideoMenuAdapter',
+        'threadsmod.video.VideoMenuClick')
+}
 if ($jadxTargetNames.Count -ne $expectedJadxTargetNames.Count `
         -or ($jadxTargetNames -join "`n") -ne ($expectedJadxTargetNames -join "`n")) {
     throw "Resolution targeted JADX classes must equal the exact ordered reviewed set for '$sourceVersionName'."
@@ -3636,9 +3645,10 @@ $requiredCurrentRevisions = [ordered]@{
     '050-mod-settings-ui' = 17
     '060-inline-block-controls' = 14
     '070-consented-reporting' = 10
+    '075-video-download' = 1
     '080-socks5-proxy' = 3
     '085-in-app-update' = 2
-    '090-release-gates' = 62
+    '090-release-gates' = 63
 }
 foreach ($patchletId in $requiredCurrentRevisions.Keys) {
     if ([int]$manifests[$patchletId].revision -ne [int]$requiredCurrentRevisions[$patchletId]) {
@@ -3930,14 +3940,26 @@ foreach ($ownedRule in $ownership['rewriteRuleIds'].Keys) {
 $requiredClassDescriptors = @($resolution.release.requiredClassDescriptors | ForEach-Object {
         [string]$_
     })
-if ($requiredClassDescriptors.Count -ne 54 `
+$requiredClassCount = if ($null -ne $resolution.PSObject.Properties['videoDownload']) { 60 } else { 54 }
+if ($requiredClassDescriptors.Count -ne $requiredClassCount `
         -or @($requiredClassDescriptors | Where-Object {
             $_ -eq 'Lthreadsmod/autoblock/BlockDiagnostic;'
         }).Count -ne 1 `
         -or @($requiredClassDescriptors | Where-Object {
             $_.Contains('UserFetchCallback', [StringComparison]::Ordinal)
         }).Count -ne 0) {
-    throw 'Required class descriptors must equal the 54-class passive-plus-update release set, own BlockDiagnostic once, and exclude retired UserFetchCallback.'
+    throw 'Required class descriptors must equal the exact feature-owned release set, own BlockDiagnostic once, and exclude retired UserFetchCallback.'
+}
+if ($null -ne $resolution.PSObject.Properties['videoDownload']) {
+    foreach ($videoDescriptor in @('Lthreadsmod/video/VideoSaveRequest;', 'Lthreadsmod/video/VideoSaveController;',
+            'Lthreadsmod/video/VideoSaveActivity;', 'Lthreadsmod/video/VideoTransfer;',
+            'Lthreadsmod/video/VideoMenuAdapter;', 'Lthreadsmod/video/VideoMenuClick;')) {
+        if (@($requiredClassDescriptors | Where-Object { [string]$_ -ceq $videoDescriptor }).Count -ne 1 `
+                -or -not $ownership['classDescriptors'].ContainsKey($videoDescriptor) `
+                -or [string]$ownership['classDescriptors'][$videoDescriptor] -cne '075-video-download') {
+            throw 'Video release classes must be required once and solely owned by patchlet 075.'
+        }
+    }
 }
 $requiredPassiveDescriptors = [ordered]@{
     'Lthreadsmod/autoblock/BlocklistStore;' = '020-autoblock-runtime'

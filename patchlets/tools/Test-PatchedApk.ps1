@@ -2154,6 +2154,37 @@ if ($null -ne $proxyProperty) {
     }
 }
 
+$videoContract = $null
+$videoReleaseGates = $null
+if ($null -ne $resolution.PSObject.Properties['videoDownload']) {
+    $videoContract = & (Join-Path $PSScriptRoot 'Test-VideoDownloadContract.ps1') `
+        -ScratchRoot (Join-Path $scratchFull 'video-signed-contract') -ResolutionPath $ResolutionPath `
+        -Apk $apkFull -SourceApk $SourceApk -AndroidSdk $AndroidSdk -BuildToolsVersion $BuildToolsVersion `
+        -Java $Java -Javac $Javac -ReportPath (Join-Path $scratchFull 'video-signed-contract.json')
+    if ([string]$videoContract.status -cne 'passed' -or $videoContract.signedCandidateBound -ne $true `
+            -or $null -eq $videoContract.rawDex `
+            -or [string]$videoContract.rawDex.status -cne 'passed') {
+        throw 'Video signed primary-DEX contract did not pass.'
+    }
+    $videoActivityBlock = Get-AaptXmlElementBlock -Lines $manifestTree -ElementName 'activity' `
+        -AndroidName 'threadsmod.video.VideoSaveActivity'
+    if ($videoActivityBlock.text -notmatch 'android:exported[^\n]*=false' `
+            -or $videoActivityBlock.text -match '(?m)^\s*E:\s+intent-filter(?:\s|\(|$)') {
+        throw 'Video save Activity must be private and have no intent filter.'
+    }
+    $videoReleaseGates = [ordered]@{
+        'video-download-contract' = $videoContract
+        'video-native-exact-seam' = [pscustomobject]@{
+            status = 'passed'; nativeHookDriftRejected = $videoContract.nativeHookDriftRejected
+            templateIdempotency = $videoContract.templateIdempotency
+        }
+        'video-signed-dex-contract' = $videoContract.rawDex
+        'video-activity-ui-probe' = [pscustomobject]@{
+            status = 'required-separately'; activity = 'threadsmod.video.VideoSaveActivity'; exported = $false
+            intentFilters = 0; emulatorProbe = 'required-separately-exact-primary-dex-no-permission'
+        }
+    }
+}
 $outputSha256 = Get-PatchletSha256 -Path $apkFull
 $sourceSha256 = $boundSourceSha256
 $resolutionSha256 = Get-PatchletSha256 -Path $resolutionPathFull
@@ -2235,6 +2266,7 @@ $report = [ordered]@{
     assets = $assetPreservation
     passiveBlockingReleaseGates = $passiveBlockingReleaseGates
     updateReleaseGates = $updateReleaseGates
+    videoDownloadReleaseGates = $videoReleaseGates
     proxyReleaseGates = $proxyReleaseGates
     targetedJadx = [pscustomobject]@{
         version = [string]$resolution.toolchain.jadxVersion

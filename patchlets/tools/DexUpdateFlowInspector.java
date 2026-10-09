@@ -167,7 +167,7 @@ public final class DexUpdateFlowInspector {
         return field.getDefiningClass() + "->" + field.getName() + ":" + field.getType();
     }
 
-    private static Iterable<Method> methods(ClassDef classDef) {
+    public static Iterable<Method> methods(ClassDef classDef) {
         List<Method> result = new ArrayList<>();
         for (Object method : classDef.getDirectMethods()) result.add((Method) method);
         for (Object method : classDef.getVirtualMethods()) result.add((Method) method);
@@ -3141,7 +3141,7 @@ public final class DexUpdateFlowInspector {
         return value.toString();
     }
 
-    private static String canonicalClass(ClassDef classDef) throws Failure {
+    public static String canonicalClass(ClassDef classDef) throws Failure {
         StringBuilder result = new StringBuilder();
         append(result, "class");
         append(result, classDef.getType());
@@ -3298,7 +3298,7 @@ public final class DexUpdateFlowInspector {
         return new String(result);
     }
 
-    private static Map<String, ClassDef> readPrimaryDex(String apkPath, String dexName)
+    public static Map<String, ClassDef> readPrimaryDex(String apkPath, String dexName)
             throws Exception {
         Map<String, ClassDef> classes = new HashMap<>();
         int primaryCount = 0;

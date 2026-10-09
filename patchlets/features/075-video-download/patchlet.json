@@ -1,0 +1,190 @@
+{
+  "$schema": "../../schemas/patchlet.schema.json",
+  "schemaVersion": 1,
+  "id": "075-video-download",
+  "revision": 1,
+  "title": "Save a captured Threads video as an MP4",
+  "summary": "Add an exact-source native post-menu Save video action, validate its captured progressive video URL, and save a bounded, cookie-isolated HTTPS MP4 through Android's user-selected document destination without Block, report, account mutation, or broad storage permissions.",
+  "stage": "hook",
+  "dependsOn": [
+    "010-clone-identity"
+  ],
+  "resolution": {
+    "required": true,
+    "binding": "exact-apk-sha256",
+    "sourceSha256Pointer": "/source/sha256",
+    "requiredSections": [
+      "source",
+      "target",
+      "videoDownload",
+      "proofs",
+      "assets",
+      "release"
+    ],
+    "rewriteSets": [
+      "video-download-rewrites.json"
+    ]
+  },
+  "risk": [
+    "network-read",
+    "private-api",
+    "user-interface",
+    "personal-data",
+    "packaging"
+  ],
+  "ownership": {
+    "classPrefixes": [
+      "Lthreadsmod/video/"
+    ],
+    "classDescriptors": [
+      "Lthreadsmod/video/VideoSaveRequest;",
+      "Lthreadsmod/video/VideoSaveController;",
+      "Lthreadsmod/video/VideoSaveActivity;",
+      "Lthreadsmod/video/VideoTransfer;",
+      "Lthreadsmod/video/VideoMenuAdapter;",
+      "Lthreadsmod/video/VideoMenuClick;"
+    ],
+    "rewriteRuleIds": [
+      "video-menu-captured-media-hook",
+      "video-private-save-activity"
+    ],
+    "manifestComponents": [
+      "threadsmod.video.VideoSaveActivity"
+    ],
+    "hostHooks": [
+      "smali_classes6/X/0Lbf.smali:invoke(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;:cond_c6"
+    ],
+    "preferenceKeys": [],
+    "databaseSchemas": [],
+    "semanticProofIds": [
+      "video-menu-captured-activity",
+      "video-menu-captured-media",
+      "video-menu-capture-constructor",
+      "video-menu-native-column-end",
+      "video-renditions-native-getter",
+      "video-renditions-native-field",
+      "video-native-url-interface",
+      "video-native-height-semantics",
+      "video-native-width-semantics",
+      "video-native-menu-row"
+    ]
+  },
+  "inputs": [
+    {
+      "id": "video-java",
+      "kind": "asset-tree",
+      "path": "assets/autoblock/java/threadsmod/video",
+      "sha256FromResolution": "/assets/videoJavaTreeSha256",
+      "required": true
+    },
+    {
+      "id": "video-templates",
+      "kind": "asset-tree",
+      "pathFromResolution": "/videoDownload/templateRoot",
+      "sha256FromResolution": "/assets/videoTemplateTreeSha256",
+      "required": true
+    },
+    {
+      "id": "video-rewrites",
+      "kind": "resolution-rewrite-set",
+      "pathFromResolution": "video-download-rewrites.json",
+      "required": true
+    },
+    {
+      "id": "video-resolution",
+      "kind": "resolution-section",
+      "pointer": "/videoDownload",
+      "required": true
+    }
+  ],
+  "operations": [
+    {
+      "id": "compile-video-save-runtime",
+      "type": "java-to-smali",
+      "sources": [
+        "assets/autoblock/java/threadsmod/video"
+      ],
+      "target": "decoded-apk:primary-dex",
+      "idempotency": "class-set-and-content-hash"
+    },
+    {
+      "id": "render-video-menu-adapter",
+      "type": "render-smali-templates",
+      "source": "resolution:/videoDownload/templateRoot",
+      "target": "decoded-apk:primary-dex",
+      "destination": "smali/threadsmod/video",
+      "templateNames": [
+        "VideoMenuAdapter.smali.tmpl",
+        "VideoMenuClick.smali.tmpl"
+      ],
+      "bindingsPointer": "/videoDownload/symbols",
+      "idempotency": "rendered-content-hash",
+      "verifyNoPlaceholders": true
+    },
+    {
+      "id": "apply-video-menu-and-manifest",
+      "type": "exact-anchor-rewrite-set",
+      "source": "resolution:video-download-rewrites.json",
+      "target": "decoded-apk",
+      "expectedCount": "per-rule",
+      "idempotency": "before-xor-after"
+    }
+  ],
+  "preconditions": [
+    {
+      "id": "video-source-bound",
+      "check": "source-apk-sha256-equals-resolution",
+      "pointer": "/source/sha256",
+      "severity": "error"
+    },
+    {
+      "id": "video-native-seams-proven",
+      "check": "resolution-proofs-match-decoded-apk",
+      "pointer": "/proofs",
+      "severity": "error"
+    },
+    {
+      "id": "video-anchor-state",
+      "check": "rewrite-before-xor-after-at-expected-count",
+      "expectedCount": "per-rule",
+      "severity": "error"
+    }
+  ],
+  "postconditions": [
+    {
+      "id": "video-owned-classes",
+      "check": "owned-class-descriptors-present-once",
+      "severity": "error"
+    },
+    {
+      "id": "video-user-action-only",
+      "check": "captured-video-native-menu-action-opens-only-private-save-activity-and-does-not-create-block-or-report-work",
+      "severity": "error"
+    },
+    {
+      "id": "video-private-document-save",
+      "check": "user-selected-content-uri-only-after-bounded-cookie-isolated-cdn-get-and-mp4-cache-validation-with-failure-cleanup",
+      "severity": "error"
+    },
+    {
+      "id": "video-activity-shell",
+      "check": "non-exported-no-intent-filter-shell-before-input-and-no-null-layout-parameters",
+      "severity": "error"
+    }
+  ],
+  "releaseGates": [
+    "video-download-contract",
+    "video-native-exact-seam",
+    "video-signed-dex-contract",
+    "video-activity-ui-probe",
+    "dex-method-budget",
+    "patchlet-idempotency"
+  ],
+  "ai": {
+    "allowed": true,
+    "taskTemplate": "../../ai/tasks/RESOLVE-VIDEO-DOWNLOAD.md",
+    "output": "proposal-json-only",
+    "mayEditProductionTree": false,
+    "mayRelaxChecks": false
+  }
+}

@@ -2,7 +2,7 @@
   "$schema": "../../schemas/patchlet.schema.json",
   "schemaVersion": 1,
   "id": "090-release-gates",
-  "revision": 62,
+  "revision": 63,
   "title": "Fail-closed release and signed-review gates",
   "summary": "Verify the full patchlet replay and signed primary DEX for the exact Threads source: strict mirror and write routing; chunked v3 signed-root refresh with pattern-validated object names, SHA-256-proven objects before parse, streamed whole-chunk rejection, per-bucket atomic replacement and the reviewed v1-to-v2-to-v3 migration with total/new-count/bucket-bits status; only the atomic two-field passive delay with manual inline work uncapped and unpaced; no retired target/run/hour/day admission; complete lock-bound authority before passive running, delay reservation, and bridge dispatch with conservative non-clearing deadlines; one post-Share inline control that does not depend on viewer readiness during composition and preserves its decorated visibility modifier by clearing the exact native modifier-default bit; A75 code accessor first with A7o as the strict permalink fallback, caption/no-text excerpt helper flow, zero render-time current-viewer calls, and fixed identifier-free render diagnostics; the exact Threads 444 adapter has four raw diagnostic invokes while pinned JADX 1.5.6 deterministically recovers five call expressions after duplicating the shared request-unavailable block; the isolated Activity probe securely decodes bounded UI XML, requires fixed labels as exact viewport-intersecting nodes, and requires the five dynamic status fields as one ordered value-bearing multiline viewport-intersecting node with bypass-negative fixtures; existing bridge, reporting, proxy, updater, archive, signing, idempotency, targeted-JADX, raw CFG/value-flow, negative-fixture, and non-publishing SignedReview gates remain fail closed.",
   "stage": "verify",
@@ -15,6 +15,7 @@
     "050-mod-settings-ui",
     "060-inline-block-controls",
     "070-consented-reporting",
+    "075-video-download",
     "080-socks5-proxy",
     "085-in-app-update"
   ],
@@ -32,6 +33,7 @@
       "drawerSettings",
       "inlineControls",
       "reporting",
+      "videoDownload",
       "proxy",
       "update",
       "proofs",
@@ -44,6 +46,7 @@
       "settings-manifest-rewrites.json",
       "drawer-settings-rewrites.json",
       "inline-control-rewrites.json",
+      "video-download-rewrites.json",
       "proxy-manifest-rewrites.json",
       "update-manifest-rewrites.json"
     ]
@@ -63,6 +66,27 @@
     ]
   },
   "inputs": [
+    {
+      "id": "video-contract-tool",
+      "kind": "asset-file",
+      "path": "tools/Test-VideoDownloadContract.ps1",
+      "sha256FromResolution": "/assets/videoContractTestSourceSha256",
+      "required": true
+    },
+    {
+      "id": "video-dex-inspector",
+      "kind": "asset-file",
+      "path": "tools/DexVideoDownloadInspector.java",
+      "sha256FromResolution": "/assets/videoDexInspectorSourceSha256",
+      "required": true
+    },
+    {
+      "id": "video-contract-fixtures",
+      "kind": "asset-tree",
+      "path": "assets/release-gates/video-download",
+      "sha256FromResolution": "/assets/videoContractFixtureTreeSha256",
+      "required": true
+    },
     {
       "id": "patchlet-core-module",
       "kind": "asset-file",
@@ -353,6 +377,10 @@
         "passive-activity-status-contract",
         "identity-separation",
         "mod-activity-contract",
+        "video-download-contract",
+        "video-native-exact-seam",
+        "video-signed-dex-contract",
+        "video-activity-ui-probe",
         "mod-activity-static-construction-contract",
         "viewer-scope-memory-contract",
         "drawer-settings-contract",
@@ -439,6 +467,11 @@
     }
   ],
   "postconditions": [
+    {
+      "id": "video-save-contract-proven",
+      "check": "canonical-runtime-fixtures-exact-source-menu-and-media-seams-canonical-signed-instruction-operands-branches-and-handlers-and-isolated-save-activity-shell-all-pass",
+      "severity": "error"
+    },
     {
       "id": "split-source-and-derived-bindings-are-complete",
       "check": "pipeline-report-binds-exact-source-set-member-and-aggregate-sha256-two-identical-derived-sha256-values-and-final-signed-output-sha256",
@@ -721,6 +754,9 @@
     }
   ],
   "releaseGates": [
+    "video-download-contract",
+    "video-signed-dex-contract",
+    "video-activity-ui-probe",
     "report-post-permalink-contract",
     "all-static-release-gates"
   ],

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "sourceNegatives": [
+    {"id":"automatic-redirect","file":"VideoTransfer.java","before":"connection.setInstanceFollowRedirects(false)","after":"connection.setInstanceFollowRedirects(true)","expectedCount":1},
+    {"id":"wrong-method","file":"VideoTransfer.java","before":"connection.setRequestMethod(\"GET\")","after":"connection.setRequestMethod(\"POST\")","expectedCount":1},
+    {"id":"missing-stream-cap","file":"VideoTransfer.java","before":"read > maximum - total","after":"read > Long.MAX_VALUE - total","expectedCount":1},
+    {"id":"http-scheme","file":"VideoSaveRequest.java","before":"\"https\".equals(uri.getScheme())","after":"\"http\".equals(uri.getScheme())","expectedCount":1},
+    {"id":"cookie-check-removed","file":"VideoTransfer.java","before":"CookieHandler.getDefault() != null","after":"false","expectedCount":1},
+    {"id":"saf-bypass","file":"VideoSaveActivity.java","before":"Intent.ACTION_CREATE_DOCUMENT","after":"Intent.ACTION_VIEW","expectedCount":1}
+  ],
+  "rawNegatives": [
+    {"id":"raw-url-scheme","file":"threadsmod/video/VideoSaveRequest.smali","before":"\"https\"","after":"\"http\"","expectedCount":1,"expectedCode":"video_instruction_graph_mismatch"},
+    {"id":"raw-ui-heading","file":"threadsmod/video/VideoSaveActivity.smali","before":"\"Save video\"","after":"\"Unsafe video\"","expectedCount":2,"expectedCode":"video_instruction_graph_mismatch"},
+    {"id":"raw-host-register","file":"X/0Lbf.smali","before":"invoke-static {v0, v3, v4}, Lthreadsmod/video/VideoMenuAdapter;->render","after":"invoke-static {v0, v4, v3}, Lthreadsmod/video/VideoMenuAdapter;->render","expectedCount":1,"expectedCode":"video_native_host_instruction_graph_mismatch"},
+    {"id":"raw-host-field","file":"X/0Lbf.smali","before":"iget-object v4, v1, LX/0Lbf;->A0B:Lcom/instagram/feed/media/Media;","after":"iget-object v4, v1, LX/0Lbf;->A0Z:Lcom/instagram/feed/media/Media;","expectedCount":1,"expectedCode":"video_native_host_instruction_graph_mismatch"},
+    {"id":"raw-host-hook-removed","file":"X/0Lbf.smali","before":"invoke-static {v0, v3, v4}, Lthreadsmod/video/VideoMenuAdapter;->render(LX/09dm;Landroid/app/Activity;Lcom/instagram/feed/media/Media;)V","after":"nop","expectedCount":1,"expectedCode":"video_native_host_instruction_graph_mismatch"},
+    {"id":"raw-secondary-extra-video-class","kind":"secondary-extra","expectedCode":"video_secondary_class_forbidden"},
+    {"id":"raw-secondary-duplicate-video-class","kind":"secondary-duplicate","expectedCode":"video_secondary_class_forbidden"},
+    {"id":"raw-embedded-extra-video-class","kind":"embedded-extra","expectedCode":"video_secondary_class_forbidden"},
+    {"id":"raw-embedded-duplicate-video-class","kind":"embedded-duplicate","expectedCode":"video_secondary_class_forbidden"}
+  ]
+}

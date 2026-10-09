@@ -22,11 +22,11 @@ $resolutionForContract = Read-PatchletJson -Path ([IO.Path]::GetFullPath($Resolu
 $releaseGateManifestPath = Join-Path $repositoryRoot `
     'patchlets\features\090-release-gates\patchlet.json'
 $releaseGateManifest = Read-PatchletJson -Path $releaseGateManifestPath
-if ([int]$releaseGateManifest.revision -ne 62 `
+if ([int]$releaseGateManifest.revision -ne 63 `
         -or @($releaseGateManifest.dependsOn | Where-Object {
             [string]$_ -ceq '085-in-app-update'
         }).Count -ne 1) {
-    throw 'Patchlet 090 must be revision 62 and depend exactly once on patchlet 085.'
+    throw 'Patchlet 090 must be revision 63 and depend exactly once on patchlet 085.'
 }
 
 $semanticCollisionNeedle = 'invoke-virtual {v2, v0, v3}, Lcom/instagram/user/model/UserCache;->A05(LX/02ft;Ljava/lang/String;)Lcom/instagram/user/model/User;'
@@ -617,6 +617,15 @@ if ($sourceVersionName -ceq '415.0.0.26.77') {
 $expectedTargetedJadxClassNames = @(
     'com.instagram.barcelona.mainactivity.BarcelonaActivity'
 ) + $reviewedHostTargetedJadxClassNames + $commonTargetedJadxClassNames
+if ($null -ne $resolutionForContract.PSObject.Properties['videoDownload']) {
+    $expectedTargetedJadxClassNames += @(
+        'threadsmod.video.VideoSaveRequest',
+        'threadsmod.video.VideoSaveController',
+        'threadsmod.video.VideoSaveActivity',
+        'threadsmod.video.VideoTransfer',
+        'threadsmod.video.VideoMenuAdapter',
+        'threadsmod.video.VideoMenuClick')
+}
 $resolvedTargetedJadxClassNames = @(
     $resolutionForContract.release.targetedJadxClasses | ForEach-Object {
         [string]$_.className
@@ -729,8 +738,9 @@ $resolvedRequiredDescriptors = @(
     $resolutionForContract.release.requiredClassDescriptors | ForEach-Object {
         [string]$_
     })
-if ($resolvedRequiredDescriptors.Count -ne 54) {
-    throw 'Resolution required descriptors must equal the exact 54-class passive-plus-update release set.'
+$requiredClassCount = if ($null -ne $resolutionForContract.PSObject.Properties['videoDownload']) { 60 } else { 54 }
+if ($resolvedRequiredDescriptors.Count -ne $requiredClassCount) {
+    throw 'Resolution required descriptors must equal the exact feature-owned release set.'
 }
 foreach ($passiveDescriptor in @(
         'Lthreadsmod/autoblock/BlocklistStore;',
@@ -3735,7 +3745,13 @@ if (-not $activityProbeText.Contains(
         -or $activityProbeManifestText.Contains('<receiver', [StringComparison]::OrdinalIgnoreCase) `
         -or $activityProbeManifestText.Contains('<provider', [StringComparison]::OrdinalIgnoreCase) `
         -or (Get-PatchletLiteralCount -Text $activityProbeManifestText `
-            -Literal 'android:exported="true"') -ne 3) {
+            -Literal 'android:exported="true"') -ne 4 `
+        -or -not $activityProbeText.Contains(
+            "-Activity 'threadsmod.video.VideoSaveActivity'", [StringComparison]::Ordinal) `
+        -or -not $activityProbeText.Contains(
+            "@('Save video', 'Choose where to save this MP4.', 'Choose location')", [StringComparison]::Ordinal) `
+        -or -not $activityProbeManifestText.Contains(
+            'android:name="threadsmod.video.VideoSaveActivity"', [StringComparison]::Ordinal)) {
     throw 'The exact-Dex Activity emulator probe is not isolated, UI-visible, or cleanup-bounded.'
 }
 if (-not $splitUniversalizationText.Contains(

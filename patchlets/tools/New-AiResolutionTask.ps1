@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory)][string]$TaskId,
-    [Parameter(Mandatory)][ValidateSet('resolve-identity', 'resolve-native-block-bridge', 'resolve-main-activity-hooks', 'resolve-drawer-settings', 'resolve-inline-action-row', 'resolve-inline-report', 'resolve-socks5-proxy', 'review-release-drift', 'propose-feature')][string]$Kind,
+    [Parameter(Mandatory)][ValidateSet('resolve-identity', 'resolve-native-block-bridge', 'resolve-main-activity-hooks', 'resolve-drawer-settings', 'resolve-inline-action-row', 'resolve-inline-report', 'resolve-video-download', 'resolve-socks5-proxy', 'review-release-drift', 'propose-feature')][string]$Kind,
     [Parameter(Mandatory)][string]$SourceApk,
     [Parameter(Mandatory)][string]$DecodedRoot,
     [Parameter(Mandatory)][string]$CandidateInventoryPath,

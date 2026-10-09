@@ -29,6 +29,7 @@
         "resolve-drawer-settings",
         "resolve-inline-action-row",
         "resolve-inline-report",
+        "resolve-video-download",
         "resolve-socks5-proxy",
         "review-release-drift",
         "propose-feature"

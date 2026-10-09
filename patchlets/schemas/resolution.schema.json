@@ -440,6 +440,21 @@
         "requiredSignerCertificateSha256": { "$ref": "#/$defs/sha256" }
       }
     },
+    "videoDownload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rewriteSet", "templateRoot", "templateNames", "symbols", "activity", "maximumBytes", "allowedCdnHosts", "hookRationale"],
+      "properties": {
+        "rewriteSet": { "const": "video-download-rewrites.json" },
+        "templateRoot": { "type": "string", "pattern": "^assets/versioned/[A-Za-z0-9._-]+/video$" },
+        "templateNames": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Za-z]+\\.smali\\.tmpl$" } },
+        "symbols": { "type": "object", "minProperties": 1, "additionalProperties": { "type": "string", "minLength": 1 } },
+        "activity": { "$ref": "#/$defs/nonExportedActivity" },
+        "maximumBytes": { "const": 268435456 },
+        "allowedCdnHosts": { "const": ["cdninstagram.com", "fbcdn.net"] },
+        "hookRationale": { "type": "string", "minLength": 1 }
+      }
+    },
     "proofs": {
       "type": "array",
       "minItems": 1,
@@ -1181,6 +1196,19 @@
     }
   },
   "allOf": [
+    {
+      "if": {
+        "properties": { "patchlets": { "contains": { "const": "075-video-download" } } },
+        "required": ["patchlets"]
+      },
+      "then": { "required": ["videoDownload"] }
+    },
+    {
+      "if": { "required": ["videoDownload"] },
+      "then": {
+        "properties": { "patchlets": { "contains": { "const": "075-video-download" } } }
+      }
+    },
     {
       "if": {
         "properties": {

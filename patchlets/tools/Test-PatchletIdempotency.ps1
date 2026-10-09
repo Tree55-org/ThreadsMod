@@ -39,13 +39,15 @@ $unexpectedWrites = [int]$reapply.identity.applied `
     + [int]$reapply.injection.inlineCreated `
     + [int]$reapply.injection.reportTemplateCreated `
     + [int]$reapply.injection.settingsTemplateCreated `
+    + [int]$reapply.injection.videoTemplateCreated `
     + [int]$reapply.hooks.applied `
     + [int]$reapply.drawerSettings.applied `
     + [int]$reapply.inlineControls.applied `
     + [int]$reapply.proxyManifest.applied `
     + [int]$reapply.proxyNative.applied `
     + [int]$reapply.proxyLicense.applied `
-    + [int]$reapply.update.applied
+    + [int]$reapply.update.applied `
+    + [int]$reapply.videoDownload.applied
 if ($before.sha256 -ne $after.sha256 -or $unexpectedWrites -ne 0) {
     throw "Patchlet idempotency failed. Before='$($before.sha256)' After='$($after.sha256)' BeforeFiles=$($before.files) AfterFiles=$($after.files) BeforeDirectories=$($before.directories) AfterDirectories=$($after.directories) UnexpectedWrites=$unexpectedWrites"
 }
@@ -70,6 +72,7 @@ $report = [ordered]@{
         inlineTemplates = [int]$reapply.injection.inlineNoOp
         reportTemplates = [int]$reapply.injection.reportTemplateNoOp
         settingsTemplates = [int]$reapply.injection.settingsTemplateNoOp
+        videoTemplates = [int]$reapply.injection.videoTemplateNoOp
         hooks = [int]$reapply.hooks.noOp
         drawerSettings = [int]$reapply.drawerSettings.noOp
         inlineControls = [int]$reapply.inlineControls.noOp
@@ -77,6 +80,7 @@ $report = [ordered]@{
         proxyNative = [int]$reapply.proxyNative.noOp
         proxyLicense = [int]$reapply.proxyLicense.noOp
         update = [int]$reapply.update.noOp
+        videoDownload = [int]$reapply.videoDownload.noOp
     }
 }
 if ($ReportPath) { Write-PatchletJson -Value $report -Path ([IO.Path]::GetFullPath($ReportPath)) }

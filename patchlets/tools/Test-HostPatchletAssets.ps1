@@ -6696,5 +6696,13 @@ $report = [ordered]@{
     }
     fixture = [ordered]@{ path = $fixture; sha256 = Get-PatchletSha256 -Path $fixture; liveNetworkUsed = $false }
 }
+$videoContract = $null
+if ($null -ne $resolution.PSObject.Properties['videoDownload']) {
+    $videoContract = & (Join-Path $PSScriptRoot 'Test-VideoDownloadContract.ps1') `
+        -ScratchRoot (Join-Path $scratchFull 'video-contract') -ResolutionPath $ResolutionPath `
+        -Java $Java -Javac $Javac -ReportPath (Join-Path $scratchFull 'video-contract.json')
+    if ([string]$videoContract.status -cne 'passed') { throw 'Video host contract did not pass.' }
+}
+$report.videoDownload = $videoContract
 if ($ReportPath) { Write-PatchletJson -Value $report -Path ([IO.Path]::GetFullPath($ReportPath)) }
 [pscustomobject]$report

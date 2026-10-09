@@ -493,6 +493,14 @@ try {
         -RequiredExactText @(
             'SOCKS5 proxy', 'Proxy status', 'Route this app through SOCKS5') `
         -RemoteDump $remoteDump
+    $videoSaveResult = @()
+    if ($null -ne $resolution.PSObject.Properties['videoDownload']) {
+        $videoSaveResult = @(Test-ProbeActivity `
+            -Adb $adb -Serial $DeviceSerial -Package $package `
+            -Activity 'threadsmod.video.VideoSaveActivity' `
+            -RequiredExactText @('Save video', 'Choose where to save this MP4.', 'Choose location') `
+            -RemoteDump $remoteDump)
+    }
 
     if ((Get-PatchletSha256 -Path $apkFull) -ne $candidateSha256) {
         throw 'Candidate APK changed during the Activity UI probe.'
@@ -524,7 +532,7 @@ try {
             abi = $abi
             fingerprint = $fingerprint
         }
-        activities = @($activityResult, $settingsResult, $proxySettingsResult)
+        activities = @($activityResult, $settingsResult, $proxySettingsResult) + $videoSaveResult
         networkOrAccountActionAttempted = $false
     }
     if ($ReportPath) {

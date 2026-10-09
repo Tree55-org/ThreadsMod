@@ -213,6 +213,19 @@ Add-FixedOwnerAttribution -Items $bridges -Owner '030-native-block-bridge'
 Add-FixedOwnerAttribution -Items $inline -Owner '060-inline-block-controls'
 Add-FixedOwnerAttribution -Items $report -Owner '070-consented-reporting'
 Add-FixedOwnerAttribution -Items $settings -Owner '050-mod-settings-ui'
+$video = @()
+if ($null -ne $resolution.PSObject.Properties['videoDownload']) {
+    $videoTemplateRoot = Resolve-PatchletTemplateRoot `
+        -PatchletsRoot $patchletsRoot -Section $resolution.videoDownload `
+        -DefaultRelativeRoot 'assets\video-download\templates' -Kind 'video'
+    $videoDestination = Join-Path $destinationSmaliRoot 'threadsmod\video'
+    [IO.Directory]::CreateDirectory($videoDestination) | Out-Null
+    $video = @(Expand-PatchletSmaliTemplates `
+        -Symbols $resolution.videoDownload.symbols -TemplateRoot $videoTemplateRoot `
+        -DestinationRoot $videoDestination `
+        -TemplateNames @($resolution.videoDownload.templateNames) -Owner 'video download')
+    Add-FixedOwnerAttribution -Items $video -Owner '075-video-download'
+}
 
 $generatedByPatchlet = @($generated `
     | Group-Object ownerPatchlet `
@@ -252,5 +265,8 @@ if ($stubText.Contains('bridge_stub')) {
     settingsTemplateFiles = $settings.Count
     settingsTemplateCreated = @($settings | Where-Object action -eq 'created').Count
     settingsTemplateNoOp = @($settings | Where-Object action -eq 'no-op').Count
+    videoTemplateFiles = $video.Count
+    videoTemplateCreated = @($video | Where-Object action -eq 'created').Count
+    videoTemplateNoOp = @($video | Where-Object action -eq 'no-op').Count
     scratchRoot = $scratchRootFull
 }

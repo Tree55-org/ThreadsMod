@@ -13,14 +13,14 @@ Every build is a replay of the same ordered catalog against a hash-locked source
 The current source is the exact `Threads-444.0.0.45.85/` base + arm64-v8a + xhdpi split set, not the historical 415 single APK and not an earlier modified tree.
 Patchlet 005 deterministically derives one pristine unsigned standalone APK from that set, after which every ordinary patchlet is replayed against a resolution bound to both the source-set digest and the derived-APK digest.
 
-The Threads 444 resolution is `verified-current` with its signed-Dex review blocker cleared, and six builds have been published from this Threads 444 series.
+The Threads 444 resolution is being returned to `review-required` for patchlet 075 video saving and release gates r63. Six earlier builds were published from this Threads 444 series; their promotion does not authorize the new menu/video seam.
 The current artifact is `ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-threads55-mod1-d.apk`, 135,150,120 bytes, SHA-256 `e6ec4d70dacfa094659e31e09f2a890c537ba72b574767d62337a6a929c672a4`, published 2026-09-06 into `dist/`, which is not part of this repository.
 `runtimeValidation` is `not-run` for all six.
 No published APK has ever been installed on a device or exercised against a real account: installation, startup, login, feed scrolling, Block, report delivery, live mirror fetch, VPN routing, and updater behaviour are all unobserved for 444.
 Static, archive, and signed-DEX gates are the only evidence that exists, alongside an isolated emulator probe that constructs the two mod screens from a candidate's exact primary DEX.
 
-The catalog has eleven ordered patchlets.
-Series order is 005, 010, 020, 030, 040, 050, 070, 060, 080, 085, 090.
+The catalog has twelve ordered patchlets.
+Series order is 005, 010, 020, 030, 040, 050, 070, 060, 075, 080, 085, 090.
 It is dependency order, not numeric order: 070 is applied before 060 because 060 declares `070-consented-reporting` in its `dependsOn` set.
 
 | Patchlet | Stable work (reviewable Java and templates) | Version-bound work (resolution only) |
@@ -34,8 +34,9 @@ It is dependency order, not numeric order: 070 is applied before 060 because 060
 | `070-consented-reporting` r10 | Consumes the immutable row snapshot without private identity re-resolution, exact no-text excerpt, canonical URL, one bounded request, durable foreground reporting | Resolution-selected caption, code, and permalink templates, exact `targetUrl` and sole-evidence equality, no second inline action |
 | `060-inline-block-controls` r14 | Shared host rewrite, one memory-only observer, one combined modal, report-always and Block-optional routing, the immutable row request, no composition viewer gate, callback-driven Block UI | Resolution-selected snapshot and action-row templates, the one-control post-Share topology, Compose lifecycle, animation, exact anchors |
 | `080-socks5-proxy` r3 | Private Proxy Settings, explicit VPN consent, app-UID routing, bounded numeric bypass, encrypted credentials, pinned arm64 engine, four guard and forwarding topologies, lifecycle-bounded polling | Exact Application hook, components, native hash, truthful status and lifecycle behaviour |
+| `075-video-download` r1 | User-selected MP4 saving, bounded isolated HTTPS inside the clone, private cache verification and cleanup, private save Activity | Native post-menu insertion, captured video-version URL and quality fields, menu renderer and click semantics |
 | `085-in-app-update` r2 | Strict Ed25519 metadata parsing, GitHub raw -> jsDelivr -> AWS discovery, monotonic revision and modBuild state, bounded private download, artifact verification, visible Android installer handoff | Exact target clone version and modBuild, signer pin, manifest permission rewrite, FileProvider authority and cache path, signed update policy |
-| `090-release-gates` r62 | The signed-DEX bridge, report, passive, updater and UI proofs, the pinned-JADX readable-evidence contract, the isolated Activity matcher, the release-tool argument contract | Exact resolution-owned fixture counts and semantics, bounded DTD-free UI XML, viewport and nonzero-bounds visibility, five nonempty ordered status values, one-positive/nine-negative matcher evidence |
+| `090-release-gates` r63 | The signed-DEX bridge, report, passive, updater, video and UI proofs, the pinned-JADX readable-evidence contract, the isolated Activity matcher, the release-tool argument contract | Exact resolution-owned fixture counts and semantics, canonical video instruction agreement, bounded DTD-free UI XML, viewport and nonzero-bounds visibility, five nonempty ordered status values, one-positive/nine-negative matcher evidence |
 
 This split is deliberate.
 Stable behaviour stays reviewable Java and templates that a human can read once and keep reading; facts that drift with every obfuscation pass live only in an exact-hash resolution that has to be re-proved per Threads version.

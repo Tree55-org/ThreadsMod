@@ -2660,6 +2660,9 @@ function Test-ThreadsModReleaseToolInvocationContracts {
         [pscustomobject]@{ caller='Invoke-PatchletPipeline.ps1'; callee='Test-PatchedApk.ps1'; script='Test-PatchedApk.ps1'; variable=''; sets=@([pscustomobject]@{names=@('Apk','SourceApk','ScratchRoot','ResolutionPath','ValidationMode','ReportPath','AndroidSdk','BuildToolsVersion','Java','Javac')}) },
         [pscustomobject]@{ caller='Invoke-PatchletPipeline.ps1'; callee='Test-ActivityUiEmulator.ps1'; script='Test-ActivityUiEmulator.ps1'; variable=''; sets=@([pscustomobject]@{names=@('Apk','ScratchRoot','DeviceSerial','KeyStore','KeyAlias','ResolutionPath','ValidationMode','KeyStorePasswordEnvironment','KeyPasswordEnvironment','AndroidSdk','BuildToolsVersion','Java','SevenZip','ReportPath')}) },
         [pscustomobject]@{ caller='Apply-Patchlets.ps1'; callee='Build-JavaInjection.ps1'; script='Build-JavaInjection.ps1'; variable=''; sets=@([pscustomobject]@{names=@('DecodedRoot','ScratchRoot','ResolutionPath','AndroidSdk','BuildToolsVersion','Java','Javac','Jar')}) },
+        [pscustomobject]@{ caller='Test-HostPatchletAssets.ps1'; callee='Test-VideoDownloadContract.ps1'; script='Test-VideoDownloadContract.ps1'; variable=''; sets=@([pscustomobject]@{names=@('ScratchRoot','ResolutionPath','Java','Javac','ReportPath')}) },
+        [pscustomobject]@{ caller='Test-PatchedApk.ps1'; callee='Test-VideoDownloadContract.ps1'; script='Test-VideoDownloadContract.ps1'; variable=''; sets=@([pscustomobject]@{names=@('ScratchRoot','ResolutionPath','Apk','SourceApk','AndroidSdk','BuildToolsVersion','Java','Javac','ReportPath')}) },
+        [pscustomobject]@{ caller='Test-VideoDownloadContract.ps1'; callee='Build-JavaInjection.ps1'; script='Build-JavaInjection.ps1'; variable=''; sets=@([pscustomobject]@{names=@('DecodedRoot','ScratchRoot','ResolutionPath','AndroidSdk','BuildToolsVersion','Java','Javac','Jar')}) },
         [pscustomobject]@{ caller='Test-PatchletIdempotency.ps1'; callee='Apply-Patchlets.ps1'; script='Apply-Patchlets.ps1'; variable=''; sets=@([pscustomobject]@{names=@('SourceApk','DecodedRoot','ScratchRoot','ResolutionPath','AndroidSdk','BuildToolsVersion','Java','Javac','Jar')}) },
         [pscustomobject]@{ caller='Test-PatchedApk.ps1'; callee='Test-DexBridgeFlowInspector.ps1'; script=''; variable='dexBridgeFlowFixtureTest'; sets=@([pscustomobject]@{names=@('ScratchRoot','ResolutionPath','Java','Javac','AndroidSdk','BuildToolsVersion','SevenZip','ReportPath')}) },
         [pscustomobject]@{ caller='Test-DexBridgeFlowInspector.ps1'; callee='Build-JavaInjection.ps1'; script=''; variable='buildJavaInjection'; sets=@([pscustomobject]@{names=@('DecodedRoot','ScratchRoot','ResolutionPath','AndroidSdk','BuildToolsVersion','Java','Javac','Jar','SevenZip','ApktoolJar','FrameworkDirectory')}) },
@@ -2710,6 +2713,8 @@ function Test-ThreadsModReleaseToolInvocationContracts {
         'Invoke-PatchletPipeline.ps1' = @('Command', 'aapt2')
         'Test-PatchedApk.ps1' = @('Command')
         'Test-DexBridgeFlowInspector.ps1' = @('Command')
+        'Test-HostPatchletAssets.ps1' = @('Command', 'testInlineReportRequestGuard', 'testMainOnlyVisibilityEntry')
+        'Test-VideoDownloadContract.ps1' = @('Command')
     }
     foreach ($callerName in @($claimedOffsets.Keys)) {
         $allowed = [Collections.Generic.HashSet[string]]::new(

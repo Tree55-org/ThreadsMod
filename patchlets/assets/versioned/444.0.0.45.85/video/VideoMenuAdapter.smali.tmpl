@@ -1,0 +1,110 @@
+.class public final Lthreadsmod/video/VideoMenuAdapter;
+.super Ljava/lang/Object;
+.source "VideoMenuAdapter.smali"
+
+.method private constructor <init>()V
+    .locals 0
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+    return-void
+.end method
+
+# The native sheet has already captured this media and Activity. No cache lookup,
+# account lookup, network call, report or mutation is allowed in this adapter.
+.method public static render({{composerDescriptor}}Landroid/app/Activity;{{mediaDescriptor}})V
+    .locals 8
+    if-eqz p0, :return
+    move-object v0, p0
+    const v4, 0x07555a01
+    invoke-interface {v0, v4}, {{composerDescriptor}}->EQ5(I)V
+    if-eqz p1, :end_group
+    if-eqz p2, :end_group
+    invoke-static {p2}, Lthreadsmod/video/VideoMenuAdapter;->bestUrl({{mediaDescriptor}})Ljava/lang/String;
+    move-result-object v2
+    if-eqz v2, :end_group
+
+    new-instance v3, Lthreadsmod/video/VideoMenuClick;
+    invoke-direct {v3, p1, v2}, Lthreadsmod/video/VideoMenuClick;-><init>(Landroid/app/Activity;Ljava/lang/String;)V
+    move-object v0, p0
+    sget-object v1, {{baseModifierField}}
+    const-string v2, "Save video"
+    const/4 v4, 0x0
+    const/16 v5, 0xc00
+    const/4 v6, 0x4
+    const/4 v7, 0x0
+    invoke-static/range {v0 .. v7}, {{nativeMenuRowMethod}}
+    :end_group
+    move-object v0, p0
+    check-cast v0, Landroidx/compose/runtime/ComposerImpl;
+    const/4 v1, 0x0
+    invoke-static {v0, v1}, Landroidx/compose/runtime/ComposerImpl;->A0O(Landroidx/compose/runtime/ComposerImpl;Z)V
+    :return
+    return-void
+.end method
+
+# Choose the largest supported progressive rendition. The exact VideoVersion
+# schema serializer binds Bln to height and CyI to width. An absent or malformed
+# dimension has zero rank, so the first supported URL still remains usable.
+.method private static bestUrl({{mediaDescriptor}})Ljava/lang/String;
+    .locals 14
+    const/4 v3, 0x0
+    if-eqz p0, :return
+    :try_start
+    invoke-virtual {p0}, {{mediaVideoVersionsMethod}}
+    move-result-object v0
+    if-eqz v0, :return
+    invoke-interface {v0}, Ljava/util/List;->size()I
+    move-result v1
+    const/16 v12, 0x20
+    if-gt v1, v12, :invalid
+    const/4 v2, 0x0
+    const-wide/16 v4, -0x1
+    :loop
+    if-ge v2, v1, :return
+    invoke-interface {v0, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
+    move-result-object v6
+    instance-of v13, v6, {{videoVersionDescriptor}}
+    if-eqz v13, :next
+    check-cast v6, {{videoVersionDescriptor}}
+    invoke-interface {v6}, {{videoUrlMethod}}
+    move-result-object v7
+    invoke-static {v7}, Lthreadsmod/video/VideoSaveRequest;->isAllowed(Ljava/lang/String;)Z
+    move-result v13
+    if-eqz v13, :next
+    const-wide/16 v10, 0x0
+    invoke-interface {v6}, {{videoHeightMethod}}
+    move-result-object v8
+    invoke-interface {v6}, {{videoWidthMethod}}
+    move-result-object v9
+    if-eqz v8, :rank
+    if-eqz v9, :rank
+    invoke-virtual {v8}, Ljava/lang/Integer;->intValue()I
+    move-result v8
+    invoke-virtual {v9}, Ljava/lang/Integer;->intValue()I
+    move-result v9
+    if-lez v8, :rank
+    if-lez v9, :rank
+    const/16 v12, 0x4000
+    if-gt v8, v12, :rank
+    if-gt v9, v12, :rank
+    int-to-long v10, v8
+    int-to-long v12, v9
+    mul-long/2addr v10, v12
+    :rank
+    cmp-long v13, v10, v4
+    if-lez v13, :next
+    move-wide v4, v10
+    move-object v3, v7
+    :next
+    add-int/lit8 v2, v2, 0x1
+    goto :loop
+    :try_end
+    .catch Ljava/lang/Exception; {:try_start .. :try_end} :catch
+    :invalid
+    const/4 v3, 0x0
+    :return
+    return-object v3
+    :catch
+    move-exception v0
+    const/4 v3, 0x0
+    return-object v3
+.end method
