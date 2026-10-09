@@ -25,7 +25,7 @@ if ([string]$catalog.policies.signedReview `
 $updateManifestPath = Join-Path $patchletsRoot 'features\085-in-app-update\patchlet.json'
 $updateManifest = Read-PatchletJson -Path $updateManifestPath
 if ([string]$updateManifest.id -ne '085-in-app-update' `
-        -or [int]$updateManifest.revision -ne 2 `
+        -or [int]$updateManifest.revision -ne 3 `
         -or [string]$updateManifest.ai.taskTemplate `
             -ne '../../ai/tasks/RESOLVE-IN-APP-UPDATE.md') {
     throw 'In-app update patchlet identity, revision, or bounded AI task drifted.'
@@ -77,14 +77,14 @@ $expectedUpdateMetadataEndpoints = @(
 )
 $sourceVersionCode = [int64]$resolution.source.versionCode
 $targetModBuild = [int64]$resolution.target.modBuild
-if ($sourceVersionCode -eq [int64]::MaxValue) {
+if ($sourceVersionCode -gt ([int64]::MaxValue - 2L)) {
     throw 'Resolution source versionCode cannot be incremented for the clone target.'
 }
-$expectedTargetVersionCode = $sourceVersionCode + 1L
+$expectedTargetVersionCode = $sourceVersionCode + 2L
 $expectedTargetVersionName = '{0}-threadsmod.{1}' -f `
     [string]$resolution.source.versionName, $targetModBuild
-if ([int64]$resolution.update.currentModBuild -ne 1L `
-        -or $targetModBuild -ne 1L `
+if ([int64]$resolution.update.currentModBuild -ne 2L `
+        -or $targetModBuild -ne 2L `
         -or [int64]$resolution.target.versionCode -ne $expectedTargetVersionCode `
         -or [string]$resolution.target.versionName -cne $expectedTargetVersionName `
         -or [string]$resolution.update.metadataPurpose -ne 'threadsmod-app-update' `
@@ -3647,8 +3647,8 @@ $requiredCurrentRevisions = [ordered]@{
     '070-consented-reporting' = 10
     '075-video-download' = 1
     '080-socks5-proxy' = 3
-    '085-in-app-update' = 2
-    '090-release-gates' = 63
+    '085-in-app-update' = 3
+    '090-release-gates' = 64
 }
 foreach ($patchletId in $requiredCurrentRevisions.Keys) {
     if ([int]$manifests[$patchletId].revision -ne [int]$requiredCurrentRevisions[$patchletId]) {
@@ -4031,7 +4031,7 @@ $report = [ordered]@{
     drawerSettingsRows = @($drawerRows)
     inAppUpdate = [ordered]@{
         patchlet = '085-in-app-update'
-        revision = 1
+        revision = [int]$updateManifest.revision
         currentModBuild = [long]$resolution.update.currentModBuild
         targetModBuild = $targetModBuild
         targetVersionCode = [long]$resolution.target.versionCode

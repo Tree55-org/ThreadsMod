@@ -22,11 +22,11 @@ $resolutionForContract = Read-PatchletJson -Path ([IO.Path]::GetFullPath($Resolu
 $releaseGateManifestPath = Join-Path $repositoryRoot `
     'patchlets\features\090-release-gates\patchlet.json'
 $releaseGateManifest = Read-PatchletJson -Path $releaseGateManifestPath
-if ([int]$releaseGateManifest.revision -ne 63 `
+if ([int]$releaseGateManifest.revision -ne 64 `
         -or @($releaseGateManifest.dependsOn | Where-Object {
             [string]$_ -ceq '085-in-app-update'
         }).Count -ne 1) {
-    throw 'Patchlet 090 must be revision 63 and depend exactly once on patchlet 085.'
+    throw 'Patchlet 090 must be revision 64 and depend exactly once on patchlet 085.'
 }
 
 $semanticCollisionNeedle = 'invoke-virtual {v2, v0, v3}, Lcom/instagram/user/model/UserCache;->A05(LX/02ft;Ljava/lang/String;)Lcom/instagram/user/model/User;'
@@ -408,10 +408,10 @@ $expectedUpdateMetadataEndpoints = @(
 )
 $sourceVersionCode = [int64]$resolutionForContract.source.versionCode
 $targetModBuild = [int64]$resolutionForContract.target.modBuild
-if ($sourceVersionCode -eq [int64]::MaxValue) {
+if ($sourceVersionCode -gt ([int64]::MaxValue - 2L)) {
     throw 'Resolution source versionCode cannot be incremented for the clone target.'
 }
-$expectedTargetVersionCode = $sourceVersionCode + 1L
+$expectedTargetVersionCode = $sourceVersionCode + 2L
 $expectedTargetVersionName = '{0}-threadsmod.{1}' -f `
     [string]$resolutionForContract.source.versionName, $targetModBuild
 $expectedUpdateDexReviewRequired = if (
@@ -422,8 +422,8 @@ $expectedUpdateDexReviewRequired = if (
 } else {
     throw 'Updater release contract has an unsupported resolution review status.'
 }
-if ([int64]$resolutionForContract.update.currentModBuild -ne 1L `
-        -or $targetModBuild -ne 1L `
+if ([int64]$resolutionForContract.update.currentModBuild -ne 2L `
+        -or $targetModBuild -ne 2L `
         -or [int64]$resolutionForContract.target.versionCode `
             -ne $expectedTargetVersionCode `
         -or [string]$resolutionForContract.target.versionName `
@@ -3199,7 +3199,7 @@ foreach ($updateHostLiteral in @(
         "'MAX_REDIRECT_LOCATION_CHARS = 4096'",
         "'MAX_REDIRECT_PATH_CHARS = 2048'",
         "'MAX_REDIRECT_QUERY_CHARS = 2048'",
-        "'public static final long CURRENT_MOD_BUILD = 1L'",
+        "'public static final long CURRENT_MOD_BUILD = 2L'",
         "'METADATA_ATTEMPT_TIMEOUT_MS = 8000L'",
         "'METADATA_OPERATION_TIMEOUT_MS = 24000L'",
         "'DOWNLOAD_OPERATION_TIMEOUT_MS = 20L * 60L * 1000L'",
@@ -3396,7 +3396,7 @@ foreach ($activityUiMatcherLiteral in $activityUiMatcherLiterals) {
     }
 }
 if ((Get-PatchletLiteralCount -Text $activityProbeText `
-            -Literal '-RequiredExactText @(') -ne 3 `
+            -Literal '-RequiredExactText @(') -ne 4 `
         -or (Get-PatchletLiteralCount -Text $activityProbeText `
             -Literal '-RequiredOrderedLinePrefix @(') -ne 2 `
         -or (Get-PatchletLiteralCount -Text $activityProbeText `
@@ -4269,7 +4269,7 @@ $report = [ordered]@{
     }
     inAppUpdate = [ordered]@{
         patchlet = '085-in-app-update'
-        releaseGateRevision = 56
+        releaseGateRevision = [int]$releaseGateManifest.revision
         releaseGates = $updateReleaseGateOrder
         currentModBuild = [long]$resolutionForContract.update.currentModBuild
         targetModBuild = $targetModBuild

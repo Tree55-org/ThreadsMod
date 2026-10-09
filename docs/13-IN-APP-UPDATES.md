@@ -96,7 +96,7 @@ Retained state cannot show an Update action, open unknown-sources settings, down
 
 ## Eligibility and dialog behaviour
 
-The exact [Threads 444 resolution](../patchlets/resolutions/444.0.0.45.85/resolution.json) owns the running mod build (`update.currentModBuild`, currently 1) and the clone target version code `511407878`, displayed as `444.0.0.45.85-threadsmod.1`.
+The exact working [Threads 444 resolution](../patchlets/resolutions/444.0.0.45.85/resolution.json) pins mod build 2 (`update.currentModBuild`), clone target version code `511407879`, and version name `444.0.0.45.85-threadsmod.2` under review. The published September 6 build remains mod build 1, version code `511407878`, version name `444.0.0.45.85-threadsmod.1`; the working target still requires complete SignedReview evidence, human promotion, and a fresh Release publication.
 Its pristine derived source stays at version code `511407877`, version `444.0.0.45.85`; the [resolution evidence](../patchlets/resolutions/444.0.0.45.85/EVIDENCE.md) records the split-source and validation boundary.
 
 A candidate is offered only when both conditions hold: its signed `modBuild` is greater than the running build's, and its signed `versionCode` is greater than the installed clone's.
@@ -189,7 +189,7 @@ Published builds from before the updater existed contain no update code at all, 
 Reaching an updater-capable build from one of those is a one-time manual install; built APKs are not committed, so that install has to come from a build you produce and verify yourself.
 Only mod build 1 and later can receive in-app update prompts, and none of them can receive one until a manifest is published.
 
-Every `app.tree55.threads` build so far shares one application ID and one version code, so the current artifact updates any earlier `app.tree55.threads` install in place rather than sitting beside it, provided the signer matches.
+Every published `app.tree55.threads` build so far shares the application ID and version code `511407878`. The working mod-build-2 target keeps that application ID and advances the version code to `511407879`, but remains under review. After review, promotion, and a fresh Release, its matching package and signer permit a manual update of an earlier `app.tree55.threads` installation in place.
 It installs beside a `com.threadsmod.barcelona` clone rather than upgrading it.
 Artifact filenames, sizes and hashes for each published build are in [`CHANGELOG.md`](CHANGELOG.md).
 

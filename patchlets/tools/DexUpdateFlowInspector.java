@@ -790,11 +790,11 @@ public final class DexUpdateFlowInspector {
         require(modBranch < versionCmp && versionCmp < versionBranch
                 && versionBranch < show,
                 "eligibility_conjunction");
-        requireCmpOrigins(view, minimumCmp, "CONST:1",
+        requireCmpOrigins(view, minimumCmp, "CONST:2",
                 "FIELD:" + manifest + "->minimumModBuild:J",
                 "eligibility_minimum");
         requireCmpOrigins(view, modCmp,
-                "FIELD:" + manifest + "->modBuild:J", "CONST:1",
+                "FIELD:" + manifest + "->modBuild:J", "CONST:2",
                 "eligibility_mod_build");
         requireCmpOrigins(view, versionCmp,
                 "FIELD:" + manifest + "->versionCode:J",

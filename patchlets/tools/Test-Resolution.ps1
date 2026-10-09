@@ -24,10 +24,10 @@ $expectedUpdateMetadataEndpoints = @(
 )
 $sourceVersionCode = [int64]$resolution.source.versionCode
 $targetModBuild = [int64]$resolution.target.modBuild
-if ($sourceVersionCode -eq [int64]::MaxValue) {
+if ($sourceVersionCode -gt ([int64]::MaxValue - 2L)) {
     throw 'Resolution source versionCode cannot be incremented for the clone target.'
 }
-$expectedTargetVersionCode = $sourceVersionCode + 1L
+$expectedTargetVersionCode = $sourceVersionCode + 2L
 $expectedTargetVersionName = '{0}-threadsmod.{1}' -f `
     [string]$resolution.source.versionName, $targetModBuild
 $expectedUpdateDexReviewRequired = if ([string]$resolution.status -ceq 'verified-current') {
@@ -37,8 +37,8 @@ $expectedUpdateDexReviewRequired = if ([string]$resolution.status -ceq 'verified
 } else {
     throw 'Resolution updater proof has an unsupported review status.'
 }
-if ([int64]$resolution.update.currentModBuild -ne 1L `
-        -or $targetModBuild -ne 1L `
+if ([int64]$resolution.update.currentModBuild -ne 2L `
+        -or $targetModBuild -ne 2L `
         -or [int64]$resolution.target.versionCode -ne $expectedTargetVersionCode `
         -or [string]$resolution.target.versionName -cne $expectedTargetVersionName `
         -or [string]$resolution.update.metadataPurpose -ne 'threadsmod-app-update' `

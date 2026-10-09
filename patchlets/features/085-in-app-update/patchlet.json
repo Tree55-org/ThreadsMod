@@ -2,7 +2,7 @@
   "$schema": "../../schemas/patchlet.schema.json",
   "schemaVersion": 1,
   "id": "085-in-app-update",
-  "revision": 2,
+  "revision": 3,
   "title": "Signed in-app update prompt and installer handoff",
   "summary": "Compile the stable foreground updater, verify strict signed update policy from all three ISP-resilient metadata mirrors, persist monotonic revision policy, present optional or minimum-build-required dialogs, download only explicit GitHub/AWS artifacts through a cookie-isolated client, verify size, SHA-256, package, newer target version and signer, and hand the internal-cache FileProvider URI to Android's consented installer.",
   "stage": "hook",

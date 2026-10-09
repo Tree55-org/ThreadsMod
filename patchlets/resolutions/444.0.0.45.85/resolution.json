@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "resolutionId": "threads-444.0.0.45.85-arm64-split",
   "status": "review-required",
-  "resolvedAt": "2026-10-09T14:52:50.9195889+07:00",
+  "resolvedAt": "2026-10-09T17:52:22.0568547+07:00",
   "source": {
     "fileName": "Threads-444.0.0.45.85-merged-unsigned.apk",
     "sha256": "156ae30cef15a2de7ce9bec2637a68a51f0ab2547ae7b7e7ff9541853d9670ec",
@@ -53,10 +53,10 @@
   "target": {
     "applicationId": "app.tree55.threads",
     "label": "Threads 55",
-    "artifactBaseName": "ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-update-mod1",
-    "versionCode": 511407878,
-    "versionName": "444.0.0.45.85-threadsmod.1",
-    "modBuild": 1
+    "artifactBaseName": "ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2",
+    "versionCode": 511407879,
+    "versionName": "444.0.0.45.85-threadsmod.2",
+    "modBuild": 2
   },
   "patchlets": [
     "005-split-source-universalization",
@@ -273,7 +273,7 @@
   },
   "update": {
     "rewriteSet": "update-manifest-rewrites.json",
-    "currentModBuild": 1,
+    "currentModBuild": 2,
     "metadataPurpose": "threadsmod-app-update",
     "metadataPublicKey": "fYcRAV8CRof15IAinUoDOZuBbqqDtDXDPl3lwSLoMhk",
     "metadataEndpoints": [
@@ -849,8 +849,8 @@
     "eddsaJarSha256": "3bc2c8922a52de7ecad21e9a34d2594b473f18598b7a2b8bd7d4b68ed6cc4dbf",
     "smaliCarrierSha256": "ee24d1cbee11555c72bd0cf061552377099c62dbe0bb4afcf0875d74010c419e",
     "signedBlocklistV3FixtureTreeSha256": "aa09d3ed9f1c03419ad434929f7130c0860ae4e702abf6fa092c3b04e50f0835",
-    "autoblockJavaTreeSha256": "2ddbec99228e1d14702c26ccf42a5070f424d1745ee694ff435c2ca2afe0c239",
-    "updateJavaTreeSha256": "92978e68471c5b90ab2fffb73d7f0cef649145c882db09a9606a99c3299249cb",
+    "autoblockJavaTreeSha256": "6fabfbd43d59bf37ba0a46bb3b90efa66872cf65ce4d1aafc6f6540d3aabde60",
+    "updateJavaTreeSha256": "cb0d8efb2230439a80100b08a545d7969216419a916c40b4d39789226a10bd68",
     "proxyJavaTreeSha256": "37f49b90534286be378db4d056f67fde7ab14930dd7e1beeac8c44cc024b3e0a",
     "socks5NativeAssetTreeSha256": "961d2d09014c0e8a752d8c9f93e34e953279cc8f65118af29919c5122e4b395b",
     "socks5NativeBuildToolSha256": "e66abbacd49e6923c4994fe56e5f9f860bc152f2d7f32735c2978f35b89d826b",
@@ -862,11 +862,11 @@
     "settingsUiTemplateTreeSha256": "002f1875e5858e8f7f87b7eccaed57b6c3bc7fd574b32faa269f71788213d235",
     "hostHarnessTreeSha256": "07945c7d7ff90996b4dec90af2cbe256cc88bac248023ec5d739498c7925caf5",
     "patchletCoreModuleSha256": "bbaf05f7834f01133abeb4d09491bfb509d5cf3f5dff312342401decae77a559",
-    "resolutionSchemaSha256": "a7b20ea2d4b87622b1b03035996c9e9fbece0a157484001fc1f27c504bf96ff6",
+    "resolutionSchemaSha256": "34dc362fdea36b6b4eb9a9832a88eb3d3140e8a6594bf6d9933ad98edcb8875f",
     "patchletSchemaSha256": "8b5c84e157c2251d41f3798fc6fe6a6f3e1363b7834a9126e524a90fdc52d469",
-    "patchletCatalogTestSourceSha256": "3b30c89b561d9e8cc1ae4c59f67a9c0954b8530886c483c228f050d1b5aa4d24",
+    "patchletCatalogTestSourceSha256": "da1dd41b8e7aa4d481d64331a03a79d5e2a659a82622daf52818654c38b317f0",
     "targetedJadxRecoverySourceSha256": "505cbc5bc2e1d6cfc35d40fc8279128d6035ec5fdbb324e89b8357bf46d0976b",
-    "releaseContractTestSourceSha256": "0048427ff8f8093219f9733c5cff5dd417d45096aa068e5028b1aa67892bbf20",
+    "releaseContractTestSourceSha256": "2a151eb654434165a49127c515f206fd7185cc6b6d95cf34e3b151bc740d5808",
     "dexInspectorSourceSha256": "ef528ff790ef3cdef297f95d99e31055793ca0befdaad200bbb2793b3052543e",
     "dexLiteralCallInspectorSourceSha256": "19c4f5709bb814ce4dea8dbbc1fff97b05b6dce80bc802b13a585f9fdf4fefca",
     "dexLiteralCallInspectorTestSourceSha256": "9441d3abac854c60effcf9d280473430763c52fbf7e72158be19a61c5bb5a572",
@@ -881,7 +881,7 @@
     "dexReportPermalinkFlowInspectorSourceSha256": "53cba56c63cd958e267c99c07548a2bca8024e59201758baeed5e069222b6569",
     "dexReportPermalinkFlowInspectorTestSourceSha256": "af7b34b295175576549f4222fc616d583722689b4939e1945c8771ea8c39667d",
     "dexReportPermalinkFlowFixtureTreeSha256": "e485799ce6ae054c2e15d4d107afb90f913be724a48f13b838e2429b21170e0a",
-    "dexUpdateFlowInspectorSourceSha256": "ecd0bd81e2b45922309215374d7d9f4577b1a04335035be9d5e1b70aff5d418a",
+    "dexUpdateFlowInspectorSourceSha256": "0f12306d74718ae6d17ba431b7c0fa66b61728786c606283de4c54380ec03d8d",
     "dexUpdateFlowInspectorTestSourceSha256": "ccbd1676fd81ac96020f3aef0ba136df168d36126603d4127edf50b121376b94",
     "dexUpdateFlowFixtureTreeSha256": "a6ad5ac2d9ae35cb56b26e863fad7ae7431e02722b6a4efe0a07eca729b06508",
     "releaseToolContractModuleSha256": "4846fee81a1309309058e9c538879df449acc466308c6a88d9d3a544c24c7b47",
@@ -956,7 +956,7 @@
       "id": "threadsmod-update-flow-v1",
       "expectedDexName": "classes.dex",
       "classPrefix": "Lthreadsmod/update/",
-      "expectedSemanticSha256": "97b8947b803ef4dcdecefd315507bc1e5f9c27f89ab402639ab2646b46bde9f2",
+      "expectedSemanticSha256": "2fa6ac2aedc889096c4542d202a7f2032299e65321f9fcf43e7fcacded8db2b0",
       "expectedSemanticClassCount": 24,
       "orderedRootDescriptors": [
         "Lthreadsmod/update/UpdateController;",

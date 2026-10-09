@@ -36,7 +36,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 /** Foreground update checker, policy dialog, verified downloader and installer handoff. */
 public final class UpdateController {
-    public static final long CURRENT_MOD_BUILD = 1L;
+    public static final long CURRENT_MOD_BUILD = 2L;
     private static final String FILE_PROVIDER_AUTHORITY =
             "app.tree55.threads.fileprovider";
     private static final String CACHE_APK_NAME = "threadsmod-update.apk";

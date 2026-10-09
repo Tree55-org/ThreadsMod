@@ -422,7 +422,7 @@
       ],
       "properties": {
         "rewriteSet": { "const": "update-manifest-rewrites.json" },
-        "currentModBuild": { "const": 1 },
+        "currentModBuild": { "const": 2 },
         "metadataPurpose": { "const": "threadsmod-app-update" },
         "metadataPublicKey": {
           "const": "fYcRAV8CRof15IAinUoDOZuBbqqDtDXDPl3lwSLoMhk"

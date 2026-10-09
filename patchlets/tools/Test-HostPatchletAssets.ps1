@@ -209,17 +209,17 @@ $resolutionDirectory = Split-Path -Parent $resolutionPathFull
 $resolution = Read-PatchletJson -Path $resolutionPathFull
 $sourceVersionCode = [int64]$resolution.source.versionCode
 $targetModBuild = [int64]$resolution.target.modBuild
-if ($sourceVersionCode -eq [int64]::MaxValue) {
+if ($sourceVersionCode -gt ([int64]::MaxValue - 2L)) {
     throw 'Resolution source versionCode cannot be incremented for the clone target.'
 }
-$expectedTargetVersionCode = $sourceVersionCode + 1L
+$expectedTargetVersionCode = $sourceVersionCode + 2L
 $expectedTargetVersionName = '{0}-threadsmod.{1}' -f `
     [string]$resolution.source.versionName, $targetModBuild
-if ([int64]$resolution.update.currentModBuild -ne 1L `
-        -or $targetModBuild -ne 1L `
+if ([int64]$resolution.update.currentModBuild -ne 2L `
+        -or $targetModBuild -ne 2L `
         -or [int64]$resolution.target.versionCode -ne $expectedTargetVersionCode `
         -or [string]$resolution.target.versionName -cne $expectedTargetVersionName) {
-    throw 'Resolution target version is not the exact source-plus-one mod-build-1 contract.'
+    throw 'Resolution target version does not match the reviewed mod build 2 contract.'
 }
 $null = Test-PatchletAssets -Resolution $resolution -RepositoryRoot $repositoryRoot
 $updateDexInspectorPath = Join-Path $repositoryRoot `
@@ -576,7 +576,7 @@ foreach ($literal in @(
     }
 }
 foreach ($literal in @(
-    'public static final long CURRENT_MOD_BUILD = 1L',
+    'public static final long CURRENT_MOD_BUILD = 2L',
     'METADATA_ATTEMPT_TIMEOUT_MS = 8000L',
     'METADATA_OPERATION_TIMEOUT_MS = 24000L',
     'DOWNLOAD_ATTEMPT_TIMEOUT_MS = 10L * 60L * 1000L',

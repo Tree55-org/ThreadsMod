@@ -32,13 +32,14 @@ The patchlet series rewrites that source into a separately installable clone.
 |---|---|
 | Application ID | `app.tree55.threads` |
 | Launcher label | `Threads 55` |
-| Version name | `444.0.0.45.85-threadsmod.1` |
-| Version code | `511407878` |
-| Mod build | `CURRENT_MOD_BUILD` = 1 |
+| Version name | `444.0.0.45.85-threadsmod.2` |
+| Version code | `511407879` |
+| Mod build | `CURRENT_MOD_BUILD` = 2 |
 | Minimum / target SDK | 28 / 36 |
 | ABI | `arm64-v8a` |
 
 `patchlets/resolutions/444.0.0.45.85/resolution.json` is the authority for every value in that table.
+The table describes the working mod-build-2 target, which remains under review. The published September 6 build remains mod build 1, version code `511407878`, version name `444.0.0.45.85-threadsmod.1`; the new target still requires complete SignedReview evidence, human promotion, and a fresh Release publication.
 
 The earlier clone package `com.threadsmod.barcelona` is historical and is not the current target.
 Android treats it as a different application, so a `com.threadsmod.barcelona` install sits side by side with `app.tree55.threads` instead of being replaced by it, and the in-app updater cannot bridge the two package names.
