@@ -18,12 +18,13 @@ liên kết với Meta và không có trên kho ứng dụng nào.
 · [tệp trong kho](docs/media/threads55-install-guide.mp4).
 Video là mô phỏng giao diện, không phải quay từ máy thật.
 
-Tải ở **[trang phát hành](https://github.com/Tree55-org/ThreadsMod/releases/tag/release)**:
+Tải ở **[trang phát hành](https://github.com/Tree55-org/ThreadsMod/releases/tag/threads55-444.0.0.45.85-mod2)**:
 
 | Tệp | Dung lượng | Dùng khi nào |
 |---|---:|---|
-| `tree55-threads-mod.apk` | 129 MB | Chính là ứng dụng. Tải tệp này. |
-| `tree55-threads-mod.zip` | 83 MB | Cũng chính tệp APK đó nhưng đã nén — dùng khi mạng hoặc trình duyệt chặn tải `.apk`. Giải nén rồi cài. |
+| [ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk](https://github.com/Tree55-org/ThreadsMod/releases/download/threads55-444.0.0.45.85-mod2/ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk) | 128.89 MiB | Chính là ứng dụng. Tải tệp này. |
+| [ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.zip](https://github.com/Tree55-org/ThreadsMod/releases/download/threads55-444.0.0.45.85-mod2/ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.zip) | 85.51 MiB | Cùng tệp APK đã nén. Giải nén rồi cài. |
+| [ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2-SHA256SUMS.txt](https://github.com/Tree55-org/ThreadsMod/releases/download/threads55-444.0.0.45.85-mod2/ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2-SHA256SUMS.txt) | 258 bytes | Mã SHA-256 của cả hai tệp tải xuống. |
 
 Cần **Android 9 trở lên**, chip **arm64-v8a**. Bạn sẽ phải cho phép cài ứng dụng
 từ nguồn không xác định.
@@ -31,12 +32,12 @@ từ nguồn không xác định.
 Hãy kiểm tra tệp trước khi cài — mã băm phải đúng chính xác:
 
 ```
-SHA-256  e6ec4d70dacfa094659e31e09f2a890c537ba72b574767d62337a6a929c672a4
+SHA-256  83cc9c1cf12ae154154983ac1b4f7961e81d1e7695ee467431fc3994f0de6dae
 ```
 
 ```powershell
-Get-FileHash -Algorithm SHA256 tree55-threads-mod.apk    # Windows
-sha256sum tree55-threads-mod.apk                         # Linux / macOS
+Get-FileHash -Algorithm SHA256 ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk    # Windows
+sha256sum ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk                         # Linux / macOS
 ```
 
 Nếu mã băm không khớp thì đừng cài.
@@ -61,8 +62,11 @@ bằng một tài khoản mà bạn chấp nhận mất.
 - **Trang Cài đặt và Hoạt động** ở cuối ngăn kéo bên trái: tình trạng danh sách,
   số bản ghi, hàng đợi báo cáo và lịch sử.
 - **Proxy SOCKS5 tuỳ chọn**, chỉ áp dụng cho riêng ứng dụng này. Mặc định tắt.
-- **Cập nhật trong ứng dụng có chữ ký**, giao cho trình cài đặt thường của
-  Android — không bao giờ cài ngầm hay cần root.
+- **Lưu video** trong menu bài đăng: bấm **Save video**, rồi **Choose location**
+  để lưu MP4 trực tiếp được hỗ trợ, tối đa 256 MiB. Không hỗ trợ video trong
+  carousel hoặc chỉ có luồng adaptive. [Chi tiết](docs/14-VIDEO-SAVING.md).
+- **Hỗ trợ cập nhật trong ứng dụng có chữ ký**, qua trình cài đặt của Android.
+  Metadata đã ký chưa được triển khai; hãy cài bản này thủ công.
 
 **Các lượt chặn là thật.** Chúng chạy qua chính chức năng chặn của Threads bằng
 phiên đăng nhập của bạn, nên sẽ hiện trong Threads chính thức, áp dụng trên mọi
@@ -70,18 +74,20 @@ thiết bị dùng tài khoản đó, và **không** được hoàn tác khi b�
 
 ## Tình trạng
 
-Tính năng lưu video đang được bổ sung qua patchlet 075. Xem [hướng dẫn lưu video](docs/14-VIDEO-SAVING.md); APK đã phát hành bên dưới chưa có tính năng này.
+Bản hiện tại `ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk`, được xuất bản cục bộ vào `dist/` ngày 2026-10-10, mod build 2,
+phiên bản `444.0.0.45.85-threadsmod.2` / `511407879`, từ loạt patchlet
+005 r1, 010 r5, 020 r24, 030 r7, 040 r2, 050 r17, 070 r10, 060 r14, 075 r1, 080 r3, 085 r3, 090 r64.
 
-Bản hiện tại `tree55-threads-mod.apk`, phát hành 2026-09-06, từ loạt patchlet
-005 r1, 010 r5, 020 r24, 030 r7, 040 r2, 050 r17, 060 r14, 070 r10, 080 r3,
-085 r2, 090 r62.
+Đã kiểm tra 229 khẳng định bằng harness ngoại tuyến, các cổng tĩnh của APK đã ký
+và bốn màn hình Activity trong gói thử emulator cô lập không có quyền. Bằng
+chứng này chỉ kiểm tra mã và việc dựng màn hình. Chưa thử chọn video từ menu
+bảng tin thật, tải từ CDN, ghi qua nhà cung cấp tệp thật hoặc phát video đã lưu.
 
-**Chưa có bản phát hành nào từng được cài hay chạy thử trên máy thật.** Mọi bản
-đều ghi `runtimeValidation: not-run`. Các cổng kiểm tra khi phát hành đều là kiểm
-tra tĩnh — chúng chứng minh tính chất của tệp đã ký, chứ không chứng minh ứng
-dụng chạy được. Đăng nhập, lướt bảng tin, một lượt chặn thật, việc gửi báo cáo và
-trình cập nhật đều chưa được thử trên thiết bị. Hãy xem đây là phần mềm chưa được
-kiểm chứng.
+**APK đã phát hành chưa được cài hay khởi chạy trên thiết bị.** Báo cáo Release
+ghi `runtimeValidation: not-run`. Đăng nhập, lướt bảng tin,
+chặn thật, gửi báo cáo, định tuyến proxy và cài qua trình cập nhật chưa được thử
+trên thiết bị. Metadata cập nhật đã ký chưa được triển khai; hãy cài bản này
+thủ công.
 
 Lịch sử: [docs/CHANGELOG.md](docs/CHANGELOG.md).
 
@@ -124,7 +130,7 @@ duyệt thủ công để nâng resolution lên `verified-current`, rồi một 
 mới xuất bản. Câu lệnh nằm ở [docs/03](docs/03-BUILD-SIGN-TEST-PLAN.md); các
 script từng bước nằm ở [patchlets/README.md](patchlets/README.md).
 
-Không có gì được sửa tay. Bản mod là mười một patchlet có thứ tự, đếm chính xác,
+Không có gì được sửa tay. Bản mod là mười hai patchlet có thứ tự, đếm chính xác,
 chạy lại trên một bộ nguồn đã khoá mã băm, với mọi ký hiệu đã làm rối được tách
 riêng vào resolution của từng phiên bản. Sai lệch bất kỳ đều dừng lại và không
 tạo ra tệp nào.
@@ -134,15 +140,15 @@ tạo ra tệp nào.
 | Đường dẫn | |
 |---|---|
 | `patchlets/` | Nguồn chính thức — mọi thay đổi bắt đầu từ đây |
-| `patchlets/features/` | Mười một patchlet |
+| `patchlets/features/` | Mười hai patchlet |
 | `patchlets/resolutions/` | Ràng buộc ký hiệu và bằng chứng theo từng phiên bản |
 | `patchlets/tools/` | Pipeline build và các trình kiểm tra DEX |
 | `docs/` | Tài liệu thiết kế và vận hành |
 | `AGENTS.md` | Quy tắc bắt buộc của dự án |
 
-Các tệp APK gốc, `dist/`, `work/`, `decompiled/` và `.tools/` chỉ nằm ở máy —
-đó là tệp nhị phân của Meta, tệp vượt giới hạn dung lượng của GitHub, hoặc bằng
-chứng của từng lượt chạy. Mã băm của chúng đã được ghim nên vẫn build lại được.
+Các tệp APK gốc, `dist/`, `work/`, `decompiled/` và `.tools/` không nằm trong
+mã nguồn Git. Bản mod đã phát hành có trên GitHub Releases; tệp gốc và bằng
+chứng từng lượt chạy vẫn nằm ở máy. Đầu vào build được ghim bằng mã băm.
 
 ## Tài liệu
 

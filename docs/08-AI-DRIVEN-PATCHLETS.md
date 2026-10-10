@@ -6,18 +6,18 @@ Release history — which revision shipped when, with which hashes — belongs t
 
 ## Outcome
 
-Everything the clone does is represented by the reusable [`patchlets/`](../patchlets/README.md) system: the separate application identity, the optional app-scoped SOCKS5 VPN transport, always-on indexed passive Block, the ten-minute foreground mirror refresh, the single inline Block control and its one **Block and report** modal, the Activity and Settings screens, lifecycle hooks, diagnostics and quarantine, in-app updates, packaging, signing, and the release checks.
+Everything the clone does is represented by the reusable [`patchlets/`](../patchlets/README.md) system: the separate application identity, the optional app-scoped SOCKS5 VPN transport, always-on indexed passive Block, the ten-minute foreground mirror refresh, the single inline Block control and its one **Block and report** modal, the Activity and Settings screens, lifecycle hooks, diagnostics and quarantine, video saving, in-app updates, packaging, signing, and the release checks.
 No behaviour lives in a hand-edited decompiled tree.
 Every build is a replay of the same ordered catalog against a hash-locked source set, and a run that cannot reproduce its own inputs produces no artifact at all.
 
 The current source is the exact `Threads-444.0.0.45.85/` base + arm64-v8a + xhdpi split set, not the historical 415 single APK and not an earlier modified tree.
 Patchlet 005 deterministically derives one pristine unsigned standalone APK from that set, after which every ordinary patchlet is replayed against a resolution bound to both the source-set digest and the derived-APK digest.
 
-The Threads 444 resolution is `review-required` for patchlet 075 video saving, the mod-build-2 identity in patchlet 085 r3, and release gates r64. Six earlier builds were published from this Threads 444 series; their promotion does not authorize the new menu/video seam.
-The current artifact is `ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-threads55-mod1-d.apk`, 135,150,120 bytes, SHA-256 `e6ec4d70dacfa094659e31e09f2a890c537ba72b574767d62337a6a929c672a4`, published 2026-09-06 into `dist/`, which is not part of this repository.
-`runtimeValidation` is `not-run` for all six.
+The Threads 444 mod-build-2 resolution is `verified-current` following complete SignedReview evidence and human promotion. Patchlet 075 r1 owns video saving, 085 r3 pins the binary build identity, and 090 r64 binds the release proofs. Six historical mod-build-1 releases retain their own evidence; their promotion did not authorize the new menu/video seam.
+The current artifact is `ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk`, 135,150,120 bytes, SHA-256 `83cc9c1cf12ae154154983ac1b4f7961e81d1e7695ee467431fc3994f0de6dae`, published locally on 2026-10-10 directly in `dist/`. Its GitHub download page is [this Release](https://github.com/Tree55-org/ThreadsMod/releases/tag/threads55-444.0.0.45.85-mod2); `dist/` is excluded from Git source.
+The six historical Release reports record `runtimeValidation: not-run`; the mod-build-2 report records `not-run`.
 No published APK has ever been installed on a device or exercised against a real account: installation, startup, login, feed scrolling, Block, report delivery, live mirror fetch, VPN routing, and updater behaviour are all unobserved for 444.
-Static, archive, and signed-DEX gates are the only evidence that exists, alongside an isolated emulator probe that constructs the two mod screens from a candidate's exact primary DEX.
+Evidence includes static, archive and signed-DEX gates, 229 offline video harness assertions, and an isolated no-permission emulator probe that constructs four Activity screens from the candidate's exact primary DEX. It does not prove native video menu selection in a live feed, real CDN downloads, provider writes or playback.
 
 The catalog has twelve ordered patchlets.
 Series order is 005, 010, 020, 030, 040, 050, 070, 060, 075, 080, 085, 090.
@@ -91,7 +91,7 @@ The two-pass APKEditor 1.4.9 derivation produces an unsigned standalone APK with
 That derived file remains source input, never a release result.
 
 The source identity is `com.instagram.barcelona`, versionName `444.0.0.45.85`, versionCode `511407877`, minSdk 28, targetSdk 36, arm64-v8a.
-The working patchlet target is the separate clone `app.tree55.threads`, launcher label `Threads 55`, versionName `444.0.0.45.85-threadsmod.2`, versionCode `511407879`, mod build 2. The published September 6 APK remains mod build 1 until the new review and Release workflow completes.
+The published patchlet target is the separate clone `app.tree55.threads`, launcher label `Threads 55`, versionName `444.0.0.45.85-threadsmod.2`, versionCode `511407879`, mod build 2. September 6 releases remain historical mod build 1. GitHub publication has not deployed signed in-app updater metadata.
 The older `com.threadsmod.barcelona` identity is historical only: Android installs it side by side with the current clone, and the in-app updater cannot bridge between package names.
 
 The resolution at [`patchlets/resolutions/444.0.0.45.85/resolution.json`](../patchlets/resolutions/444.0.0.45.85/resolution.json) is the canonical source for every member, source-set, and deterministic unsigned-input hash, with its derivation and current proof boundary summarized in [EVIDENCE.md](../patchlets/resolutions/444.0.0.45.85/EVIDENCE.md).
@@ -192,7 +192,7 @@ A revision that changes the artifact's name therefore publishes a new file besid
   -ResolutionPath .\patchlets\resolutions\444.0.0.45.85\resolution.json `
   -KeyStore "$env:USERPROFILE\.android\debug.keystore" `
   -KeyAlias androiddebugkey `
-  -PublishPath .\dist\ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-NEW-mod1.apk
+  -PublishPath .\dist\ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-NEW-mod2.apk
 ```
 
 `Release` runs only against a `verified-current` resolution with the blocker false, and it is the only mode that may receive `-PublishPath`.
@@ -255,5 +255,5 @@ Drift in an existing seam has a dedicated task template: drawer drift uses [`RES
 - The sole inline control always opens one **Block and report** modal. Its positive action always durably queues one report; **Also block this profile** only adds a scheduler-backed Block. Dedicated Report, editor, review, consent, and one-click paths must remain absent. Report POST may use only the exact reviewed AWS endpoint with no fallback; mirror GETs remain ordered GitHub raw -> jsDelivr -> AWS, and `tree55.com` remains forbidden.
 - The opaque inline model is only a current-row optimization. Null and passive work uses the cache-first same-APK session get-or-create-by-ID path, whose model is still subject to exact ID validation. Cache-placeholder acceptance and every fixed failure stage remain device-runtime boundaries until explicitly tested.
 - A confirmed native success whose completion save fails is review work, not a transient mutation failure: the viewer and target are quarantined with no automatic retry, and only an explicit atomic manual retry may remove a matching quarantine.
-- No published build has been installed or run on a device. `runtimeValidation` is `not-run` for every published artifact, and no runtime, network, or installer result exists for any published 444 bytes.
+- No published full APK has been installed or run on a device. The current Release report records `runtimeValidation: not-run`; static and isolated Activity evidence does not establish live video saving, other runtime network behaviour, or installer results for published 444 bytes.
 - Full arm64 clone and device validation remains a separate explicit step, using a disposable account or profile and one controlled target.

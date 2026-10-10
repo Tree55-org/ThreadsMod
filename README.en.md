@@ -18,12 +18,13 @@ with Meta, and not on any app store.
 · [file in the repo](docs/media/threads55-install-guide.mp4).
 It is an animated mockup of the UI, not footage from a device.
 
-Download from the **[release page](https://github.com/Tree55-org/ThreadsMod/releases/tag/release)**:
+Download from the **[release page](https://github.com/Tree55-org/ThreadsMod/releases/tag/threads55-444.0.0.45.85-mod2)**:
 
 | File | Size | Use |
 |---|---:|---|
-| `tree55-threads-mod.apk` | 129 MB | The app. Install this. |
-| `tree55-threads-mod.zip` | 83 MB | The same APK, zipped — for when `.apk` downloads are blocked. Unzip, then install. |
+| [ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk](https://github.com/Tree55-org/ThreadsMod/releases/download/threads55-444.0.0.45.85-mod2/ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk) | 128.89 MiB | The app. Install this. |
+| [ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.zip](https://github.com/Tree55-org/ThreadsMod/releases/download/threads55-444.0.0.45.85-mod2/ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.zip) | 85.51 MiB | The same APK, zipped. Unzip, then install. |
+| [ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2-SHA256SUMS.txt](https://github.com/Tree55-org/ThreadsMod/releases/download/threads55-444.0.0.45.85-mod2/ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2-SHA256SUMS.txt) | 258 bytes | SHA-256 values for both downloads. |
 
 Requires **Android 9 or newer**, **arm64-v8a**. You will need to allow installing
 from an unknown source.
@@ -31,12 +32,12 @@ from an unknown source.
 Verify the download before installing — it should be exactly:
 
 ```
-SHA-256  e6ec4d70dacfa094659e31e09f2a890c537ba72b574767d62337a6a929c672a4
+SHA-256  83cc9c1cf12ae154154983ac1b4f7961e81d1e7695ee467431fc3994f0de6dae
 ```
 
 ```powershell
-Get-FileHash -Algorithm SHA256 tree55-threads-mod.apk    # Windows
-sha256sum tree55-threads-mod.apk                         # Linux / macOS
+Get-FileHash -Algorithm SHA256 ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk    # Windows
+sha256sum ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk                         # Linux / macOS
 ```
 
 If the hash does not match, do not install it.
@@ -61,9 +62,12 @@ account you can afford to lose.
 - **Reports are never automatic** — only an explicit tap sends one.
 - **Settings and Activity screens** from the bottom of the left drawer: list
   status, record counts, the report outbox, and history.
+- **Save video** in the native post menu: choose **Choose location** to save a
+  supported direct MP4, up to 256 MiB. Video carousels and adaptive-only streams
+  are excluded. [Details](docs/14-VIDEO-SAVING.md).
 - **Optional SOCKS5 proxy** covering only this app. Off by default.
-- **Signed in-app updates**, handed to Android's normal installer — never a
-  silent or root install.
+- **Signed in-app update support**, handed to Android's normal installer.
+  Signed update metadata has not been deployed; install this release manually.
 
 **Blocks are real.** They run through Threads' own block action on your live
 session, so they appear in official Threads, apply on every device using that
@@ -71,17 +75,19 @@ account, and are **not** undone by uninstalling.
 
 ## Status
 
-Video saving is being added through patchlet 075. See [how video saving works](docs/14-VIDEO-SAVING.md); the published APK below predates that feature.
+Current build `ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk`, published locally to `dist/` on 2026-10-10 as mod build 2,
+version `444.0.0.45.85-threadsmod.2` / `511407879`, from patchlet series
+005 r1, 010 r5, 020 r24, 030 r7, 040 r2, 050 r17, 070 r10, 060 r14, 075 r1, 080 r3, 085 r3, 090 r64.
 
-Current build `tree55-threads-mod.apk`, published 2026-09-06, from patchlet
-series 005 r1, 010 r5, 020 r24, 030 r7, 040 r2, 050 r17, 060 r14, 070 r10,
-080 r3, 085 r2, 090 r62.
+Video checks include 229 offline harness assertions, static signed-APK gates,
+and four Activity screens in an isolated no-permission emulator probe. They
+cover code and screen construction. Native menu selection in a live feed, CDN
+downloads, writing to a real document provider, and playback remain untested.
 
-**No published build has ever been installed or started on a device.** Every
-release records `runtimeValidation: not-run`. The release gates are static — they
-prove properties of the signed bytes, not that the app works. Login, feed
-scrolling, a real block, report delivery and the updater are all unexercised on
-hardware. Treat this as unverified software.
+**The published APK has not been installed or started on a device.** Its
+Release report records `runtimeValidation: not-run`.
+Login, scrolling, real Block, report delivery, proxy routing and updater
+installation remain untested on hardware.
 
 History: [docs/CHANGELOG.md](docs/CHANGELOG.md).
 
@@ -123,7 +129,7 @@ the resolution to `verified-current`, then a `Release` run that publishes. The
 commands are in [docs/03](docs/03-BUILD-SIGN-TEST-PLAN.md); the per-stage scripts
 are in [patchlets/README.md](patchlets/README.md).
 
-Nothing is hand-edited. The mod is eleven ordered, exact-count patchlets replayed
+Nothing is hand-edited. The mod is twelve ordered, exact-count patchlets replayed
 against a hash-locked source set, with every obfuscated symbol isolated in a
 per-version resolution. Any drift fails closed and produces no artifact.
 
@@ -132,15 +138,15 @@ per-version resolution. Any drift fails closed and produces no artifact.
 | Path | |
 |---|---|
 | `patchlets/` | Canonical source — every change starts here |
-| `patchlets/features/` | The eleven patchlets |
+| `patchlets/features/` | The twelve patchlets |
 | `patchlets/resolutions/` | Per-version symbol bindings and evidence |
 | `patchlets/tools/` | The build pipeline and DEX inspectors |
 | `docs/` | Design and operator documentation |
 | `AGENTS.md` | Binding project rules |
 
-Upstream APKs, `dist/`, `work/`, `decompiled/` and `.tools/` are local-only —
-Meta's binaries, files over GitHub's size limit, or per-run evidence. Their hashes
-are pinned, so builds reproduce without them.
+Upstream APKs, `dist/`, `work/`, `decompiled/` and `.tools/` are excluded from
+Git source. Published mod artifacts are available as GitHub Release assets;
+upstream binaries and per-run evidence remain local. Build inputs are hash-pinned.
 
 ## Documentation
 

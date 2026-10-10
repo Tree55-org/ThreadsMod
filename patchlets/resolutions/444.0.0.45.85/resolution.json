@@ -2,8 +2,8 @@
   "$schema": "../../schemas/resolution.schema.json",
   "schemaVersion": 1,
   "resolutionId": "threads-444.0.0.45.85-arm64-split",
-  "status": "review-required",
-  "resolvedAt": "2026-10-09T17:52:22.0568547+07:00",
+  "status": "verified-current",
+  "resolvedAt": "2026-10-10T13:25:47.6289254+07:00",
   "source": {
     "fileName": "Threads-444.0.0.45.85-merged-unsigned.apk",
     "sha256": "156ae30cef15a2de7ce9bec2637a68a51f0ab2547ae7b7e7ff9541853d9670ec",
@@ -951,7 +951,7 @@
     "expectedDexUpdateFlowInspectorArgumentCount": 12,
     "expectedDexUpdateFlowFixtureCount": 96,
     "requiredSignerCertificateSha256": "317e3f3813f3b1ec324717faf1bb78f954f49a12122181a85b42338ca10dd079",
-    "updateSignedDexReviewRequired": true,
+    "updateSignedDexReviewRequired": false,
     "requiredDexUpdateFlow": {
       "id": "threadsmod-update-flow-v1",
       "expectedDexName": "classes.dex",

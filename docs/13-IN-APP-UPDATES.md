@@ -6,14 +6,14 @@ It does not modify the official Threads installation, install an APK silently, o
 ## Current status
 
 The updater is inert in production.
-No signed `threadsmod-update.json` has ever been published for `app.tree55.threads`, so every check finds no metadata and no update can be offered, downloaded or installed.
+No signed `threadsmod-update.json` has been deployed for `app.tree55.threads`, so the in-app updater cannot offer, download or install an update. Publishing the mod-build-2 APK on GitHub Releases does not publish this signed metadata channel.
 
 The updater cannot bridge package names.
 A `com.threadsmod.barcelona` clone from an older build is a different Android package: Android installs it side by side, and because the updater's application ID is the compiled constant `app.tree55.threads` — `UpdateController.onResume` returns without checking anything when the running package is not that constant, and every downloaded archive must declare that same constant — no `com.threadsmod.barcelona` install can ever be upgraded to `app.tree55.threads`.
 `adb install -r` cannot cross that boundary either.
 
 No published build has been installed or started on a device, so no update check, download, verification, installer handoff or rollback attempt has ever run on hardware.
-Every `Release` report records `runtimeValidation: not-run`, and the release gate's `update-installer-contract` subresult records `runtimeInstallTested: false`.
+Historical `Release` reports record `runtimeValidation: not-run`; the mod-build-2 report records `runtimeValidation: not-run`. The release gate's `update-installer-contract` subresult records `runtimeInstallTested: false`.
 Everything below is a property of the signed bytes, proven statically.
 
 Release history for every published artifact is in [`CHANGELOG.md`](CHANGELOG.md).
@@ -96,7 +96,7 @@ Retained state cannot show an Update action, open unknown-sources settings, down
 
 ## Eligibility and dialog behaviour
 
-The exact working [Threads 444 resolution](../patchlets/resolutions/444.0.0.45.85/resolution.json) pins mod build 2 (`update.currentModBuild`), clone target version code `511407879`, and version name `444.0.0.45.85-threadsmod.2` under review. The published September 6 build remains mod build 1, version code `511407878`, version name `444.0.0.45.85-threadsmod.1`; the working target still requires complete SignedReview evidence, human promotion, and a fresh Release publication.
+The published mod-build-2 [Threads 444 resolution](../patchlets/resolutions/444.0.0.45.85/resolution.json) pins `update.currentModBuild` to 2, version code `511407879`, and version name `444.0.0.45.85-threadsmod.2`. Historical September 6 builds are mod build 1, version code `511407878`, version name `444.0.0.45.85-threadsmod.1`. Review, human promotion, and the fresh Release publication are recorded in the [release history](CHANGELOG.md).
 Its pristine derived source stays at version code `511407877`, version `444.0.0.45.85`; the [resolution evidence](../patchlets/resolutions/444.0.0.45.85/EVIDENCE.md) records the split-source and validation boundary.
 
 A candidate is offered only when both conditions hold: its signed `modBuild` is greater than the running build's, and its signed `versionCode` is greater than the installed clone's.
@@ -186,10 +186,10 @@ Per-run reports, candidate hashes and review records are evidence under `work/`,
 ## Bootstrapping and package identity
 
 Published builds from before the updater existed contain no update code at all, so they cannot discover mod build 1.
-Reaching an updater-capable build from one of those is a one-time manual install; built APKs are not committed, so that install has to come from a build you produce and verify yourself.
+Reaching an updater-capable build from one of those requires a manual install. Built APKs are not committed; obtain the [mod-build-2 release](https://github.com/Tree55-org/ThreadsMod/releases/tag/threads55-444.0.0.45.85-mod2) or build it yourself, and verify the APK hash before installing.
 Only mod build 1 and later can receive in-app update prompts, and none of them can receive one until a manifest is published.
 
-Every published `app.tree55.threads` build so far shares the application ID and version code `511407878`. The working mod-build-2 target keeps that application ID and advances the version code to `511407879`, but remains under review. After review, promotion, and a fresh Release, its matching package and signer permit a manual update of an earlier `app.tree55.threads` installation in place.
+The published mod-build-2 APK keeps `app.tree55.threads` and advances the version code from historical mod-build-1 code `511407878` to `511407879`. With the matching signer, it permits a manual update of an earlier `app.tree55.threads` installation in place. GitHub publication does not enable an in-app prompt without separately deployed signed metadata.
 It installs beside a `com.threadsmod.barcelona` clone rather than upgrading it.
 Artifact filenames, sizes and hashes for each published build are in [`CHANGELOG.md`](CHANGELOG.md).
 

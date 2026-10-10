@@ -2,13 +2,12 @@
 
 This file owns the release history for the whole repository.
 
-`dist/` and `work/` are local-only and are not published here, so every artifact below is identified by filename, byte size and SHA-256 rather than by a link.
-None of these files can be downloaded from this repository.
-`dist/SHA256SUMS.txt` is the local ledger of published bytes; it lists sixteen artifacts, and only the three most recent Threads 444 builds are still present on disk.
+`dist/` and `work/` are excluded from Git source. GitHub download links for the latest mod-build-2 APK and ZIP are listed as [Release assets](https://github.com/Tree55-org/ThreadsMod/releases/tag/threads55-444.0.0.45.85-mod2), with exact local filenames, byte sizes and SHA-256 values recorded below.
+The historical `dist/SHA256SUMS.txt` ledger records sixteen earlier artifacts. The latest APK and ZIP have their own `dist/ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2-SHA256SUMS.txt` checksum file; historical hashes and evidence remain unchanged.
 Every entry records whether its file is still retained locally.
 
 No published build has ever been installed or run on a device.
-Every `Release` report in this history records `runtimeValidation: not-run`.
+Historical `Release` reports record `runtimeValidation: not-run`; the current mod-build-2 report records `runtimeValidation: not-run`.
 Nearly all device evidence below is an isolated, no-permission Activity UI probe on an emulator: for the Threads 444 builds it ran against a review candidate whose bytes differ from the published artifact, and for the last Threads 415 build against that build's exact primary DEX repackaged behind a no-permission manifest.
 No probe ever launched a published APK, and each proves screen construction only.
 The one other piece of device evidence is recorded under `tree55-mod1` below: a review candidate that is not the published artifact reached the Threads login screen on an arm64-capable emulator without crashing, which proves startup and nothing past it.
@@ -19,7 +18,7 @@ Failed runs, review-only `SignedReview` candidates, and per-run report inventori
 Where a failed run is the reason a release gate exists, that reasoning belongs to the patchlet document that owns the gate.
 A series line lists the patchlet revisions that the release records name for that build; patchlets the records leave unnamed did not move.
 
-## Identity carried by every Threads 444 build
+## Historical mod-build-1 Threads 444 identity
 
 | Property | Value |
 |---|---|
@@ -32,12 +31,12 @@ A series line lists the patchlet revisions that the release records name for tha
 | Signing | one APK Signature Scheme v2 signer, certificate SHA-256 `317e3f3813f3b1ec324717faf1bb78f954f49a12122181a85b42338ca10dd079` |
 | Alignment | 16 KiB |
 
-The application ID and version code do not change across the `app.tree55.threads` builds, so each one updates the previous install in place rather than sitting beside it.
+The historical mod-build-1 `app.tree55.threads` builds share that version code. Mod build 2 keeps the package and signer and advances the version code to `511407879`, permitting a manual update in place. `444.0.0.45.85-threadsmod.2` is its version name.
 `com.threadsmod.barcelona` is a different package: Android installs it side by side, and the in-app updater cannot bridge package names.
 
 Patching and re-signing the APK voids Meta's signature.
 Blocks these builds perform are real server-side account state on the signed-in Threads account and survive uninstalling the clone.
-In every build from `threads55-mod1` (2026-09-05 17:44) onward, the current `-d` build included, passive blocking is always on, with no opt-in and no in-app way to switch it off, and the activation-statistics ping is therefore unconditional.
+In every build from `threads55-mod1` (2026-09-05 17:44) onward, including mod build 2, passive blocking is always on, with no opt-in and no in-app way to switch it off, and the activation-statistics ping is therefore unconditional.
 Only the two builds published before that, `tree55-mod1` and `update-mod1`, gated passive blocking behind an opt-in, and both are historical.
 
 Configurable limits are two fields and only two: passive minimum delay, 2,000-60,000 ms, default 4,000, and passive maximum delay, 3,000-60,000 ms, default 10,000.
@@ -45,7 +44,26 @@ Both accept whole-second steps only, and the maximum may not fall below the mini
 Manual inline Block is unpaced and uncapped.
 [`10-REPORTING-AND-LIMITS.md`](10-REPORTING-AND-LIMITS.md) owns that contract in full.
 
-## 2026-09-06 19:28 (+07:00) - `threads55-mod1-d`, current
+## 2026-10-10T14:24:05.5024793+07:00 - `video-mod2`, current (local `dist/` publication verified)
+
+- GitHub Release: [threads55-444.0.0.45.85-mod2](https://github.com/Tree55-org/ThreadsMod/releases/tag/threads55-444.0.0.45.85-mod2)
+- APK: [`ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk`](https://github.com/Tree55-org/ThreadsMod/releases/download/threads55-444.0.0.45.85-mod2/ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk), 135,150,120 bytes, SHA-256 `83cc9c1cf12ae154154983ac1b4f7961e81d1e7695ee467431fc3994f0de6dae`
+- ZIP: [`ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.zip`](https://github.com/Tree55-org/ThreadsMod/releases/download/threads55-444.0.0.45.85-mod2/ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.zip), 89,662,706 bytes, SHA-256 `d57f8f23c4fcf6d27ec1e61f5f7d60e346789f7227d0a0e64b539a92612767a9`; contains the same APK bytes
+- Checksums: [`ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2-SHA256SUMS.txt`](https://github.com/Tree55-org/ThreadsMod/releases/download/threads55-444.0.0.45.85-mod2/ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2-SHA256SUMS.txt)
+- Direct local paths: `dist/ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk`, `dist/ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.zip`, `dist/ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2-SHA256SUMS.txt`
+- Binary: `app.tree55.threads`, `444.0.0.45.85-threadsmod.2`, version code `511407879`, mod build 2
+- Series: 005 r1, 010 r5, 020 r24, 030 r7, 040 r2, 050 r17, 070 r10, 060 r14, 075 r1, 080 r3, 085 r3, 090 r64
+- Retained in `dist/`: yes
+- Reviewed candidate: `work/video-mod2-signed-review-20261009-b`; resolution promotion following the user’s release direction: `2026-10-10T13:25:47.6289254+07:00`
+- Fresh Release: `work/video-mod2-release-20261010-a`, completed `2026-10-10T14:19:10.8272173+07:00`, `status: passed`, `releaseEligible: true`, `artifactProduced: true`, `runtimeValidation: not-run`
+
+Patchlet 075 adds **Save video** to the native menu for direct video posts with a progressive MP4 rendition. Tap **Choose location** and choose a filename and folder in Android's document picker. Downloads are bounded to 256 MiB; image posts, video carousels and adaptive-only streams are outside this hook. There is no automatic retry or broad storage permission. Cancellation and incomplete-document cleanup depend on the selected provider accepting those operations. See [video saving](14-VIDEO-SAVING.md).
+
+Validation includes 229 offline video harness assertions, static signed-APK gates, and four Activity screens in an isolated no-permission emulator probe. It does not qualify native menu selection in a live feed, real CDN downloads, document-provider writes, or playback. The published full APK has not been installed or started on a device. Review candidates remain separate work-only evidence.
+
+With its matching package and signer, this build can manually upgrade an earlier `app.tree55.threads` installation. It installs beside `com.threadsmod.barcelona` and official Threads. Signed in-app updater metadata has not been deployed. The previous GitHub release and retained draft are unchanged.
+
+## 2026-09-06 19:28 (+07:00) - `threads55-mod1-d`, superseded by mod build 2
 
 - Artifact: `ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-threads55-mod1-d.apk`
 - Size: 135,150,120 bytes
@@ -124,7 +142,7 @@ Both sentences shipped in that APK's DEX; the defect was user-visible text rathe
 
 The first build under the application ID `app.tree55.threads`, published with the earlier launcher label `Threads Mod Demo`.
 In this series passive blocking was opt-in and the activation-statistics ping was gated on that opt-in; both became unconditional in the next build.
-Because it shares the package and version code with everything published after it, any later `app.tree55.threads` build updates this install in place.
+Because it shares the package and signer with later `app.tree55.threads` builds, a matching later build with a nondecreasing version code can update this install in place.
 
 Two `adb install` attempts of these published bytes onto a test phone were cancelled by the device's own USB-install confirmation and returned `INSTALL_FAILED_USER_RESTRICTED`, so nothing was installed, started or exercised.
 The review candidate for this release, SHA-256 `280fa71d00315dbadcece0de5b3fcf19dffd542ee95a8052f979c2dbe86cf9b8` and not these published bytes, did launch to the Threads login screen on an arm64-capable emulator without a crash; no login, scrolling, list refresh, Block, report, ping delivery, update or VPN behaviour followed it.
@@ -156,7 +174,7 @@ That is why every build before `-d` syncs at all: each reads the whole file, and
 The chunked v3 index is published beside the legacy file and has been live on the origin, the AWS relay, GitHub raw and jsDelivr since `2026-09-06T07:14:05.577Z`.
 Its signed root `/blocklist/v3/manifest.json` uses the same key and envelope as the legacy file and names content-addressed objects under `/blocklist/v3/objects/`.
 The first production build carried 1,633 threads rows and 862 facebook rows in 16 chunks each, 35 objects, 427,821 bytes, verified byte for byte from all four sources.
-Only the `-d` build reads it; every earlier build, and the Chrome extension, still reads the legacy file, so the legacy file stays published until every old install is replaced.
+Among the historical mod-build-1 releases, only `-d` reads it; mod build 2 retains that chunked-v3 reader. Earlier mod-build-1 releases and the Chrome extension still read the legacy file, which remains published until every old install is replaced.
 
 ## Historical Threads 415 builds
 
@@ -199,11 +217,10 @@ They are described in [`05-HISTORICAL-DEMO-BUILDS.md`](05-HISTORICAL-DEMO-BUILDS
 
 ## Verifying a copy you already hold
 
-Nothing in this repository can hand you an artifact, so the hashes above are the only way to tell one build from another.
-The three retained files are in `dist/`, which is local-only; the sizes and hashes recorded above were re-verified against those bytes.
+Download the current build from the GitHub Release linked above and verify it against its checksum file. Local artifacts remain under `dist/`, excluded from Git source; each historical entry identifies its own retained bytes and proof boundaries.
 
 ```powershell
-Get-FileHash -Algorithm SHA256 .\dist\ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-threads55-mod1-d.apk
+Get-FileHash -Algorithm SHA256 .\dist\ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk
 ```
 
 An artifact whose SHA-256 is not listed above was not produced by the release pipeline, and nothing in this history vouches for it.

@@ -39,7 +39,7 @@ Only after promotion does a second, fresh run publish.
   -ResolutionPath .\patchlets\resolutions\444.0.0.45.85\resolution.json `
   -KeyStore "$env:USERPROFILE\.android\debug.keystore" `
   -KeyAlias androiddebugkey `
-  -PublishPath .\dist\ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-NEW-mod1.apk
+  -PublishPath .\dist\ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-NEW-mod2.apk
 ```
 
 `-PublishPath` must resolve under `dist/` and must not already exist.
@@ -55,11 +55,11 @@ For the patchlet model itself, see [the patchlet guide](08-AI-DRIVEN-PATCHLETS.m
 
 ## Current state
 
-The current published artifact is `ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-threads55-mod1-d.apk`, 135,150,120 bytes, SHA-256 `e6ec4d70dacfa094659e31e09f2a890c537ba72b574767d62337a6a929c672a4`, published 2026-09-06 from the eleven-patchlet series 005 r1, 010 r5, 020 r24, 030 r7, 040 r2, 050 r17, 060 r14, 070 r10, 080 r3, 085 r2, 090 r62.
-It is package `app.tree55.threads`, launcher label `Threads 55`, version name `444.0.0.45.85-threadsmod.1`, version code `511407878`, minimum and target SDK 28 and 36, arm64-v8a, signed under APK Signature Scheme v2 by exactly one signer whose certificate SHA-256 is `317e3f3813f3b1ec324717faf1bb78f954f49a12122181a85b42338ca10dd079`.
-That `Release` run recorded `status: passed`, `releaseEligible: true`, `artifactProduced: true`, and `runtimeValidation: not-run`.
+The current published artifact is `ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk`, 135,150,120 bytes, SHA-256 `83cc9c1cf12ae154154983ac1b4f7961e81d1e7695ee467431fc3994f0de6dae`, published locally on 2026-10-10 directly at `dist/ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk` from the twelve-patchlet series 005 r1, 010 r5, 020 r24, 030 r7, 040 r2, 050 r17, 070 r10, 060 r14, 075 r1, 080 r3, 085 r3, 090 r64.
+It is package `app.tree55.threads`, launcher label `Threads 55`, version name `444.0.0.45.85-threadsmod.2`, version code `511407879`, minimum and target SDK 28 and 36, arm64-v8a, signed under APK Signature Scheme v2 by exactly one signer whose certificate SHA-256 is `317e3f3813f3b1ec324717faf1bb78f954f49a12122181a85b42338ca10dd079`.
+The fresh `Release` run `work/video-mod2-release-20261010-a` recorded `status: passed`, `releaseEligible: true`, `artifactProduced: true`, and `runtimeValidation: not-run`. The earlier signed review includes 229 offline video harness assertions and four isolated no-permission Activity screens; those are code and screen-construction proofs, not live video-save qualification.
 No published build has ever been installed or started on a device: the only device evidence any revision holds is an isolated, no-permission Activity UI probe on an emulator — for the Threads 444 builds against a review candidate whose bytes differ from the published artifact, and for the last Threads 415 build against that build's exact primary DEX repackaged behind a no-permission manifest. No probe ever launched a published APK.
-`dist/` is not part of the published repository, so no clone contains the APK; build it or obtain it separately, and verify its SHA-256 before installing.
+`dist/` is excluded from Git source. Obtain the APK from the [GitHub Release page](https://github.com/Tree55-org/ThreadsMod/releases/tag/threads55-444.0.0.45.85-mod2) or build the APK yourself, and verify its SHA-256 before installing.
 
 Every release, review, promotion, and failed run — with its hashes, counts, and dates — is recorded in [the changelog](CHANGELOG.md), which this document does not repeat.
 
@@ -79,7 +79,7 @@ These are static proofs about bytes, and passing all of them says nothing about 
 - **Idempotency.** Replaying the complete series against the already-patched tree must be content-identical across the whole decoded tree, before and after.
 - **Signed-DEX flow proofs.** Four fixture matrices run against the signed candidate's primary DEX at the exact counts pinned in the resolution — currently 328 bridge, 41 report-permalink, 13 proxy-bootstrap, and 96 updater cases. Each matrix carries hash-pinned negative fixtures, and a missing, duplicate, nonliteral, or divergent expectation fails before any positive case can pass.
 - **Targeted decompilation.** A SHA-pinned, alias-free JADX 1.5.6 gate must recover every resolution-owned class — currently 40 — and the DEX must carry all 54 required class descriptors.
-- **Clone identity.** The final manifest must declare application ID `app.tree55.threads`, version code `511407878`, version name `444.0.0.45.85-threadsmod.1`, minSdk 28, targetSdk 36, the resolution's launcher activity, exactly one clone-owned non-exported FileProvider authority that grants URI permissions, and clone-owned custom permissions, task affinities, and authenticator account type.
+- **Clone identity.** The final manifest must declare application ID `app.tree55.threads`, version code `511407879`, version name `444.0.0.45.85-threadsmod.2`, minSdk 28, targetSdk 36, the resolution's launcher activity, exactly one clone-owned non-exported FileProvider authority that grants URI permissions, and clone-owned custom permissions, task affinities, and authenticator account type.
 - **Endpoints.** List reads must use exactly the three signed v3 roots in declared order — GitHub raw, then jsDelivr, then the AWS relay. Report writes must use only the single AWS `/v1/reports` URL with no fallback. Every string in the resolution's forbidden set must be absent from the DEX.
 - **Diagnostics bounds.** `BlockDiagnostic` must carry its closed reviewed stage map, the 120 / 240 / 200-character detail, status, and log bounds, `mirror=n/a`, and bridge revision `r6`, so no identifier, URL, payload, host object, or `Throwable` can reach a log line.
 - **Archive, alignment, and signature.** The primary DEX must stay under 65,536 method references, `zipalign -c -P 16 4` must pass, 7-Zip must report the archive intact, and `apksigner` must report APK Signature Scheme v2 with exactly one signer whose certificate SHA-256 matches the resolution.
@@ -90,7 +90,7 @@ These are static proofs about bytes, and passing all of them says nothing about 
 ## Runtime validation still owed
 
 Nothing in this list has been done for any published build.
-`runtimeValidation` is `not-run` in every default `Release` report, and the isolated Activity UI probe that `SignedReview` runs is an emulator probe against a review candidate, not an installation of published bytes.
+Historical default `Release` reports record `runtimeValidation: not-run`; the mod-build-2 report records `not-run`. The isolated Activity UI probe that `SignedReview` runs is an emulator probe against a review candidate, not an installation of the published full APK.
 
 Do not start with a production account.
 Use a disposable Threads account and a disposable Android user, profile, or test device.
@@ -130,12 +130,12 @@ The historical Threads 415 builds and the first Threads 444 build used `com.thre
 Separate packages do not separate accounts.
 A block is real server-side Threads account state: it is visible from official Threads and from every other signed-in device, it survives uninstalling the clone, and nothing in this app ever reverses it.
 
-On an Android 9-or-newer arm64 test phone, verify and install the exact published bytes of the current artifact, `ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-threads55-mod1-d.apk`, SHA-256 `e6ec4d70dacfa094659e31e09f2a890c537ba72b574767d62337a6a929c672a4`, from the repository root.
+On an Android 9-or-newer arm64 test phone, verify and install the exact published bytes of `ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk`, SHA-256 `83cc9c1cf12ae154154983ac1b4f7961e81d1e7695ee467431fc3994f0de6dae`, from the repository root. This is a manual validation procedure; it has not been performed on the published mod-build-2 bytes.
 
 ```powershell
 $Adb = "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe"
-$Apk = (Resolve-Path '.\dist\ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-threads55-mod1-d.apk').Path
-$ExpectedSha256 = 'e6ec4d70dacfa094659e31e09f2a890c537ba72b574767d62337a6a929c672a4'
+$Apk = (Resolve-Path '.\dist\ThreadsMod-CloneBlocker-444.0.0.45.85-arm64-v8a-video-mod2.apk').Path
+$ExpectedSha256 = '83cc9c1cf12ae154154983ac1b4f7961e81d1e7695ee467431fc3994f0de6dae'
 
 if ((Get-FileHash -Algorithm SHA256 -LiteralPath $Apk).Hash.ToLowerInvariant() -ne $ExpectedSha256) {
   throw 'APK SHA-256 mismatch'

@@ -39,7 +39,7 @@ The patchlet series rewrites that source into a separately installable clone.
 | ABI | `arm64-v8a` |
 
 `patchlets/resolutions/444.0.0.45.85/resolution.json` is the authority for every value in that table.
-The table describes the working mod-build-2 target, which remains under review. The published September 6 build remains mod build 1, version code `511407878`, version name `444.0.0.45.85-threadsmod.1`; the new target still requires complete SignedReview evidence, human promotion, and a fresh Release publication.
+The table describes the published mod-build-2 target. Historical September 6 builds remain mod build 1, version code `511407878`, version name `444.0.0.45.85-threadsmod.1`. The exact mod-build-2 artifact, hash, completed review, human promotion, and Release publication are recorded in [CHANGELOG.md](CHANGELOG.md).
 
 The earlier clone package `com.threadsmod.barcelona` is historical and is not the current target.
 Android treats it as a different application, so a `com.threadsmod.barcelona` install sits side by side with `app.tree55.threads` instead of being replaced by it, and the in-app updater cannot bridge the two package names.
@@ -72,7 +72,7 @@ It is not itself a mod APK, is not signed, and is not a publishable artifact.
 The path above is a local working directory that is not published with this repository.
 
 No build produced from this source has been installed on a device.
-`runtimeValidation` is `not-run` for every published release, so nothing in this document proves installability, startup or runtime behaviour.
+Historical Release reports record `runtimeValidation: not-run`; the mod-build-2 report records `runtimeValidation: not-run`. Static and isolated Activity evidence does not prove full-APK installation, startup, live video saving or other runtime behaviour.
 
 ## Current toolchain provenance
 
